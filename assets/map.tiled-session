@@ -1,0 +1,39 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "map.tmx",
+    "expandedProjectPaths": [
+        "ui",
+        "."
+    ],
+    "fileStates": {
+        "map.tmx": {
+            "scale": 2,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 385,
+                "y": 401.25
+            }
+        },
+        "map.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 0.75
+        }
+    },
+    "last.imagePath": "D:/javaprojects/OfficeEscape/assets",
+    "map.height": 19,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 19,
+    "openFiles": [
+        "map.tsx",
+        "map.tmx"
+    ],
+    "project": "map.tiled-project",
+    "recentFiles": [
+        "map.tsx",
+        "map.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

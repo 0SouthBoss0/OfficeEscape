@@ -6,6 +6,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * First screen of the application. Displayed after the application is created.
@@ -15,21 +23,36 @@ public class FirstScreen implements Screen {
     private SpriteBatch batch;
     private OrthographicCamera camera;
 
-    // Для карты (пока просто фон)
-    private Texture background;
+    // Для TMX карты
+    private TiledMap tiledMap;
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
+    private Array<Rectangle> collisionRects = new Array<>();
+
 
     @Override
     public void show() {
-
         batch = new SpriteBatch();
-        player = new Player("player.png"); // Замените на путь к текстуре вашего игрока
+        player = new Player("player.png");
 
         // Создаем камеру
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // Загружаем фон (временное решение)
-        background = new Texture("map.jpg"); // Замените на путь к вашей карте
+        // Загружаем TMX карту
+        tiledMap = new TmxMapLoader().load("map.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        loadCollisions();
+    }
+    private void loadCollisions() {
+        // Получаем все объекты из слоя "collisions"
+        MapObjects objects = tiledMap.getLayers().get("walls").getObjects();
+
+        for (MapObject object : objects) {
+            if (object instanceof RectangleMapObject) {
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                collisionRects.add(rect);
+            }
+        }
     }
 
     @Override
@@ -39,24 +62,30 @@ public class FirstScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Обновляем игрока
-        player.update(delta);
+        player.update(delta, collisionRects);
 
         // Обновляем камеру (следим за игроком)
         //camera.position.set(player.getX(), player.getY(), 0);
         camera.update();
 
-        batch.setProjectionMatrix(camera.combined);
+        // Устанавливаем вид для рендерера карты
+        tiledMapRenderer.setView(camera);
 
-        // Рендерим
+        // Рендерим карту
+        tiledMapRenderer.render();
+
+        // Рендерим игрока
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(background, 0, 0);
         player.draw(batch);
         batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-        // Resize your screen here. The parameters represent the new window size.
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+        camera.update();
     }
 
     @Override
@@ -78,6 +107,7 @@ public class FirstScreen implements Screen {
     public void dispose() {
         batch.dispose();
         player.dispose();
-        background.dispose();
+        tiledMap.dispose();
+        tiledMapRenderer.dispose();
     }
 }
