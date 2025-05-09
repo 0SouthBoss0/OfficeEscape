@@ -34,10 +34,10 @@
   <object id="7" x="23.301" y="588.738" width="587.184" height="18.6408"/>
   <object id="8" x="304.466" y="459.806" width="54.3689" height="15.534"/>
   <object id="9" x="346.408" y="456.699" width="10.8738" height="142.913"/>
-  <object id="10" x="236.117" y="458.252" width="18.6408" height="138.252"/>
-  <object id="11" x="23.301" y="459.806" width="172.427" height="13.9806"/>
+  <object id="10" x="244.117" y="466.252" width="10.6408" height="130.252"/>
+  <object id="11" x="23.301" y="459.806" width="165.76" height="13.9806"/>
   <object id="12" x="10.8738" y="386.796" width="23.301" height="217.476"/>
-  <object id="13" x="349.515" y="304.466" width="17.0874" height="71.4563"/>
-  <object id="14" x="343.301" y="360.388" width="94.7573" height="13.9806"/>
+  <object id="13" x="356.182" y="309.133" width="10.4207" height="66.7896"/>
+  <object id="14" x="354.634" y="360.388" width="83.424" height="13.9806"/>
  </objectgroup>
 </map>

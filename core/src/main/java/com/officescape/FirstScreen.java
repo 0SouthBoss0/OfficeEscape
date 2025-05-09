@@ -1,6 +1,7 @@
 package com.officescape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -32,19 +34,20 @@ public class FirstScreen implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        player = new Player("player.png");
+        player = new Player("player.png", collisionRects); // Передаем стены
 
-        // Создаем камеру
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // Загружаем TMX карту
         tiledMap = new TmxMapLoader().load("map.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         loadCollisions();
     }
+
     private void loadCollisions() {
-        // Получаем все объекты из слоя "collisions"
+        collisionRects.clear(); // Очищаем перед загрузкой
+
+        // Убедитесь, что слой называется именно "walls" (как в TMX файле)
         MapObjects objects = tiledMap.getLayers().get("walls").getObjects();
 
         for (MapObject object : objects) {
@@ -53,28 +56,32 @@ public class FirstScreen implements Screen {
                 collisionRects.add(rect);
             }
         }
+
+        // После загрузки стен обновите граф у игрока
+        if (player != null) {
+            player.updateGraphWithNewWalls(collisionRects);
+        }
     }
 
     @Override
     public void render(float delta) {
-        // Очищаем экран
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Обновляем игрока
-        player.update(delta, collisionRects);
+        // Обработка клика
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            Vector3 clickPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(clickPos);
+            player.goToCoords(clickPos.x, clickPos.y);
+        }
 
-        // Обновляем камеру (следим за игроком)
+        player.update(delta, collisionRects);
         //camera.position.set(player.getX(), player.getY(), 0);
         camera.update();
 
-        // Устанавливаем вид для рендерера карты
         tiledMapRenderer.setView(camera);
-
-        // Рендерим карту
         tiledMapRenderer.render();
 
-        // Рендерим игрока
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         player.draw(batch);
