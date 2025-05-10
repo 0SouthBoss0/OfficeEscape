@@ -29,10 +29,19 @@ public class Player {
     private IndexedAStarPathFinder<Vector2> pathFinder;
     private Heuristic<Vector2> heuristic;
     private Vector2 targetPosition;
+
+    public float getCollisionWidth() {
+        return collisionWidth;
+    }
+
+    public float getCollisionHeight() {
+        return collisionHeight;
+    }
+
     private float collisionWidth;
     private float collisionHeight;
 
-    public Player(String texturePath, Array<Rectangle> walls) {
+    public Player(String texturePath) {
         Texture texture = new Texture(Gdx.files.internal(texturePath));
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
@@ -48,8 +57,8 @@ public class Player {
             collisionHeight
         );
 
-        this.mapGraph = new TiledGraph(20, 20, 32f, walls, this.collisionWidth, this.collisionHeight);
-        this.pathFinder = new IndexedAStarPathFinder<>(mapGraph, true);
+        //this.mapGraph = new TiledGraph(20, 20, 32f, walls, this.collisionWidth, this.collisionHeight);
+        //this.pathFinder = new IndexedAStarPathFinder<>(mapGraph, true);
         this.heuristic = new ManhattanDistance();
     }
 
@@ -74,8 +83,8 @@ public class Player {
         }
     }
 
-    public void updateGraphWithNewWalls(Array<Rectangle> walls) {
-        this.mapGraph = new TiledGraph(20, 20, 32f, walls, this.collisionWidth, this.collisionHeight);
+    public void updateGraphWithNewWalls() {
+        this.mapGraph = TiledGraph.getInstance();
         this.pathFinder = new IndexedAStarPathFinder<>(mapGraph, true);
     }
 

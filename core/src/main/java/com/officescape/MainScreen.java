@@ -34,10 +34,10 @@ public class MainScreen implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        player = new Player("player.png", collisionRects); // Передаем стены
+        player = new Player("player.png");
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         tiledMap = new TmxMapLoader().load("map.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
@@ -56,11 +56,10 @@ public class MainScreen implements Screen {
                 collisionRects.add(rect);
             }
         }
+        // TODO: взять максимум от
+        TiledGraph.init(20, 20, 32f, collisionRects, player.getCollisionWidth(), player.getCollisionHeight());
+        player.updateGraphWithNewWalls();
 
-        // После загрузки стен обновите граф у игрока
-        if (player != null) {
-            player.updateGraphWithNewWalls(collisionRects);
-        }
     }
 
     @Override
@@ -76,7 +75,7 @@ public class MainScreen implements Screen {
         }
 
         player.update(delta, collisionRects);
-        //camera.position.set(player.getX(), player.getY(), 0);
+        camera.position.set(player.getX(), player.getY(), 0);
         camera.update();
 
         tiledMapRenderer.setView(camera);

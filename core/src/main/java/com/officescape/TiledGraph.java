@@ -7,33 +7,52 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class TiledGraph implements IndexedGraph<Vector2> {
+    private static TiledGraph instance;
+
     private Array<Vector2> nodes;
     private Array<Connection<Vector2>> connections;
-    private int width, height;
+    private int width;
+    private int height;
     private float tileSize;
     private Array<Rectangle> walls;
     private float playerWidth;
     private float playerHeight;
 
-    public TiledGraph(int width, int height, float tileSize, Array<Rectangle> walls, float collisionWidth, float collisionHeight) {
-        this.width = width;
-        this.height = height;
-        this.tileSize = tileSize;
-        this.walls = walls;
-        this.nodes = new Array<>(width * height);
-        this.connections = new Array<>();
-        this.playerWidth = collisionWidth;
-        this.playerHeight = collisionHeight;
+    private TiledGraph() {
+    }
 
-        // Создаем узлы и сразу помечаем стены
+    public static synchronized void init(int width, int height, float tileSize,
+                                         Array<Rectangle> walls, float playerWidth,
+                                         float playerHeight) {
+        if (instance != null) {
+            throw new IllegalStateException("TiledGraph already initialized!");
+        }
+        instance = new TiledGraph();
+        instance.width = width;
+        instance.height = height;
+        instance.tileSize = tileSize;
+        instance.walls = walls;
+        instance.playerWidth = playerWidth;
+        instance.playerHeight = playerHeight;
+        instance.nodes = new Array<>(width * height);
+        instance.connections = new Array<>();
+
+        // Создаем узлы
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Vector2 node = new Vector2(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
-                nodes.add(node);
+                instance.nodes.add(node);
             }
         }
 
-        buildConnections();
+        instance.buildConnections();
+    }
+
+    public static synchronized TiledGraph getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("TiledGraph is not initialized! Call init() first.");
+        }
+        return instance;
     }
 
     public float getTileSize() {
@@ -46,35 +65,36 @@ public class TiledGraph implements IndexedGraph<Vector2> {
                 Vector2 node = getNodeAt(x, y);
                 if (node == null || isWall(node)) continue;
 
-                // Проверяем соседей (4-направленные движения)
-                checkAndAddConnection(node, x, y, x + 1, y); // правый
-                checkAndAddConnection(node, x, y, x - 1, y); // левый
-                checkAndAddConnection(node, x, y, x, y + 1); // верх
-                checkAndAddConnection(node, x, y, x, y - 1); // низ
+                // Проверяем соседей
+                checkAndAddConnection(node, x, y, x + 1, y);
+                checkAndAddConnection(node, x, y, x - 1, y);
+                checkAndAddConnection(node, x, y, x, y + 1);
+                checkAndAddConnection(node, x, y, x, y - 1);
 
-                // Диагональные движения только если оба ортогональных пути свободны
-                if (getNodeAt(x + 1, y) != null && !isWall(getNodeAt(x + 1, y)) &&
-                    getNodeAt(x, y + 1) != null && !isWall(getNodeAt(x, y + 1))) {
-                    checkAndAddConnection(node, x, y, x + 1, y + 1); // верх-прав
+                // Диагональные соединения
+                if (isValidConnection(x, y, x + 1, y + 1)) {
+                    checkAndAddConnection(node, x, y, x + 1, y + 1);
                 }
-                if (getNodeAt(x - 1, y) != null && !isWall(getNodeAt(x - 1, y)) &&
-                    getNodeAt(x, y + 1) != null && !isWall(getNodeAt(x, y + 1))) {
-                    checkAndAddConnection(node, x, y, x - 1, y + 1); // верх-лев
+                if (isValidConnection(x, y, x - 1, y + 1)) {
+                    checkAndAddConnection(node, x, y, x - 1, y + 1);
                 }
-                if (getNodeAt(x + 1, y) != null && !isWall(getNodeAt(x + 1, y)) &&
-                    getNodeAt(x, y - 1) != null && !isWall(getNodeAt(x, y - 1))) {
-                    checkAndAddConnection(node, x, y, x + 1, y - 1); // низ-прав
+                if (isValidConnection(x, y, x + 1, y - 1)) {
+                    checkAndAddConnection(node, x, y, x + 1, y - 1);
                 }
-                if (getNodeAt(x - 1, y) != null && !isWall(getNodeAt(x - 1, y)) &&
-                    getNodeAt(x, y - 1) != null && !isWall(getNodeAt(x, y - 1))) {
-                    checkAndAddConnection(node, x, y, x - 1, y - 1); // низ-лев
+                if (isValidConnection(x, y, x - 1, y - 1)) {
+                    checkAndAddConnection(node, x, y, x - 1, y - 1);
                 }
             }
         }
     }
 
+    private boolean isValidConnection(int fromX, int fromY, int toX, int toY) {
+        return getNodeAt(toX, toY) != null && !isWall(getNodeAt(toX, toY)) &&
+            getNodeAt(fromX, toY) != null && !isWall(getNodeAt(fromX, toY)) &&
+            getNodeAt(toX, fromY) != null && !isWall(getNodeAt(toX, fromY));
+    }
+
     public boolean isWall(Vector2 node) {
-        // Проверяем, попадает ли узел в стену с учетом размеров игрока
         Rectangle nodeRect = new Rectangle(
             node.x - playerWidth / 2 * 0.8f,
             node.y - playerHeight / 2 * 0.8f,
@@ -90,21 +110,17 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         return false;
     }
 
-
     private void checkAndAddConnection(Vector2 from, int fromX, int fromY, int toX, int toY) {
         if (toX < 0 || toX >= width || toY < 0 || toY >= height) return;
 
         Vector2 to = getNodeAt(toX, toY);
-        if (to != null && !isWall(to)) {
-            // Проверяем, нет ли стены между узлами
-            if (!hasWallBetween(from, to)) {
-                connections.add(new DefaultConnection<>(from, to));
-            }
+        if (to != null && !isWall(to) && !hasWallBetween(from, to)) {
+            connections.add(new DefaultConnection<>(from, to));
         }
     }
 
     private boolean hasWallBetween(Vector2 from, Vector2 to) {
-        float step = Math.min(playerWidth, playerHeight) / 5f; // Более точный шаг
+        float step = Math.min(playerWidth, playerHeight) / 5f;
         float dx = to.x - from.x;
         float dy = to.y - from.y;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
