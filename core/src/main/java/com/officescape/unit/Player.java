@@ -1,4 +1,4 @@
-package com.officescape;
+package com.officescape.unit;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.officescape.ManhattanDistance;
+import com.officescape.TiledGraph;
 
 public class Player {
     private Sprite sprite;
@@ -48,7 +50,7 @@ public class Player {
 
         this.mapGraph = new TiledGraph(20, 20, 32f, walls, this.collisionWidth, this.collisionHeight);
         this.pathFinder = new IndexedAStarPathFinder<>(mapGraph, true);
-        this.heuristic = new ManhattanDistanceHeuristic();
+        this.heuristic = new ManhattanDistance();
     }
 
     public void goToCoords(float targetX, float targetY) {
@@ -170,7 +172,6 @@ public class Player {
                 }
             }
         } else {
-            // Старая логика WASD
             float oldX = sprite.getX();
             float oldY = sprite.getY();
             float moveX = 0, moveY = 0;
@@ -236,3 +237,4 @@ public class Player {
         return collisionBox;
     }
 }
+

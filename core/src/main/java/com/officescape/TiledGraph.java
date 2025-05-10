@@ -73,7 +73,7 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         }
     }
 
-    protected boolean isWall(Vector2 node) {
+    public boolean isWall(Vector2 node) {
         // Проверяем, попадает ли узел в стену с учетом размеров игрока
         Rectangle nodeRect = new Rectangle(
             node.x - playerWidth / 2 * 0.8f,
