@@ -20,6 +20,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.officescape.unit.Player;
 
@@ -52,7 +53,8 @@ public class MainScreen implements Screen {
         float mapPixelWidth = mapWidth * tileWidth;
         float mapPixelHeight = mapHeight * tileHeight;
 
-        viewport = new FitViewport(mapPixelWidth, mapPixelHeight, camera);
+        // Используем StretchViewport для растягивания на весь экран
+        viewport = new StretchViewport(mapPixelWidth, mapPixelHeight, camera);
         viewport.apply();
 
         loadCollisions();

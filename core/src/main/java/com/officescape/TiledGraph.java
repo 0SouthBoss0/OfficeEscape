@@ -110,11 +110,13 @@ public class TiledGraph implements IndexedGraph<Vector2> {
     }
 
     public boolean isWall(Vector2 node) {
+        // Для узлов графа используем фиксированный небольшой размер
+        float checkSize = tileSize * 0.3f; // 30% от размера тайла
         Rectangle nodeRect = new Rectangle(
-            node.x - playerWidth / 2 * GameConstants.IS_WALL,
-            node.y - playerHeight / 2 * GameConstants.IS_WALL,
-            playerWidth * GameConstants.IS_WALL,
-            playerHeight * GameConstants.IS_WALL
+            node.x - checkSize/2,
+            node.y - checkSize/2,
+            checkSize,
+            checkSize
         );
 
         for (Rectangle wall : walls) {
@@ -125,6 +127,22 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         return false;
     }
 
+    // Новый метод для проверки коллизий персонажа
+    public boolean isWallForPlayer(Vector2 position, float playerWidth, float playerHeight) {
+        Rectangle playerRect = new Rectangle(
+            position.x - playerWidth/2,
+            position.y - playerHeight/2,
+            playerWidth,
+            playerHeight
+        );
+
+        for (Rectangle wall : walls) {
+            if (wall.overlaps(playerRect)) {
+                return true;
+            }
+        }
+        return false;
+    }
     private void checkAndAddConnection(Vector2 from, int fromX, int fromY, int toX, int toY) {
         if (toX < 0 || toX >= width || toY < 0 || toY >= height) return;
 
@@ -135,7 +153,7 @@ public class TiledGraph implements IndexedGraph<Vector2> {
     }
 
     private boolean hasWallBetween(Vector2 from, Vector2 to) {
-        float step = Math.min(playerWidth, playerHeight) / GameConstants.NODE_SEARCH_RADIUS;
+        float step = tileSize / GameConstants.NODE_SEARCH_RADIUS;
         float dx = to.x - from.x;
         float dy = to.y - from.y;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
@@ -144,19 +162,9 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         dy /= distance;
 
         for (float t = 0; t <= distance; t += step) {
-            float x = from.x + dx * t;
-            float y = from.y + dy * t;
-            Rectangle playerBox = new Rectangle(
-                x - playerWidth / 2,
-                y - playerHeight / 2,
-                playerWidth,
-                playerHeight
-            );
-
-            for (Rectangle wall : walls) {
-                if (playerBox.overlaps(wall)) {
-                    return true;
-                }
+            Vector2 point = new Vector2(from.x + dx * t, from.y + dy * t);
+            if (isWallForPlayer(point, playerWidth, playerHeight)) {
+                return true;
             }
         }
         return false;

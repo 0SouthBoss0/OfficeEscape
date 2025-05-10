@@ -102,7 +102,7 @@ public class Player {
 
         // Проверяем сначала точное попадание
         Vector2 exactNode = mapGraph.getNodeAt(nodeX, nodeY);
-        if (exactNode != null && !mapGraph.isWall(exactNode)) {
+        if (exactNode != null && !mapGraph.isWallForPlayer(exactNode, this.collisionWidth, this.collisionHeight)) {
             return exactNode;
         }
 
@@ -113,7 +113,7 @@ public class Player {
         for (int dy = -2; dy <= 2; dy++) {
             for (int dx = -2; dx <= 2; dx++) {
                 Vector2 node = mapGraph.getNodeAt(nodeX + dx, nodeY + dy);
-                if (node != null && !mapGraph.isWall(node)) {
+                if (node != null && !mapGraph.isWallForPlayer(node, this.collisionWidth, this.collisionHeight)) {
                     float dist = Vector2.dst2(x, y, node.x, node.y);
                     if (dist < bestDistance) {
                         bestDistance = dist;
