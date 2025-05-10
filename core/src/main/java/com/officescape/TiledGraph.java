@@ -87,11 +87,26 @@ public class TiledGraph implements IndexedGraph<Vector2> {
             }
         }
     }
-
+    public Array<Vector2> getNodes() {
+        return nodes;
+    }
     private boolean isValidConnection(int fromX, int fromY, int toX, int toY) {
-        return getNodeAt(toX, toY) != null && !isWall(getNodeAt(toX, toY)) &&
-            getNodeAt(fromX, toY) != null && !isWall(getNodeAt(fromX, toY)) &&
-            getNodeAt(toX, fromY) != null && !isWall(getNodeAt(toX, fromY));
+        // Делаем проверку диагоналей менее строгой
+        Vector2 fromNode = getNodeAt(fromX, fromY);
+        Vector2 toNode = getNodeAt(toX, toY);
+
+        if (fromNode == null || toNode == null) return false;
+        if (isWall(fromNode) || isWall(toNode)) return false;
+
+        // Для диагоналей проверяем только угловые узлы
+        if (fromX != toX && fromY != toY) {
+            Vector2 corner1 = getNodeAt(fromX, toY);
+            Vector2 corner2 = getNodeAt(toX, fromY);
+            return (corner1 == null || !isWall(corner1)) &&
+                (corner2 == null || !isWall(corner2));
+        }
+
+        return true;
     }
 
     public boolean isWall(Vector2 node) {

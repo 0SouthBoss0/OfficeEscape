@@ -63,6 +63,11 @@ public class Player {
         this.heuristic = new ManhattanDistance();
     }
 
+    public GraphPath<Vector2> getCurrentPath() {
+        return path;
+    }
+
+    // И измените метод goToCoords:
     public void goToCoords(float targetX, float targetY) {
         this.targetPosition = new Vector2(targetX, targetY);
         Vector2 start = findNearestNode(getX(), getY());
@@ -70,35 +75,43 @@ public class Player {
 
         if (start == null || target == null) {
             isMovingToTarget = false;
+            path = null; // Очищаем путь при невозможности построения
             return;
         }
 
         path = new DefaultGraphPath<>();
-        pathFinder.searchNodePath(start, target, heuristic, path);
+        boolean pathFound = pathFinder.searchNodePath(start, target, heuristic, path);
 
-        if (path.getCount() > 0) {
+        if (pathFound && path.getCount() > 0) {
             currentPathIndex = 0;
             isMovingToTarget = true;
         } else {
             isMovingToTarget = false;
+            path = null; // Очищаем путь если не найден
         }
     }
-
     public void updateGraphWithNewWalls() {
         this.mapGraph = TiledGraph.getInstance();
         this.pathFinder = new IndexedAStarPathFinder<>(mapGraph, true);
     }
 
     private Vector2 findNearestNode(float x, float y) {
-        int nodeX = (int) (x / mapGraph.getTileSize());
-        int nodeY = (int) (y / mapGraph.getTileSize());
+        // Преобразуем координаты клика в координаты узла
+        int nodeX = Math.round((x - mapGraph.getTileSize()/2) / mapGraph.getTileSize());
+        int nodeY = Math.round((y - mapGraph.getTileSize()/2) / mapGraph.getTileSize());
 
+        // Проверяем сначала точное попадание
+        Vector2 exactNode = mapGraph.getNodeAt(nodeX, nodeY);
+        if (exactNode != null && !mapGraph.isWall(exactNode)) {
+            return exactNode;
+        }
+
+        // Если точный узел недоступен, ищем ближайший
         Vector2 bestNode = null;
         float bestDistance = Float.MAX_VALUE;
 
-        // Проверяем узлы в радиусе 3 тайлов
-        for (int dy = -3; dy <= 3; dy++) {
-            for (int dx = -3; dx <= 3; dx++) {
+        for (int dy = -2; dy <= 2; dy++) {
+            for (int dx = -2; dx <= 2; dx++) {
                 Vector2 node = mapGraph.getNodeAt(nodeX + dx, nodeY + dy);
                 if (node != null && !mapGraph.isWall(node)) {
                     float dist = Vector2.dst2(x, y, node.x, node.y);
