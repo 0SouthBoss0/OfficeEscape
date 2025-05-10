@@ -96,10 +96,10 @@ public class TiledGraph implements IndexedGraph<Vector2> {
 
     public boolean isWall(Vector2 node) {
         Rectangle nodeRect = new Rectangle(
-            node.x - playerWidth / 2 * 0.8f,
-            node.y - playerHeight / 2 * 0.8f,
-            playerWidth * 0.8f,
-            playerHeight * 0.8f
+            node.x - playerWidth / 2 * GameConstants.IS_WALL,
+            node.y - playerHeight / 2 * GameConstants.IS_WALL,
+            playerWidth * GameConstants.IS_WALL,
+            playerHeight * GameConstants.IS_WALL
         );
 
         for (Rectangle wall : walls) {
@@ -120,7 +120,7 @@ public class TiledGraph implements IndexedGraph<Vector2> {
     }
 
     private boolean hasWallBetween(Vector2 from, Vector2 to) {
-        float step = Math.min(playerWidth, playerHeight) / 5f;
+        float step = Math.min(playerWidth, playerHeight) / GameConstants.NODE_SEARCH_RADIUS;
         float dx = to.x - from.x;
         float dy = to.y - from.y;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);

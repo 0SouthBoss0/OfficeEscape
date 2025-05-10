@@ -12,14 +12,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.officescape.GameConstants;
 import com.officescape.ManhattanDistance;
 import com.officescape.TiledGraph;
 
 public class Player {
     private Sprite sprite;
-    private float speed = 150f;
+    private float speed = GameConstants.PLAYER_DEFAULT_SPEED;
     private Rectangle collisionBox;
-    private float scale = 0.1f;
+    private float scale = GameConstants.PLAYER_DEFAULT_SCALE;
 
     // Для A* пути
     private GraphPath<Vector2> path;
@@ -45,14 +46,14 @@ public class Player {
         Texture texture = new Texture(Gdx.files.internal(texturePath));
         sprite = new Sprite(texture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
-        sprite.setPosition(100, 200);
+        sprite.setPosition(GameConstants.PLAYER_START_X, GameConstants.PLAYER_START_Y);
 
         // Размеры коллизии должны быть немного меньше спрайта
-        this.collisionWidth = sprite.getWidth() * 0.45f;
-        this.collisionHeight = sprite.getHeight() * 0.45f;
+        this.collisionWidth = sprite.getWidth() * GameConstants.PLAYER_COLLISION_RATIO;
+        this.collisionHeight = sprite.getHeight() * GameConstants.PLAYER_COLLISION_RATIO;
         this.collisionBox = new Rectangle(
             sprite.getX() + (sprite.getWidth() - collisionWidth) / 2,
-            sprite.getY() + sprite.getHeight() * 0.2f,
+            sprite.getY() + (sprite.getHeight() - collisionHeight) / 2,
             collisionWidth,
             collisionHeight
         );
@@ -92,28 +93,23 @@ public class Player {
         int nodeX = (int) (x / mapGraph.getTileSize());
         int nodeY = (int) (y / mapGraph.getTileSize());
 
-        // Проверяем сначала точную позицию
-        Vector2 node = mapGraph.getNodeAt(nodeX, nodeY);
-        if (node != null && !mapGraph.isWall(node)) {
-            return node;
-        }
+        Vector2 bestNode = null;
+        float bestDistance = Float.MAX_VALUE;
 
-        // Если точная позиция стена, ищем ближайшую свободную
-        int radius = 1;
-        while (radius <= 3) {
-            for (int dy = -radius; dy <= radius; dy++) {
-                for (int dx = -radius; dx <= radius; dx++) {
-                    if (Math.abs(dx) == radius || Math.abs(dy) == radius) {
-                        node = mapGraph.getNodeAt(nodeX + dx, nodeY + dy);
-                        if (node != null && !mapGraph.isWall(node)) {
-                            return node;
-                        }
+        // Проверяем узлы в радиусе 3 тайлов
+        for (int dy = -3; dy <= 3; dy++) {
+            for (int dx = -3; dx <= 3; dx++) {
+                Vector2 node = mapGraph.getNodeAt(nodeX + dx, nodeY + dy);
+                if (node != null && !mapGraph.isWall(node)) {
+                    float dist = Vector2.dst2(x, y, node.x, node.y);
+                    if (dist < bestDistance) {
+                        bestDistance = dist;
+                        bestNode = node;
                     }
                 }
             }
-            radius++;
         }
-        return null;
+        return bestNode;
     }
 
     public void setScale(float scale) {
@@ -136,14 +132,21 @@ public class Player {
             float dy = target.y - getY();
             float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-            if (distance < 5f) {
+            if (distance < GameConstants.PATH_REACH_THRESHOLD) {
                 currentPathIndex++;
                 if (currentPathIndex >= path.getCount()) {
-                    float finalDistance = Vector2.dst(getX(), getY(), targetPosition.x, targetPosition.y);
-                    if (finalDistance < 10f) {
+                    // Убедимся, что персонаж достигает именно конечной точки, а не последнего узла пути
+                    float finalDx = targetPosition.x - getX();
+                    float finalDy = targetPosition.y - getY();
+                    float finalDistance = (float) Math.sqrt(finalDx * finalDx + finalDy * finalDy);
+
+                    if (finalDistance < GameConstants.PATH_REACH_THRESHOLD) {
                         isMovingToTarget = false;
                     } else {
-                        goToCoords(targetPosition.x, targetPosition.y);
+                        // Двигаемся напрямую к целевой точке, если она близко
+                        float step = speed * deltaTime;
+                        sprite.translate((finalDx / finalDistance) * step, (finalDy / finalDistance) * step);
+                        updateCollisionBox();
                     }
                     return;
                 }
@@ -164,7 +167,7 @@ public class Player {
                 // Двигаемся небольшими шагами с проверкой коллизий
                 float remainingDistance = moveDistance;
                 while (remainingDistance > 0) {
-                    float step = Math.min(5f, remainingDistance); // Маленький шаг
+                    float step = Math.min(GameConstants.STEP_THRESHOLD, remainingDistance); // Маленький шаг
                     sprite.translate(dx * step, dy * step);
                     updateCollisionBox();
 
@@ -220,7 +223,7 @@ public class Player {
     private void updateCollisionBox() {
         collisionBox.set(
             sprite.getX() + (sprite.getWidth() - collisionWidth) / 2,
-            sprite.getY() + sprite.getHeight() * 0.2f,
+            sprite.getY() + (sprite.getHeight() - collisionHeight) / 2,
             collisionWidth,
             collisionHeight
         );
@@ -242,8 +245,5 @@ public class Player {
         return sprite.getY() + sprite.getHeight() / 2;
     }
 
-    public Rectangle getCollisionBox() {
-        return collisionBox;
-    }
 }
 

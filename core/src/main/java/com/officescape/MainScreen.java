@@ -15,6 +15,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.officescape.unit.Player;
 
 /**
@@ -24,31 +26,40 @@ public class MainScreen implements Screen {
     private Player player;
     private SpriteBatch batch;
     private OrthographicCamera camera;
-
-    // Для TMX карты
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
     private Array<Rectangle> collisionRects = new Array<>();
-
+    private Viewport viewport;
 
     @Override
     public void show() {
         batch = new SpriteBatch();
-        player = new Player("player.png");
+        player = new Player(GameConstants.PLAYER_FILE_PATH);
 
         camera = new OrthographicCamera();
-        //camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        tiledMap = new TmxMapLoader().load("map.tmx");
+        tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+
+        // Получаем размеры карты в пикселях
+        int mapWidth = tiledMap.getProperties().get("width", Integer.class);
+        int mapHeight = tiledMap.getProperties().get("height", Integer.class);
+        int tileWidth = tiledMap.getProperties().get("tilewidth", Integer.class);
+        int tileHeight = tiledMap.getProperties().get("tileheight", Integer.class);
+
+        float mapPixelWidth = mapWidth * tileWidth;
+        float mapPixelHeight = mapHeight * tileHeight;
+
+        // Создаем FitViewport (автомасштабирование + центрирование)
+        viewport = new FitViewport(mapPixelWidth, mapPixelHeight, camera);
+        viewport.apply();  // Применяем текущий размер окна
+
         loadCollisions();
     }
 
     private void loadCollisions() {
         collisionRects.clear(); // Очищаем перед загрузкой
 
-        // Убедитесь, что слой называется именно "walls" (как в TMX файле)
-        MapObjects objects = tiledMap.getLayers().get("walls").getObjects();
+        MapObjects objects = tiledMap.getLayers().get(GameConstants.COLLISION_LAYER_NAME).getObjects();
 
         for (MapObject object : objects) {
             if (object instanceof RectangleMapObject) {
@@ -56,8 +67,8 @@ public class MainScreen implements Screen {
                 collisionRects.add(rect);
             }
         }
-        // TODO: взять максимум от
-        TiledGraph.init(20, 20, 32f, collisionRects, player.getCollisionWidth(), player.getCollisionHeight());
+        // TODO: взять максимум от всех player?
+        TiledGraph.init(GameConstants.TILED_GRAPH_WIDTH, GameConstants.TILED_GRAPH_HEIGHT, GameConstants.TILED_SIZE, collisionRects, player.getCollisionWidth(), player.getCollisionHeight());
         player.updateGraphWithNewWalls();
 
     }
@@ -75,7 +86,7 @@ public class MainScreen implements Screen {
         }
 
         player.update(delta, collisionRects);
-        camera.position.set(player.getX(), player.getY(), 0);
+        //camera.position.set(player.getX(), player.getY(), 0);
         camera.update();
 
         tiledMapRenderer.setView(camera);
@@ -89,9 +100,8 @@ public class MainScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
-        camera.update();
+        viewport.update(width, height);  // Обновляем Viewport при изменении размера окна
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);  // Центрируем камеру
     }
 
     @Override
