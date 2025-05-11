@@ -20,7 +20,7 @@ public class GameConstants {
     public static final String COLLISION_LAYER_NAME = "walls";
 
     // Player
-    public static final String PLAYER_FILE_PATH = "player.png";
+    public static final String PLAYER_FILE_PATH = "player_idle.png";
 
     // Graph
     public static final int TILED_GRAPH_WIDTH = 80;
