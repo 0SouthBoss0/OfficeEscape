@@ -15,15 +15,14 @@ public class TiledGraph implements IndexedGraph<Vector2> {
     private int height;
     private float tileSize;
     private Array<Rectangle> walls;
-    private float playerWidth;
-    private float playerHeight;
+    private float maxPlayerWidth;
+    private float maxPlayerHeight;
 
     private TiledGraph() {
     }
 
     public static synchronized void init(int width, int height, float tileSize,
-                                         Array<Rectangle> walls, float playerWidth,
-                                         float playerHeight) {
+                                         Array<Rectangle> walls) {
         if (instance != null) {
             throw new IllegalStateException("TiledGraph already initialized!");
         }
@@ -32,8 +31,8 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         instance.height = height;
         instance.tileSize = tileSize;
         instance.walls = walls;
-        instance.playerWidth = playerWidth;
-        instance.playerHeight = playerHeight;
+        instance.maxPlayerWidth = GameConstants.MAX_PLAYER_WIDTH;
+        instance.maxPlayerHeight = GameConstants.MAX_PLAYER_HEIGHT;
         instance.nodes = new Array<>(width * height);
         instance.connections = new Array<>();
 
@@ -87,9 +86,11 @@ public class TiledGraph implements IndexedGraph<Vector2> {
             }
         }
     }
+
     public Array<Vector2> getNodes() {
         return nodes;
     }
+
     private boolean isValidConnection(int fromX, int fromY, int toX, int toY) {
         // Делаем проверку диагоналей менее строгой
         Vector2 fromNode = getNodeAt(fromX, fromY);
@@ -109,40 +110,26 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         return true;
     }
 
+    public boolean isWall(Vector2 position, float width, float height) {
+        Rectangle rect = new Rectangle(
+            position.x - width / 2,
+            position.y - height / 2,
+            width,
+            height
+        );
+
+        for (Rectangle wall : walls) {
+            if (wall.overlaps(rect)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isWall(Vector2 node) {
-        // Для узлов графа используем фиксированный небольшой размер
-        float checkSize = tileSize * GameConstants.IS_WALL; // 30% от размера тайла
-        Rectangle nodeRect = new Rectangle(
-            node.x - checkSize/2,
-            node.y - checkSize/2,
-            checkSize,
-            checkSize
-        );
-
-        for (Rectangle wall : walls) {
-            if (wall.overlaps(nodeRect)) {
-                return true;
-            }
-        }
-        return false;
+        return isWall(node, tileSize * GameConstants.IS_WALL, tileSize * GameConstants.IS_WALL);
     }
 
-    // Новый метод для проверки коллизий персонажа
-    public boolean isWallForPlayer(Vector2 position, float playerWidth, float playerHeight) {
-        Rectangle playerRect = new Rectangle(
-            position.x - playerWidth/2,
-            position.y - playerHeight/2,
-            playerWidth,
-            playerHeight
-        );
-
-        for (Rectangle wall : walls) {
-            if (wall.overlaps(playerRect)) {
-                return true;
-            }
-        }
-        return false;
-    }
     private void checkAndAddConnection(Vector2 from, int fromX, int fromY, int toX, int toY) {
         if (toX < 0 || toX >= width || toY < 0 || toY >= height) return;
 
@@ -163,7 +150,7 @@ public class TiledGraph implements IndexedGraph<Vector2> {
 
         for (float t = 0; t <= distance; t += step) {
             Vector2 point = new Vector2(from.x + dx * t, from.y + dy * t);
-            if (isWallForPlayer(point, playerWidth, playerHeight)) {
+            if (isWall(point, this.maxPlayerWidth, this.maxPlayerHeight)) {
                 return true;
             }
         }

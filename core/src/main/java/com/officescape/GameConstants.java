@@ -1,5 +1,7 @@
 package com.officescape;
 
+import com.officescape.unit.Player;
+
 public class GameConstants {
     // Player
     public static final float PLAYER_DEFAULT_SPEED = 300f;
@@ -26,6 +28,9 @@ public class GameConstants {
     public static final float TILED_SIZE = 16f;
 
     public static final float STEP_THRESHOLD = 1f;
+    public static final float MAX_PLAYER_WIDTH = 28.7f;
+    public static final float MAX_PLAYER_HEIGHT = 28.7f;
+
 
 }
 

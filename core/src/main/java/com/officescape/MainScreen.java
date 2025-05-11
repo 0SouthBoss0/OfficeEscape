@@ -71,8 +71,7 @@ public class MainScreen implements Screen {
             }
         }
         TiledGraph.init(GameConstants.TILED_GRAPH_WIDTH, GameConstants.TILED_GRAPH_HEIGHT,
-            GameConstants.TILED_SIZE, collisionRects,
-            player.getCollisionWidth(), player.getCollisionHeight());
+            GameConstants.TILED_SIZE, collisionRects);
         player.updateGraphWithNewWalls();
     }
 
@@ -114,7 +113,7 @@ public class MainScreen implements Screen {
         shapeRenderer.begin(ShapeType.Filled);
         TiledGraph graph = TiledGraph.getInstance();
         for (Vector2 node : graph.getNodes()) {
-            if (graph.isWallForPlayer(node, player.getCollisionWidth(), player.getCollisionHeight())) {
+            if (graph.isWall(node, player.getCollisionWidth(), player.getCollisionHeight())) {
                 shapeRenderer.setColor(1, 0, 0, 0.3f); // Красный для стен
             } else {
                 shapeRenderer.setColor(0, 1, 0, 0.3f); // Зеленый для проходимых узлов
