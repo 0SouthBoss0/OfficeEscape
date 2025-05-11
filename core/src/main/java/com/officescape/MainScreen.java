@@ -114,7 +114,7 @@ public class MainScreen implements Screen {
         shapeRenderer.begin(ShapeType.Filled);
         TiledGraph graph = TiledGraph.getInstance();
         for (Vector2 node : graph.getNodes()) {
-            if (graph.isWall(node)) {
+            if (graph.isWallForPlayer(node, player.getCollisionWidth(), player.getCollisionHeight())) {
                 shapeRenderer.setColor(1, 0, 0, 0.3f); // Красный для стен
             } else {
                 shapeRenderer.setColor(0, 1, 0, 0.3f); // Зеленый для проходимых узлов
@@ -154,7 +154,15 @@ public class MainScreen implements Screen {
     }
 
     // Остальные методы интерфейса Screen оставлены без изменений
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {}
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
 }

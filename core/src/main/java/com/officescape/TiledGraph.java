@@ -111,7 +111,7 @@ public class TiledGraph implements IndexedGraph<Vector2> {
 
     public boolean isWall(Vector2 node) {
         // Для узлов графа используем фиксированный небольшой размер
-        float checkSize = tileSize * 0.3f; // 30% от размера тайла
+        float checkSize = tileSize * GameConstants.IS_WALL; // 30% от размера тайла
         Rectangle nodeRect = new Rectangle(
             node.x - checkSize/2,
             node.y - checkSize/2,
