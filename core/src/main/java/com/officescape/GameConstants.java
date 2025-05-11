@@ -4,9 +4,9 @@ import com.officescape.unit.Player;
 
 public class GameConstants {
     // Player
-    public static final float PLAYER_DEFAULT_SPEED = 300f;
+    public static final float PLAYER_DEFAULT_SPEED = 200f;
     public static final float PLAYER_DEFAULT_SCALE = 1f;
-    public static final float PLAYER_COLLISION_RATIO = 0.7f;
+    public static final float PLAYER_COLLISION_RATIO = 0.4f;
     public static final int PLAYER_START_X = 130;
     public static final int PLAYER_START_Y = 130;
 
@@ -30,6 +30,9 @@ public class GameConstants {
     public static final float STEP_THRESHOLD = 1f;
     public static final float MAX_PLAYER_WIDTH = 28.7f;
     public static final float MAX_PLAYER_HEIGHT = 28.7f;
+
+    //  Длительность одного шага в секундах
+    public static final float STEP_DURATION = 0.2f;
 
 
 }

@@ -23,6 +23,15 @@ public abstract class Character {
     private final Rectangle collisionBox;
     private float scale = GameConstants.PLAYER_DEFAULT_SCALE;
 
+    // Для анимации
+    private TextureRegion idleTexture;
+    private TextureRegion stepTexture;
+    private float animationTimer = 0;
+    private float stepDuration = GameConstants.STEP_DURATION;
+    private boolean isMirrored = false;
+    private Direction currentDirection = Direction.DOWN;
+    private boolean isMoving = false;
+
     // Для A* пути
     private GraphPath<Vector2> path;
     private int currentPathIndex;
@@ -34,11 +43,21 @@ public abstract class Character {
     private final float collisionWidth;
     private final float collisionHeight;
 
-
+    private enum Direction {
+        UP, DOWN, LEFT, RIGHT
+    }
 
     public Character(String texturePath) {
-        Texture texture = new Texture(Gdx.files.internal(texturePath));
-        sprite = new Sprite(texture);
+        // Загружаем текстуры для анимации
+        // Texture texture = new Texture(Gdx.files.internal(texturePath));
+        Texture texture = new Texture(Gdx.files.internal(texturePath.replace("_idle", "_go")));
+        idleTexture = new TextureRegion(texture);
+
+        // Предполагаем, что текстура шага имеет то же имя с суффиксом "_go"
+        String stepTexturePath = texturePath.replace("_idle", "_go");
+        stepTexture = new TextureRegion(new Texture(Gdx.files.internal(stepTexturePath)));
+
+        sprite = new Sprite(idleTexture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setPosition(GameConstants.PLAYER_START_X, GameConstants.PLAYER_START_Y);
 
@@ -136,8 +155,13 @@ public abstract class Character {
 
     public void update(float deltaTime, Array<Rectangle> walls) {
         if (collisionBox == null) {
-            updateCollisionBox(); // Инициализируем при первом вызове
+            updateCollisionBox();
         }
+
+        // Сбрасываем состояние движения перед обработкой
+        isMoving = false;
+        float moveX = 0, moveY = 0;
+
         if (isMovingToTarget && path != null && currentPathIndex < path.getCount()) {
             Vector2 target = path.get(currentPathIndex);
             float dx = target.x - getX();
@@ -147,7 +171,6 @@ public abstract class Character {
             if (distance < GameConstants.PATH_REACH_THRESHOLD) {
                 currentPathIndex++;
                 if (currentPathIndex >= path.getCount()) {
-                    // Убедимся, что персонаж достигает именно конечной точки, а не последнего узла пути
                     float finalDx = targetPosition.x - getX();
                     float finalDy = targetPosition.y - getY();
                     float finalDistance = (float) Math.sqrt(finalDx * finalDx + finalDy * finalDy);
@@ -155,10 +178,10 @@ public abstract class Character {
                     if (finalDistance < GameConstants.PATH_REACH_THRESHOLD) {
                         isMovingToTarget = false;
                     } else {
-                        // Двигаемся напрямую к целевой точке, если она близко
-                        float step = speed * deltaTime;
-                        sprite.translate((finalDx / finalDistance) * step, (finalDy / finalDistance) * step);
-                        updateCollisionBox();
+                        moveX = (finalDx / finalDistance) * speed * deltaTime;
+                        moveY = (finalDy / finalDistance) * speed * deltaTime;
+                        isMoving = true;
+                        updateDirection(moveX, moveY);
                     }
                     return;
                 }
@@ -169,82 +192,146 @@ public abstract class Character {
             }
 
             if (distance > 0) {
-                dx /= distance;
-                dy /= distance;
-
-                float oldX = sprite.getX();
-                float oldY = sprite.getY();
-                float moveDistance = speed * deltaTime;
-
-                // Двигаемся небольшими шагами с проверкой коллизий
-                float remainingDistance = moveDistance;
-                while (remainingDistance > 0) {
-                    float step = Math.min(GameConstants.STEP_THRESHOLD, remainingDistance); // Маленький шаг
-                    sprite.translate(dx * step, dy * step);
-                    updateCollisionBox();
-
-                    if (checkCollisions(walls)) {
-                        sprite.setPosition(oldX, oldY);
-                        updateCollisionBox();
-                        goToCoords(targetPosition.x, targetPosition.y);
-                        return;
-                    }
-
-                    remainingDistance -= step;
-                    oldX = sprite.getX();
-                    oldY = sprite.getY();
-                }
+                moveX = (dx / distance) * speed * deltaTime;
+                moveY = (dy / distance) * speed * deltaTime;
+                isMoving = true;
+                updateDirection(dx, dy);
             }
         } else {
-            float oldX = sprite.getX();
-            float oldY = sprite.getY();
-            float moveX = 0, moveY = 0;
-
             if (Gdx.input.isKeyPressed(Input.Keys.W)) moveY += 1;
             if (Gdx.input.isKeyPressed(Input.Keys.S)) moveY -= 1;
             if (Gdx.input.isKeyPressed(Input.Keys.A)) moveX -= 1;
             if (Gdx.input.isKeyPressed(Input.Keys.D)) moveX += 1;
 
             if (moveX != 0 || moveY != 0) {
+                isMoving = true;
+                updateDirection(moveX, moveY);
+
                 // Нормализуем вектор движения
                 float length = (float) Math.sqrt(moveX * moveX + moveY * moveY);
-                moveX /= length;
-                moveY /= length;
-
-                // Пробуем двигаться по диагонали
-                sprite.translate(moveX * speed * deltaTime, moveY * speed * deltaTime);
-                updateCollisionBox();
-
-                if (checkCollisions(walls)) {
-                    // Если коллизия, пробуем двигаться только по X
-                    sprite.setPosition(oldX, oldY);
-                    sprite.translate(moveX * speed * deltaTime, 0);
-                    updateCollisionBox();
-                    boolean xCollision = checkCollisions(walls);
-
-                    // Пробуем двигаться только по Y
-                    sprite.setPosition(oldX, oldY);
-                    sprite.translate(0, moveY * speed * deltaTime);
-                    updateCollisionBox();
-                    boolean yCollision = checkCollisions(walls);
-
-                    // Применяем движение по свободной оси
-                    if (!xCollision && !yCollision) {
-                        // Если оба направления свободны (маловероятно), оставляем как есть
-                        sprite.setPosition(oldX + moveX * speed * deltaTime, oldY + moveY * speed * deltaTime);
-                    } else if (!xCollision) {
-                        // Двигаемся только по X
-                        sprite.setPosition(oldX + moveX * speed * deltaTime, oldY);
-                    } else if (!yCollision) {
-                        // Двигаемся только по Y
-                        sprite.setPosition(oldX, oldY + moveY * speed * deltaTime);
-                    } else {
-                        // Оба направления заблокированы - не двигаемся
-                        sprite.setPosition(oldX, oldY);
-                    }
-                    updateCollisionBox();
-                }
+                moveX = (moveX / length) * speed * deltaTime;
+                moveY = (moveY / length) * speed * deltaTime;
             }
+        }
+
+        // Обработка движения и коллизий
+        if (isMoving) {
+            float oldX = sprite.getX();
+            float oldY = sprite.getY();
+
+            // Двигаемся
+            sprite.translate(moveX, moveY);
+            updateCollisionBox();
+
+            if (checkCollisions(walls)) {
+                // Обработка коллизий (как в оригинальном коде)
+                sprite.setPosition(oldX, oldY);
+                sprite.translate(moveX, 0);
+                updateCollisionBox();
+                boolean xCollision = checkCollisions(walls);
+
+                sprite.setPosition(oldX, oldY);
+                sprite.translate(0, moveY);
+                updateCollisionBox();
+                boolean yCollision = checkCollisions(walls);
+
+                if (!xCollision && !yCollision) {
+                    sprite.setPosition(oldX + moveX, oldY + moveY);
+                } else if (!xCollision) {
+                    sprite.setPosition(oldX + moveX, oldY);
+                } else if (!yCollision) {
+                    sprite.setPosition(oldX, oldY + moveY);
+                } else {
+                    sprite.setPosition(oldX, oldY);
+                    isMoving = false;
+                }
+                updateCollisionBox();
+            }
+
+            // Обновляем анимацию только при движении
+            updateAnimation(deltaTime);
+        } else {
+            // Если не движемся, сбрасываем анимацию в idle
+            resetAnimation();
+        }
+    }
+
+    private void updateDirection(float dx, float dy) {
+        // Определяем основное направление движения
+        if (Math.abs(dx) > Math.abs(dy)) {
+            currentDirection = dx > 0 ? Direction.RIGHT : Direction.LEFT;
+        } else {
+            currentDirection = dy > 0 ? Direction.UP : Direction.DOWN;
+        }
+    }
+
+    private void updateAnimation(float deltaTime) {
+        animationTimer += deltaTime;
+
+        if (animationTimer >= stepDuration) {
+            animationTimer = 0;
+            isMirrored = !isMirrored; // Переключаем зеркальное отражение
+        }
+
+        // Выбираем текущий кадр анимации
+        TextureRegion currentFrame;
+        if (animationTimer < stepDuration / 2) {
+            currentFrame = stepTexture;
+        } else {
+            currentFrame = idleTexture;
+        }
+
+        // Сбрасываем все трансформации перед применением новых
+        sprite.setFlip(false, false);
+        sprite.setRotation(0);
+
+        // Применяем трансформации в зависимости от направления
+        switch (currentDirection) {
+            case UP:
+                sprite.setRegion(currentFrame);
+                break;
+            case DOWN:
+                sprite.setRegion(currentFrame);
+                sprite.setFlip(false, true); // Отражаем по вертикали
+                break;
+            case LEFT:
+                sprite.setRegion(currentFrame);
+                sprite.rotate(90); // Отражаем по горизонтали
+                break;
+            case RIGHT:
+                sprite.setRegion(currentFrame);
+                sprite.rotate(-90);
+                break;
+        }
+
+        // Применяем зеркальное отражение для второго шага
+        if (isMirrored) {
+            sprite.flip(true, false);
+        }
+    }
+
+    private void resetAnimation() {
+        animationTimer = 0;
+        isMirrored = false;
+        sprite.setRegion(idleTexture);
+        sprite.setFlip(false, false);
+        sprite.setRotation(0);
+
+        // Применяем трансформации для idle-анимации
+        switch (currentDirection) {
+            case UP:
+                // Без изменений
+                break;
+            case DOWN:
+                sprite.setFlip(false, true);
+                break;
+            case LEFT:
+                sprite.setFlip(true, false);
+                sprite.rotate(90); // Добавляем поворот для LEFT
+                break;
+            case RIGHT:
+                sprite.rotate(-90); // Добавляем поворот для RIGHT
+                break;
         }
     }
 
