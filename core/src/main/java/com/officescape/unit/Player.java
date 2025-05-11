@@ -90,6 +90,7 @@ public class Player {
             path = null; // Очищаем путь если не найден
         }
     }
+
     public void updateGraphWithNewWalls() {
         this.mapGraph = TiledGraph.getInstance();
         this.pathFinder = new IndexedAStarPathFinder<>(mapGraph, true);
@@ -97,8 +98,8 @@ public class Player {
 
     private Vector2 findNearestNode(float x, float y) {
         // Преобразуем координаты клика в координаты узла
-        int nodeX = Math.round((x - mapGraph.getTileSize()/2) / mapGraph.getTileSize());
-        int nodeY = Math.round((y - mapGraph.getTileSize()/2) / mapGraph.getTileSize());
+        int nodeX = Math.round((x - mapGraph.getTileSize() / 2) / mapGraph.getTileSize());
+        int nodeY = Math.round((y - mapGraph.getTileSize() / 2) / mapGraph.getTileSize());
 
         // Проверяем сначала точное попадание
         Vector2 exactNode = mapGraph.getNodeAt(nodeX, nodeY);
@@ -207,15 +208,42 @@ public class Player {
             if (Gdx.input.isKeyPressed(Input.Keys.D)) moveX += 1;
 
             if (moveX != 0 || moveY != 0) {
+                // Нормализуем вектор движения
                 float length = (float) Math.sqrt(moveX * moveX + moveY * moveY);
                 moveX /= length;
                 moveY /= length;
 
+                // Пробуем двигаться по диагонали
                 sprite.translate(moveX * speed * deltaTime, moveY * speed * deltaTime);
                 updateCollisionBox();
 
                 if (checkCollisions(walls)) {
+                    // Если коллизия, пробуем двигаться только по X
                     sprite.setPosition(oldX, oldY);
+                    sprite.translate(moveX * speed * deltaTime, 0);
+                    updateCollisionBox();
+                    boolean xCollision = checkCollisions(walls);
+
+                    // Пробуем двигаться только по Y
+                    sprite.setPosition(oldX, oldY);
+                    sprite.translate(0, moveY * speed * deltaTime);
+                    updateCollisionBox();
+                    boolean yCollision = checkCollisions(walls);
+
+                    // Применяем движение по свободной оси
+                    if (!xCollision && !yCollision) {
+                        // Если оба направления свободны (маловероятно), оставляем как есть
+                        sprite.setPosition(oldX + moveX * speed * deltaTime, oldY + moveY * speed * deltaTime);
+                    } else if (!xCollision) {
+                        // Двигаемся только по X
+                        sprite.setPosition(oldX + moveX * speed * deltaTime, oldY);
+                    } else if (!yCollision) {
+                        // Двигаемся только по Y
+                        sprite.setPosition(oldX, oldY + moveY * speed * deltaTime);
+                    } else {
+                        // Оба направления заблокированы - не двигаемся
+                        sprite.setPosition(oldX, oldY);
+                    }
                     updateCollisionBox();
                 }
             }
