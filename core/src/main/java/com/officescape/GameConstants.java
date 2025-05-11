@@ -5,12 +5,12 @@ public class GameConstants {
     public static final float PLAYER_DEFAULT_SPEED = 200f;
     public static final float PLAYER_DEFAULT_SCALE = 1f;
     public static final float PLAYER_COLLISION_RATIO = 0.4f;
-    public static final int PLAYER_START_X = 130;
-    public static final int PLAYER_START_Y = 130;
+    public static final int PLAYER_START_X = 40;
+    public static final int PLAYER_START_Y = 650;
     public static final float MAX_PLAYER_WIDTH = 28.7f;
     public static final float MAX_PLAYER_HEIGHT = 28.7f;
     public static final float STEP_DURATION = 0.2f;
-    public static final String PLAYER_FILE_PATH = "player_idle.png";
+    public static final String PLAYER_FILE_PATH = "player_skin/player_idle.png";
 
     // Pathfinding
     public static final float PATH_REACH_THRESHOLD = 1f;
