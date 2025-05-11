@@ -36,14 +36,13 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         instance.nodes = new Array<>(width * height);
         instance.connections = new Array<>();
 
-        // Создаем узлы
+        // create nodes for all map
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Vector2 node = new Vector2(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
                 instance.nodes.add(node);
             }
         }
-
         instance.buildConnections();
     }
 
@@ -64,13 +63,13 @@ public class TiledGraph implements IndexedGraph<Vector2> {
                 Vector2 node = getNodeAt(x, y);
                 if (node == null || isWall(node)) continue;
 
-                // Проверяем соседей
+                // check up/down/left/right
                 checkAndAddConnection(node, x, y, x + 1, y);
                 checkAndAddConnection(node, x, y, x - 1, y);
                 checkAndAddConnection(node, x, y, x, y + 1);
                 checkAndAddConnection(node, x, y, x, y - 1);
 
-                // Диагональные соединения
+                // check diagonal
                 if (isValidConnection(x, y, x + 1, y + 1)) {
                     checkAndAddConnection(node, x, y, x + 1, y + 1);
                 }
@@ -87,26 +86,20 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         }
     }
 
-    public Array<Vector2> getNodes() {
-        return nodes;
-    }
 
     private boolean isValidConnection(int fromX, int fromY, int toX, int toY) {
-        // Делаем проверку диагоналей менее строгой
         Vector2 fromNode = getNodeAt(fromX, fromY);
         Vector2 toNode = getNodeAt(toX, toY);
 
         if (fromNode == null || toNode == null) return false;
         if (isWall(fromNode) || isWall(toNode)) return false;
 
-        // Для диагоналей проверяем только угловые узлы
         if (fromX != toX && fromY != toY) {
             Vector2 corner1 = getNodeAt(fromX, toY);
             Vector2 corner2 = getNodeAt(toX, fromY);
             return (corner1 == null || !isWall(corner1)) &&
                 (corner2 == null || !isWall(corner2));
         }
-
         return true;
     }
 
@@ -183,5 +176,9 @@ public class TiledGraph implements IndexedGraph<Vector2> {
             }
         }
         return result;
+    }
+
+    public Array<Vector2> getNodes() {
+        return nodes;
     }
 }

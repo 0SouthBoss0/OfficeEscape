@@ -1,7 +1,5 @@
 package com.officescape;
 
-import com.officescape.unit.Player;
-
 public class GameConstants {
     // Player
     public static final float PLAYER_DEFAULT_SPEED = 200f;
@@ -9,6 +7,10 @@ public class GameConstants {
     public static final float PLAYER_COLLISION_RATIO = 0.4f;
     public static final int PLAYER_START_X = 130;
     public static final int PLAYER_START_Y = 130;
+    public static final float MAX_PLAYER_WIDTH = 28.7f;
+    public static final float MAX_PLAYER_HEIGHT = 28.7f;
+    public static final float STEP_DURATION = 0.2f;
+    public static final String PLAYER_FILE_PATH = "player_idle.png";
 
     // Pathfinding
     public static final float PATH_REACH_THRESHOLD = 1f;
@@ -19,20 +21,10 @@ public class GameConstants {
     public static final String MAP_FILE_PATH = "map.tmx";
     public static final String COLLISION_LAYER_NAME = "walls";
 
-    // Player
-    public static final String PLAYER_FILE_PATH = "player_idle.png";
-
     // Graph
     public static final int TILED_GRAPH_WIDTH = 80;
     public static final int TILED_GRAPH_HEIGHT = 45;
     public static final float TILED_SIZE = 16f;
-
-    public static final float STEP_THRESHOLD = 1f;
-    public static final float MAX_PLAYER_WIDTH = 28.7f;
-    public static final float MAX_PLAYER_HEIGHT = 28.7f;
-
-    //  Длительность одного шага в секундах
-    public static final float STEP_DURATION = 0.2f;
 
 
 }

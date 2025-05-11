@@ -23,16 +23,16 @@ public abstract class Character {
     private final Rectangle collisionBox;
     private float scale = GameConstants.PLAYER_DEFAULT_SCALE;
 
-    // Для анимации
-    private TextureRegion idleTexture;
-    private TextureRegion stepTexture;
+    //  animation
+    private final TextureRegion idleTexture;
+    private final TextureRegion stepTexture;
     private float animationTimer = 0;
-    private float stepDuration = GameConstants.STEP_DURATION;
+    private final float stepDuration = GameConstants.STEP_DURATION;
     private boolean isMirrored = false;
     private Direction currentDirection = Direction.DOWN;
     private boolean isMoving = false;
 
-    // Для A* пути
+    // for a* algo
     private GraphPath<Vector2> path;
     private int currentPathIndex;
     private boolean isMovingToTarget = false;
@@ -48,12 +48,11 @@ public abstract class Character {
     }
 
     public Character(String texturePath) {
-        // Загружаем текстуры для анимации
+        // loading textures
         // Texture texture = new Texture(Gdx.files.internal(texturePath));
         Texture texture = new Texture(Gdx.files.internal(texturePath.replace("_idle", "_go")));
         idleTexture = new TextureRegion(texture);
 
-        // Предполагаем, что текстура шага имеет то же имя с суффиксом "_go"
         String stepTexturePath = texturePath.replace("_idle", "_go");
         stepTexture = new TextureRegion(new Texture(Gdx.files.internal(stepTexturePath)));
 
@@ -72,18 +71,6 @@ public abstract class Character {
         this.heuristic = new ManhattanDistance();
     }
 
-    public float getCollisionWidth() {
-        return collisionWidth;
-    }
-
-    public float getCollisionHeight() {
-        return collisionHeight;
-    }
-
-    public GraphPath<Vector2> getCurrentPath() {
-        return path;
-    }
-
 
     public void goToCoords(float targetX, float targetY) {
         this.targetPosition = new Vector2(targetX, targetY);
@@ -92,7 +79,7 @@ public abstract class Character {
 
         if (start == null || target == null) {
             isMovingToTarget = false;
-            path = null; // Очищаем путь при невозможности построения
+            path = null;
             return;
         }
 
@@ -104,7 +91,7 @@ public abstract class Character {
             isMovingToTarget = true;
         } else {
             isMovingToTarget = false;
-            path = null; // Очищаем путь если не найден
+            path = null;
         }
     }
 
@@ -114,17 +101,17 @@ public abstract class Character {
     }
 
     private Vector2 findNearestNode(float x, float y) {
-        // Преобразуем координаты клика в координаты узла
+        // convert click coordinates to node coordinates
         int nodeX = Math.round((x - mapGraph.getTileSize() / 2) / mapGraph.getTileSize());
         int nodeY = Math.round((y - mapGraph.getTileSize() / 2) / mapGraph.getTileSize());
 
-        // Проверяем сначала точное попадание
+        // check for exact
         Vector2 exactNode = mapGraph.getNodeAt(nodeX, nodeY);
         if (exactNode != null && !mapGraph.isWall(exactNode, this.collisionWidth, this.collisionHeight)) {
             return exactNode;
         }
 
-        // Если точный узел недоступен, ищем ближайший
+        // check for closest
         Vector2 bestNode = null;
         float bestDistance = Float.MAX_VALUE;
 
@@ -143,22 +130,12 @@ public abstract class Character {
         return bestNode;
     }
 
-    public void setScale(float scale) {
-        this.scale = scale;
-        sprite.setSize(
-            sprite.getTexture().getWidth() * scale,
-            sprite.getTexture().getHeight() * scale
-        );
-        updateCollisionBox();
-    }
-
 
     public void update(float deltaTime, Array<Rectangle> walls) {
         if (collisionBox == null) {
             updateCollisionBox();
         }
 
-        // Сбрасываем состояние движения перед обработкой
         isMoving = false;
         float moveX = 0, moveY = 0;
 
@@ -171,6 +148,18 @@ public abstract class Character {
             if (distance < GameConstants.PATH_REACH_THRESHOLD) {
                 currentPathIndex++;
                 if (currentPathIndex >= path.getCount()) {
+                    if (path.getCount() >= 2) {
+                        Vector2 lastNode = path.get(path.getCount() - 2);
+                        Vector2 finalNode = path.get(path.getCount() - 1);
+                        float finalDx = finalNode.x - lastNode.x;
+                        float finalDy = finalNode.y - lastNode.y;
+                        updateDirection(finalDx, finalDy);
+                    } else {
+                        float finalDx = targetPosition.x - getX();
+                        float finalDy = targetPosition.y - getY();
+                        updateDirection(finalDx, finalDy);
+                    }
+
                     float finalDx = targetPosition.x - getX();
                     float finalDy = targetPosition.y - getY();
                     float finalDistance = (float) Math.sqrt(finalDx * finalDx + finalDy * finalDy);
@@ -178,10 +167,7 @@ public abstract class Character {
                     if (finalDistance < GameConstants.PATH_REACH_THRESHOLD) {
                         isMovingToTarget = false;
                     } else {
-                        moveX = (finalDx / finalDistance) * speed * deltaTime;
-                        moveY = (finalDy / finalDistance) * speed * deltaTime;
                         isMoving = true;
-                        updateDirection(moveX, moveY);
                     }
                     return;
                 }
@@ -207,24 +193,20 @@ public abstract class Character {
                 isMoving = true;
                 updateDirection(moveX, moveY);
 
-                // Нормализуем вектор движения
                 float length = (float) Math.sqrt(moveX * moveX + moveY * moveY);
                 moveX = (moveX / length) * speed * deltaTime;
                 moveY = (moveY / length) * speed * deltaTime;
             }
         }
 
-        // Обработка движения и коллизий
         if (isMoving) {
             float oldX = sprite.getX();
             float oldY = sprite.getY();
 
-            // Двигаемся
             sprite.translate(moveX, moveY);
             updateCollisionBox();
 
             if (checkCollisions(walls)) {
-                // Обработка коллизий (как в оригинальном коде)
                 sprite.setPosition(oldX, oldY);
                 sprite.translate(moveX, 0);
                 updateCollisionBox();
@@ -247,17 +229,14 @@ public abstract class Character {
                 }
                 updateCollisionBox();
             }
-
-            // Обновляем анимацию только при движении
             updateAnimation(deltaTime);
         } else {
-            // Если не движемся, сбрасываем анимацию в idle
             resetAnimation();
         }
     }
 
     private void updateDirection(float dx, float dy) {
-        // Определяем основное направление движения
+        // find main direction
         if (Math.abs(dx) > Math.abs(dy)) {
             currentDirection = dx > 0 ? Direction.RIGHT : Direction.LEFT;
         } else {
@@ -270,10 +249,9 @@ public abstract class Character {
 
         if (animationTimer >= stepDuration) {
             animationTimer = 0;
-            isMirrored = !isMirrored; // Переключаем зеркальное отражение
+            isMirrored = !isMirrored;
         }
 
-        // Выбираем текущий кадр анимации
         TextureRegion currentFrame;
         if (animationTimer < stepDuration / 2) {
             currentFrame = stepTexture;
@@ -281,30 +259,25 @@ public abstract class Character {
             currentFrame = idleTexture;
         }
 
-        // Сбрасываем все трансформации перед применением новых
         sprite.setFlip(false, false);
         sprite.setRotation(0);
 
-        // Применяем трансформации в зависимости от направления
         switch (currentDirection) {
-            case UP:
+            case UP -> sprite.setRegion(currentFrame);
+            case DOWN -> {
                 sprite.setRegion(currentFrame);
-                break;
-            case DOWN:
+                sprite.setFlip(false, true);
+            }
+            case LEFT -> {
                 sprite.setRegion(currentFrame);
-                sprite.setFlip(false, true); // Отражаем по вертикали
-                break;
-            case LEFT:
-                sprite.setRegion(currentFrame);
-                sprite.rotate(90); // Отражаем по горизонтали
-                break;
-            case RIGHT:
+                sprite.rotate(90);
+            }
+            case RIGHT -> {
                 sprite.setRegion(currentFrame);
                 sprite.rotate(-90);
-                break;
+            }
         }
 
-        // Применяем зеркальное отражение для второго шага
         if (isMirrored) {
             sprite.flip(true, false);
         }
@@ -316,21 +289,18 @@ public abstract class Character {
         sprite.setRegion(idleTexture);
         sprite.setFlip(false, false);
         sprite.setRotation(0);
-
-        // Применяем трансформации для idle-анимации
         switch (currentDirection) {
             case UP:
-                // Без изменений
                 break;
             case DOWN:
                 sprite.setFlip(false, true);
                 break;
             case LEFT:
                 sprite.setFlip(true, false);
-                sprite.rotate(90); // Добавляем поворот для LEFT
+                sprite.rotate(90);
                 break;
             case RIGHT:
-                sprite.rotate(-90); // Добавляем поворот для RIGHT
+                sprite.rotate(-90);
                 break;
         }
     }
@@ -355,6 +325,15 @@ public abstract class Character {
         );
     }
 
+    public void setScale(float scale) {
+        this.scale = scale;
+        sprite.setSize(
+            sprite.getTexture().getWidth() * scale,
+            sprite.getTexture().getHeight() * scale
+        );
+        updateCollisionBox();
+    }
+
     public void draw(SpriteBatch batch) {
         sprite.draw(batch);
     }
@@ -371,4 +350,15 @@ public abstract class Character {
         return sprite.getY() + sprite.getHeight() / 2;
     }
 
+    public float getCollisionWidth() {
+        return collisionWidth;
+    }
+
+    public float getCollisionHeight() {
+        return collisionHeight;
+    }
+
+    public GraphPath<Vector2> getCurrentPath() {
+        return path;
+    }
 }
