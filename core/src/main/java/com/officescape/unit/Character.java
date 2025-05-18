@@ -47,7 +47,7 @@ public abstract class Character {
         UP, DOWN, LEFT, RIGHT
     }
 
-    public Character(String texturePath) {
+    public Character(String texturePath, int x, int y) {
         // loading textures
         // Texture texture = new Texture(Gdx.files.internal(texturePath));
         Texture texture = new Texture(Gdx.files.internal(texturePath.replace("_idle", "_go")));
@@ -58,7 +58,7 @@ public abstract class Character {
 
         sprite = new Sprite(idleTexture);
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
-        sprite.setPosition(GameConstants.PLAYER_START_X, GameConstants.PLAYER_START_Y);
+        sprite.setPosition(x, y);
 
         this.collisionWidth = sprite.getWidth() * GameConstants.PLAYER_COLLISION_RATIO;
         this.collisionHeight = sprite.getHeight() * GameConstants.PLAYER_COLLISION_RATIO;
@@ -183,7 +183,7 @@ public abstract class Character {
                 isMoving = true;
                 updateDirection(dx, dy);
             }
-        } else {
+        } else if (this instanceof Player){
             if (Gdx.input.isKeyPressed(Input.Keys.W)) moveY += 1;
             if (Gdx.input.isKeyPressed(Input.Keys.S)) moveY -= 1;
             if (Gdx.input.isKeyPressed(Input.Keys.A)) moveX -= 1;

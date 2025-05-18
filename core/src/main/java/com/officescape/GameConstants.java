@@ -11,6 +11,7 @@ public class GameConstants {
     public static final float MAX_PLAYER_HEIGHT = 28.7f;
     public static final float STEP_DURATION = 0.2f;
     public static final String PLAYER_FILE_PATH = "player_skin/player_idle.png";
+    public static final String NPC_FILE_PATH = "player_skin/npc_idle.png";
 
     // Pathfinding
     public static final float PATH_REACH_THRESHOLD = 1f;

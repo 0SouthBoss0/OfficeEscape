@@ -22,10 +22,14 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.officescape.unit.NPC;
+import com.officescape.unit.NPCFactory;
 import com.officescape.unit.Player;
+
 
 public class MainScreen implements Screen {
     private Player player;
+    private Array<NPC> npcs;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
@@ -40,6 +44,14 @@ public class MainScreen implements Screen {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         player = new Player(GameConstants.PLAYER_FILE_PATH);
+
+        NPCFactory npcFactory = NPCFactory.getInstance();
+        npcFactory.createNPC(GameConstants.NPC_FILE_PATH, 50, 50);
+        npcFactory.createNPC(GameConstants.NPC_FILE_PATH, 150, 50);
+        npcFactory.createNPC(GameConstants.NPC_FILE_PATH, 50, 150);
+
+        npcs = npcFactory.getAllNPCs();
+
 
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
@@ -73,6 +85,9 @@ public class MainScreen implements Screen {
         TiledGraph.init(GameConstants.TILED_GRAPH_WIDTH, GameConstants.TILED_GRAPH_HEIGHT,
             GameConstants.TILED_SIZE, collisionRects);
         player.updateGraphWithNewWalls();
+        for (NPC npc : npcs) {
+            npc.updateGraphWithNewWalls();
+        }
     }
 
     @Override
@@ -91,6 +106,10 @@ public class MainScreen implements Screen {
         }
 
         player.update(delta, collisionRects);
+        for (NPC npc : npcs) {
+            npc.update(delta, collisionRects);
+        }
+
         camera.update();
 
         tiledMapRenderer.setView(camera);
@@ -99,6 +118,9 @@ public class MainScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         player.draw(batch);
+        for (NPC npc : npcs) {
+            npc.draw(batch);
+        }
         batch.end();
 
         if (showDebug) {
