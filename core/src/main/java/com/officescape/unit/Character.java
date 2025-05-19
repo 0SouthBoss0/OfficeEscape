@@ -29,6 +29,11 @@ public abstract class Character {
     private float animationTimer = 0;
     private final float stepDuration = GameConstants.STEP_DURATION;
     private boolean isMirrored = false;
+
+    public void setCurrentDirection(Direction currentDirection) {
+        this.currentDirection = currentDirection;
+    }
+
     private Direction currentDirection = Direction.DOWN;
     private boolean isMoving = false;
 
@@ -43,7 +48,7 @@ public abstract class Character {
     private final float collisionWidth;
     private final float collisionHeight;
 
-    private enum Direction {
+    public enum Direction {
         UP, DOWN, LEFT, RIGHT
     }
 
@@ -183,7 +188,7 @@ public abstract class Character {
                 isMoving = true;
                 updateDirection(dx, dy);
             }
-        } else if (this instanceof Player){
+        } else if (this instanceof Player) {
             if (Gdx.input.isKeyPressed(Input.Keys.W)) moveY += 1;
             if (Gdx.input.isKeyPressed(Input.Keys.S)) moveY -= 1;
             if (Gdx.input.isKeyPressed(Input.Keys.A)) moveX -= 1;
@@ -341,27 +346,35 @@ public abstract class Character {
             return false;
         }
 
-        // Проверяем, есть ли стены между персонажами
-        TiledGraph graph = TiledGraph.getInstance();
-        float step = graph.getTileSize() / GameConstants.NODE_SEARCH_RADIUS;
-        float dx = other.getX() - getX();
-        float dy = other.getY() - getY();
-        float totalDistance = (float) Math.sqrt(dx * dx + dy * dy);
+        // Проверяем, находится ли игрок в поле зрения NPC
+        Vector2 npcToPlayer = new Vector2(other.getX() - getX(), other.getY() - getY()).nor();
+        Vector2 npcFacingDirection = getFacingDirection();
 
-        if (totalDistance == 0) return true;
+        // Угол между направлением NPC и направлением на игрока
+        float angle = npcFacingDirection.angleDeg(npcToPlayer);
 
-        dx /= totalDistance;
-        dy /= totalDistance;
-
-        for (float t = 0; t <= totalDistance; t += step) {
-            Vector2 point = new Vector2(getX() + dx * t, getY() + dy * t);
-            if (graph.isWall(point, this.collisionWidth, this.collisionHeight)) {
-                return false;
-            }
+        // Если угол больше половины FOV, игрок вне поля зрения
+        if (Math.abs(angle) > GameConstants.NPC_FOV_ANGLE / 2f) {
+            return false;
         }
 
-        return true;
+        // Проверяем, есть ли стены между NPC и игроком
+        TiledGraph graph = TiledGraph.getInstance();
+        Vector2 start = new Vector2(getX(), getY());
+        Vector2 end = new Vector2(other.getX(), other.getY());
+
+        return !graph.hasWallBetween(start, end);
     }
+
+    public Vector2 getFacingDirection() {
+        return switch (currentDirection) {
+            case UP -> new Vector2(0, 1);
+            case DOWN -> new Vector2(0, -1);
+            case LEFT -> new Vector2(-1, 0);
+            case RIGHT -> new Vector2(1, 0);
+        };
+    }
+
     public void draw(SpriteBatch batch) {
         sprite.draw(batch);
     }

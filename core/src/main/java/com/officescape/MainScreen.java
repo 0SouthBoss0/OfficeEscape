@@ -47,7 +47,9 @@ public class MainScreen implements Screen {
 
         NPCFactory npcFactory = NPCFactory.getInstance();
         npcFactory.setPlayer(player);
-        npcFactory.createBabka(50, 50);
+        npcFactory.createBabka(475, 100);
+        npcFactory.createCat(150, 50);
+        npcFactory.createBoss(500, 50);
 
         npcs = npcFactory.getAllNPCs();
 
@@ -156,6 +158,32 @@ public class MainScreen implements Screen {
             }
             shapeRenderer.end();
         }
+
+        // Рисуем поле обзора NPC
+        shapeRenderer.begin(ShapeType.Filled);
+        shapeRenderer.setColor(1, 1, 0, 0.3f); // Желтый полупрозрачный
+        for (NPC npc : npcs) {
+            Vector2 pos = new Vector2(npc.getX(), npc.getY());
+            Vector2 facingDir = npc.getFacingDirection();
+
+            // Базовый угол направления взгляда в градусах
+            float baseAngle = facingDir.angleDeg();
+
+            // Угол обзора и радиус
+            float fovAngle = GameConstants.NPC_FOV_ANGLE;
+            float range = GameConstants.NPC_DETECTION_RANGE;
+
+            // Рассчитываем точки треугольника для сектора обзора
+            Vector2 leftDir = new Vector2(1, 0).setAngleDeg(baseAngle - fovAngle/2).scl(range);
+            Vector2 rightDir = new Vector2(1, 0).setAngleDeg(baseAngle + fovAngle/2).scl(range);
+
+            shapeRenderer.triangle(
+                pos.x, pos.y,
+                pos.x + leftDir.x, pos.y + leftDir.y,
+                pos.x + rightDir.x, pos.y + rightDir.y
+            );
+        }
+        shapeRenderer.end();
     }
 
     @Override

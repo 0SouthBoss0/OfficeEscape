@@ -34,7 +34,7 @@ public abstract class NPC extends Character {
         }
         Player player = findPlayerInRange();
         if (player != null && this.canSee(player, walls)) {
-            System.out.println(this.getClass().getSimpleName() + " sees me blyat!");
+            System.out.println(this.getClass().getSimpleName() + " sees me!");
 
         }
         super.update(deltaTime, walls);

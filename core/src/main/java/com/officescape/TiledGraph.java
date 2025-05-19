@@ -132,7 +132,7 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         }
     }
 
-    private boolean hasWallBetween(Vector2 from, Vector2 to) {
+    public boolean hasWallBetween(Vector2 from, Vector2 to) {
         float step = tileSize / GameConstants.NODE_SEARCH_RADIUS;
         float dx = to.x - from.x;
         float dy = to.y - from.y;
