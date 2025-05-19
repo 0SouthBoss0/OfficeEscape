@@ -28,11 +28,11 @@ public class GameConstants {
 
     // textures
     public static final String PLAYER_FILE_PATH = "player_skin/player_idle.png";
-    public static final String BABKA_FILE_PATH = "player_skin/npc_idle.png";
-    public static final String BOSS_FILE_PATH = "player_skin/npc_idle.png";
-    public static final String CAT_FILE_PATH = "player_skin/npc_idle.png";
-    public static final String COLLEAGUE_FILE_PATH = "player_skin/npc_idle.png";
-    public static final String ITSHNIK_FILE_PATH = "player_skin/npc_idle.png";
+    public static final String BABKA_FILE_PATH = "player_skin/babka_idle.png";
+    public static final String BOSS_FILE_PATH = "player_skin/boss_idle.png";
+    public static final String CAT_FILE_PATH = "player_skin/cat_idle.png";
+    public static final String COLLEAGUE_FILE_PATH = "player_skin/clerk_idle.png";
+    public static final String ITSHNIK_FILE_PATH = "player_skin/it_idle.png";
 
     public static final float NPC_DETECTION_RANGE = 200f;
     public static final float NPC_FOV_ANGLE = 90f;
