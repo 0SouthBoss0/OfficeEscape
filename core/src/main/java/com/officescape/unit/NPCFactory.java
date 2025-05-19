@@ -1,6 +1,7 @@
 package com.officescape.unit;
 
 import com.badlogic.gdx.utils.Array;
+import com.officescape.GameConstants;
 
 public class NPCFactory {
     private static NPCFactory instance;
@@ -17,10 +18,34 @@ public class NPCFactory {
         return instance;
     }
 
-    public NPC createNPC(String texturePath, int x, int y) {
-        NPC npc = new NPC(texturePath, x, y);
-        npcs.add(npc);
-        return npc;
+    public NPC createBabka(int x, int y) {
+        NPC babka = new Babka(GameConstants.BABKA_FILE_PATH, x, y);
+        npcs.add(babka);
+        return babka;
+    }
+
+    public NPC createBoss(int x, int y) {
+        NPC boss = new Boss(GameConstants.BOSS_FILE_PATH, x, y);
+        npcs.add(boss);
+        return boss;
+    }
+
+    public NPC createCat(int x, int y) {
+        NPC cat = new Cat(GameConstants.CAT_FILE_PATH, x, y);
+        npcs.add(cat);
+        return cat;
+    }
+
+    public NPC createColleague(int x, int y) {
+        NPC colleague = new Colleague(GameConstants.COLLEAGUE_FILE_PATH, x, y);
+        npcs.add(colleague);
+        return colleague;
+    }
+
+    public NPC createItshnik(int x, int y) {
+        NPC itshnik = new Itshnik(GameConstants.ITSHNIK_FILE_PATH, x, y);
+        npcs.add(itshnik);
+        return itshnik;
     }
 
     public Array<NPC> getAllNPCs() {

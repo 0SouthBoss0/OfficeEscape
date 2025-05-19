@@ -10,8 +10,7 @@ public class GameConstants {
     public static final float MAX_PLAYER_WIDTH = 28.7f;
     public static final float MAX_PLAYER_HEIGHT = 28.7f;
     public static final float STEP_DURATION = 0.2f;
-    public static final String PLAYER_FILE_PATH = "player_skin/player_idle.png";
-    public static final String NPC_FILE_PATH = "player_skin/npc_idle.png";
+
 
     // Pathfinding
     public static final float PATH_REACH_THRESHOLD = 1f;
@@ -26,6 +25,14 @@ public class GameConstants {
     public static final int TILED_GRAPH_WIDTH = 80;
     public static final int TILED_GRAPH_HEIGHT = 45;
     public static final float TILED_SIZE = 16f;
+
+    // textures
+    public static final String PLAYER_FILE_PATH = "player_skin/player_idle.png";
+    public static final String BABKA_FILE_PATH = "player_skin/npc_idle.png";
+    public static final String BOSS_FILE_PATH = "player_skin/npc_idle.png";
+    public static final String CAT_FILE_PATH = "player_skin/npc_idle.png";
+    public static final String COLLEAGUE_FILE_PATH = "player_skin/npc_idle.png";
+    public static final String ITSHNIK_FILE_PATH = "player_skin/npc_idle.png";
 
 
 }
