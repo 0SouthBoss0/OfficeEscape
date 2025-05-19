@@ -28,18 +28,28 @@ public abstract class NPC extends Character {
 
     @Override
     public void update(float deltaTime, Array<Rectangle> walls) {
+        onCustomUpdate(deltaTime, walls);
+        super.update(deltaTime, walls);
+    }
+
+    protected abstract void onCustomUpdate(float deltaTime, Array<Rectangle> walls);
+
+    protected void walkThrough(float deltaTime) {
         moveTimer += deltaTime;
         if (moveTimer >= delay) {
             moveTimer = 0;
             moveToRandomWaypoint();
             delay = generateDelay();
         }
+    }
+
+    protected boolean isPlayerNearby(Array<Rectangle> walls) {
         Player player = findPlayerInRange();
         if (player != null && this.canSee(player, walls)) {
             System.out.println(this.getClass().getSimpleName() + " sees me!");
-
+            return true;
         }
-        super.update(deltaTime, walls);
+        return false;
     }
 
     private void moveToRandomWaypoint() {
