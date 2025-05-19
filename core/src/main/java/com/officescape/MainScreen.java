@@ -50,6 +50,8 @@ public class MainScreen implements Screen {
         npcFactory.createBabka(475, 100);
         npcFactory.createCat(150, 50);
         npcFactory.createBoss(500, 50);
+        npcFactory.createColleague(1000, 150);
+        npcFactory.createItshnik(600, 600);
 
         npcs = npcFactory.getAllNPCs();
 

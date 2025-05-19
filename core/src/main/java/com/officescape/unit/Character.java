@@ -53,9 +53,7 @@ public abstract class Character {
     }
 
     public Character(String texturePath, int x, int y) {
-        // loading textures
-        // Texture texture = new Texture(Gdx.files.internal(texturePath));
-        Texture texture = new Texture(Gdx.files.internal(texturePath.replace("_idle", "_go")));
+        Texture texture = new Texture(Gdx.files.internal(texturePath));
         idleTexture = new TextureRegion(texture);
 
         String stepTexturePath = texturePath.replace("_idle", "_go");
