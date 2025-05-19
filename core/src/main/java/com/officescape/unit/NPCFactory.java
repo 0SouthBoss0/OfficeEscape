@@ -6,9 +6,18 @@ import com.officescape.GameConstants;
 public class NPCFactory {
     private static NPCFactory instance;
     private Array<NPC> npcs;
+    private Player player;
 
     private NPCFactory() {
         npcs = new Array<>();
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public static synchronized NPCFactory getInstance() {

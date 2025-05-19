@@ -34,6 +34,6 @@ public class GameConstants {
     public static final String COLLEAGUE_FILE_PATH = "player_skin/npc_idle.png";
     public static final String ITSHNIK_FILE_PATH = "player_skin/npc_idle.png";
 
-
+    public static final float NPC_DETECTION_RANGE = 150f;
 }
 

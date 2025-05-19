@@ -46,6 +46,7 @@ public class MainScreen implements Screen {
         player = new Player(GameConstants.PLAYER_FILE_PATH);
 
         NPCFactory npcFactory = NPCFactory.getInstance();
+        npcFactory.setPlayer(player);
         npcFactory.createBabka(50, 50);
 
         npcs = npcFactory.getAllNPCs();

@@ -32,6 +32,11 @@ public abstract class NPC extends Character {
             moveTimer = 0;
             moveToRandomWaypoint();
         }
+        Player player = findPlayerInRange();
+        if (player != null && this.canSee(player, walls)) {
+            System.out.println(this.getClass().getSimpleName() + " sees me blyat!");
+
+        }
         super.update(deltaTime, walls);
     }
 
@@ -40,5 +45,7 @@ public abstract class NPC extends Character {
         Vector2 waypoint = NPC_WAYPOINTS[random.nextInt(NPC_WAYPOINTS.length)];
         this.goToCoords(waypoint.x, waypoint.y);
     }
-
+    private Player findPlayerInRange() {
+        return NPCFactory.getInstance().getPlayer();
+    }
 }

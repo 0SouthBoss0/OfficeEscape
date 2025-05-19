@@ -334,6 +334,34 @@ public abstract class Character {
         updateCollisionBox();
     }
 
+    public boolean canSee(Character other, Array<Rectangle> walls) {
+        // Проверяем расстояние
+        float distance = Vector2.dst(getX(), getY(), other.getX(), other.getY());
+        if (distance > GameConstants.NPC_DETECTION_RANGE) {
+            return false;
+        }
+
+        // Проверяем, есть ли стены между персонажами
+        TiledGraph graph = TiledGraph.getInstance();
+        float step = graph.getTileSize() / GameConstants.NODE_SEARCH_RADIUS;
+        float dx = other.getX() - getX();
+        float dy = other.getY() - getY();
+        float totalDistance = (float) Math.sqrt(dx * dx + dy * dy);
+
+        if (totalDistance == 0) return true;
+
+        dx /= totalDistance;
+        dy /= totalDistance;
+
+        for (float t = 0; t <= totalDistance; t += step) {
+            Vector2 point = new Vector2(getX() + dx * t, getY() + dy * t);
+            if (graph.isWall(point, this.collisionWidth, this.collisionHeight)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
     public void draw(SpriteBatch batch) {
         sprite.draw(batch);
     }
