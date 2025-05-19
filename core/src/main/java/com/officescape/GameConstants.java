@@ -36,5 +36,7 @@ public class GameConstants {
 
     public static final float NPC_DETECTION_RANGE = 200f;
     public static final float NPC_FOV_ANGLE = 90f;
+    public static final float NPC_MIN_DELAY = 1f;
+    public static final float NPC_MAX_DELAY = 10f;
 }
 
