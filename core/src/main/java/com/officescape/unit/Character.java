@@ -40,7 +40,7 @@ public abstract class Character {
     // for a* algo
     private GraphPath<Vector2> path;
     private int currentPathIndex;
-    private boolean isMovingToTarget = false;
+    protected boolean isMovingToTarget = false;
     private TiledGraph mapGraph;
     private IndexedAStarPathFinder<Vector2> pathFinder;
     private final Heuristic<Vector2> heuristic;
@@ -158,6 +158,7 @@ public abstract class Character {
                 currentPathIndex++;
                 if (currentPathIndex >= path.getCount()) {
                     // Применяем конечное направление, если оно было задано
+                    isMovingToTarget = false;
                     if (finalDirection != null) {
                         currentDirection = finalDirection;
                         finalDirection = null; // сбрасываем, чтобы не применять повторно
@@ -167,6 +168,7 @@ public abstract class Character {
                         float finalDy = targetPosition.y - getY();
                         updateDirection(finalDx, finalDy);
                     }
+
 
                     float finalDistance = Vector2.dst(getX(), getY(), targetPosition.x, targetPosition.y);
                     if (finalDistance < GameConstants.PATH_REACH_THRESHOLD) {

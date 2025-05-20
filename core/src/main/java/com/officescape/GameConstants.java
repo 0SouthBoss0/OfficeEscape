@@ -40,8 +40,8 @@ public class GameConstants {
     // NPC
     public static final float NPC_DETECTION_RANGE = 200f;
     public static final float NPC_FOV_ANGLE = 90f;
-    public static final float NPC_MIN_DELAY = 3f;
-    public static final float NPC_MAX_DELAY = 3f;
+    public static final float NPC_MIN_DELAY = 5f;
+    public static final float NPC_MAX_DELAY = 15f;
 
     public static final Position BABKA_START = new Position(1100, 600, Character.Direction.RIGHT);
     public static final Position BOSS_START = new Position(72, 67, Character.Direction.LEFT);

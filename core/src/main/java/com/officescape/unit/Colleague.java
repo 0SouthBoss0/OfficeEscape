@@ -20,7 +20,7 @@ public class Colleague extends NPC {
     @Override
     protected void setNPCWaypoints() {
         this.NPC_WAYPOINTS = new GameConstants.Position[]{
-            COLLEAGUE1_START, COFFEE_EAT1, COFFEE_EAT2
+            COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT
         };
     }
 }

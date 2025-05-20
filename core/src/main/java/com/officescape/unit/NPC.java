@@ -2,7 +2,6 @@
 package com.officescape.unit;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.officescape.GameConstants;
 
@@ -31,11 +30,13 @@ public abstract class NPC extends Character {
     protected abstract void setNPCWaypoints();
 
     protected void walkThrough(float deltaTime) {
-        moveTimer += deltaTime;
-        if (moveTimer >= delay) {
-            moveTimer = 0;
-            moveToRandomWaypoint();
-            delay = generateDelay();
+        if (!isMovingToTarget) {
+            moveTimer += deltaTime;
+            if (moveTimer >= delay) {
+                moveTimer = 0;
+                moveToRandomWaypoint();
+                delay = generateDelay();
+            }
         }
     }
 
