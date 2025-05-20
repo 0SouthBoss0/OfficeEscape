@@ -47,11 +47,11 @@ public class MainScreen implements Screen {
 
         NPCFactory npcFactory = NPCFactory.getInstance();
         npcFactory.setPlayer(player);
-        npcFactory.createBabka(475, 100);
-        npcFactory.createCat(150, 50);
-        npcFactory.createBoss(500, 50);
-        npcFactory.createColleague(1000, 150);
-        npcFactory.createItshnik(600, 600);
+        npcFactory.createBabka(GameConstants.BABKA_START.x(), GameConstants.BABKA_START.y(), GameConstants.BABKA_START.direction());
+        npcFactory.createCat(GameConstants.CAT_START.x(), GameConstants.CAT_START.y(), GameConstants.CAT_START.direction());
+        npcFactory.createBoss(GameConstants.BOSS_START.x(), GameConstants.BOSS_START.y(), GameConstants.BOSS_START.direction());
+        npcFactory.createColleague(GameConstants.COLLEAGUE1_START.x(), GameConstants.COLLEAGUE1_START.y(), GameConstants.COLLEAGUE1_START.direction());
+        npcFactory.createItshnik(GameConstants.ITSHNIK_START.x(), GameConstants.ITSHNIK_START.y(), GameConstants.ITSHNIK_START.direction());
 
         npcs = npcFactory.getAllNPCs();
 
@@ -105,6 +105,9 @@ public class MainScreen implements Screen {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             Vector3 clickPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(clickPos);
+            if (showDebug) {
+                System.out.printf("Mouse click at: X=%.1f, Y=%.1f%n", clickPos.x, clickPos.y);
+            }
             player.goToCoords(clickPos.x, clickPos.y);
         }
 
@@ -176,8 +179,8 @@ public class MainScreen implements Screen {
             float range = GameConstants.NPC_DETECTION_RANGE;
 
             // Рассчитываем точки треугольника для сектора обзора
-            Vector2 leftDir = new Vector2(1, 0).setAngleDeg(baseAngle - fovAngle/2).scl(range);
-            Vector2 rightDir = new Vector2(1, 0).setAngleDeg(baseAngle + fovAngle/2).scl(range);
+            Vector2 leftDir = new Vector2(1, 0).setAngleDeg(baseAngle - fovAngle / 2).scl(range);
+            Vector2 rightDir = new Vector2(1, 0).setAngleDeg(baseAngle + fovAngle / 2).scl(range);
 
             shapeRenderer.triangle(
                 pos.x, pos.y,

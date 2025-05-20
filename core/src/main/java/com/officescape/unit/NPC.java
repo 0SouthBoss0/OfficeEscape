@@ -12,18 +12,12 @@ public abstract class NPC extends Character {
     private float moveTimer = 0;
     private float delay = 0;
     private static final Random random = new Random();
-    public static final Vector2[] NPC_WAYPOINTS = {
-        new Vector2(100, 100),
-        new Vector2(300, 200),
-        new Vector2(500, 300),
-        new Vector2(200, 400),
-        new Vector2(500, 400),
-        new Vector2(600, 400),
-        new Vector2(120, 100)
-    };
+
+    public GameConstants.Position[] NPC_WAYPOINTS;
 
     public NPC(String texturePath, int x, int y) {
         super(texturePath, x, y);
+        setNPCWaypoints();
     }
 
     @Override
@@ -33,6 +27,8 @@ public abstract class NPC extends Character {
     }
 
     protected abstract void onCustomUpdate(float deltaTime, Array<Rectangle> walls);
+
+    protected abstract void setNPCWaypoints();
 
     protected void walkThrough(float deltaTime) {
         moveTimer += deltaTime;
@@ -54,8 +50,8 @@ public abstract class NPC extends Character {
 
     private void moveToRandomWaypoint() {
         if (NPC_WAYPOINTS.length == 0) return;
-        Vector2 waypoint = NPC_WAYPOINTS[random.nextInt(NPC_WAYPOINTS.length)];
-        this.goToCoords(waypoint.x, waypoint.y);
+        GameConstants.Position waypoint = NPC_WAYPOINTS[random.nextInt(NPC_WAYPOINTS.length)];
+        this.goToCoords(waypoint.x(), waypoint.y(), waypoint.direction());
         this.generateDelay();
     }
 

@@ -52,6 +52,8 @@ public abstract class Character {
         UP, DOWN, LEFT, RIGHT
     }
 
+    private Direction finalDirection = null;
+
     public Character(String texturePath, int x, int y) {
         Texture texture = new Texture(Gdx.files.internal(texturePath));
         idleTexture = new TextureRegion(texture);
@@ -74,6 +76,10 @@ public abstract class Character {
         this.heuristic = new ManhattanDistance();
     }
 
+    public void goToCoords(float targetX, float targetY, Direction direction) {
+        this.goToCoords(targetX, targetY); // используем существующую логику движения
+        this.finalDirection = direction; // сохраняем конечное направление
+    }
 
     public void goToCoords(float targetX, float targetY) {
         this.targetPosition = new Vector2(targetX, targetY);
@@ -151,22 +157,18 @@ public abstract class Character {
             if (distance < GameConstants.PATH_REACH_THRESHOLD) {
                 currentPathIndex++;
                 if (currentPathIndex >= path.getCount()) {
-                    if (path.getCount() >= 2) {
-                        Vector2 lastNode = path.get(path.getCount() - 2);
-                        Vector2 finalNode = path.get(path.getCount() - 1);
-                        float finalDx = finalNode.x - lastNode.x;
-                        float finalDy = finalNode.y - lastNode.y;
-                        updateDirection(finalDx, finalDy);
+                    // Применяем конечное направление, если оно было задано
+                    if (finalDirection != null) {
+                        currentDirection = finalDirection;
+                        finalDirection = null; // сбрасываем, чтобы не применять повторно
                     } else {
+                        // Стандартная логика определения направления
                         float finalDx = targetPosition.x - getX();
                         float finalDy = targetPosition.y - getY();
                         updateDirection(finalDx, finalDy);
                     }
 
-                    float finalDx = targetPosition.x - getX();
-                    float finalDy = targetPosition.y - getY();
-                    float finalDistance = (float) Math.sqrt(finalDx * finalDx + finalDy * finalDy);
-
+                    float finalDistance = Vector2.dst(getX(), getY(), targetPosition.x, targetPosition.y);
                     if (finalDistance < GameConstants.PATH_REACH_THRESHOLD) {
                         isMovingToTarget = false;
                     } else {
@@ -174,6 +176,7 @@ public abstract class Character {
                     }
                     return;
                 }
+
                 target = path.get(currentPathIndex);
                 dx = target.x - getX();
                 dy = target.y - getY();
@@ -236,6 +239,7 @@ public abstract class Character {
         } else {
             resetAnimation();
         }
+
     }
 
     private void updateDirection(float dx, float dy) {
