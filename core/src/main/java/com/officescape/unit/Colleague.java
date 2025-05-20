@@ -7,8 +7,8 @@ import com.officescape.GameConstants;
 import static com.officescape.GameConstants.*;
 
 public class Colleague extends NPC {
-    public Colleague(String texturePath, int x, int y) {
-        super(texturePath, x, y);
+    public Colleague(String texturePath, int x, int y, GameConstants.Position[] waypoints) {
+        super(texturePath, x, y, waypoints);
     }
 
     @Override
@@ -17,10 +17,5 @@ public class Colleague extends NPC {
         isPlayerNearby(walls);
     }
 
-    @Override
-    protected void setNPCWaypoints() {
-        this.NPC_WAYPOINTS = new GameConstants.Position[]{
-            COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT
-        };
-    }
+
 }

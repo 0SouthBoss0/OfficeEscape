@@ -64,6 +64,17 @@ public class GameConstants {
     public static final Position SERVER_TOP = new Position(792, 664, Character.Direction.LEFT);
     public static final Position SERVER_BOTTOM = new Position(826, 598, Character.Direction.DOWN);
 
+    public static final Position[] BABKA_WAYPOINTS = {BABKA_START};
+    public static final Position[] BOSS_WAYPOINTS = {BOSS_START, COFFEE_CORNER, TOILET, SMALL_MEET_CENTER};
+    public static final Position[] CAT_WAYPOINTS = {CAT_START, SERVER_BOTTOM, SMALL_MEET_LEFT};
+    public static final Position[] COLLEGUE1_WAYPOINTS = {COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT};
+    public static final Position[] COLLEGUE2_WAYPOINTS = {COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT};
+    public static final Position[] COLLEGUE3_WAYPOINTS = {COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT};
+    public static final Position[] COLLEGUE4_WAYPOINTS = {COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT};
+    public static final Position[] COLLEGUE5_WAYPOINTS = {COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT};
+    public static final Position[] ITSHNIK_WAYPOINTS = {ITSHNIK_START, SERVER_TOP, COFFEE_MACHINE};
+
+
 
     public record Position(int x, int y, Character.Direction direction) {
         // record автоматически создает конструктор, геттеры, equals, hashCode и toString

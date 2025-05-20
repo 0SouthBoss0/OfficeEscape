@@ -14,9 +14,9 @@ public abstract class NPC extends Character {
 
     public GameConstants.Position[] NPC_WAYPOINTS;
 
-    public NPC(String texturePath, int x, int y) {
+    public NPC(String texturePath, int x, int y, GameConstants.Position[] waypoints) {
         super(texturePath, x, y);
-        setNPCWaypoints();
+        this.NPC_WAYPOINTS = waypoints;
     }
 
     @Override
@@ -27,7 +27,6 @@ public abstract class NPC extends Character {
 
     protected abstract void onCustomUpdate(float deltaTime, Array<Rectangle> walls);
 
-    protected abstract void setNPCWaypoints();
 
     protected void walkThrough(float deltaTime) {
         if (!isMovingToTarget) {

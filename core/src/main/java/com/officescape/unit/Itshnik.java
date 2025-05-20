@@ -8,8 +8,8 @@ import static com.officescape.GameConstants.*;
 import static com.officescape.GameConstants.SMALL_MEET_CENTER;
 
 public class Itshnik extends NPC{
-    public Itshnik(String texturePath, int x, int y) {
-        super(texturePath, x, y);
+    public Itshnik(String texturePath, int x, int y, GameConstants.Position[] waypoints) {
+        super(texturePath, x, y, waypoints);
     }
 
     @Override
@@ -18,10 +18,4 @@ public class Itshnik extends NPC{
         isPlayerNearby(walls);
     }
 
-    @Override
-    protected void setNPCWaypoints() {
-        this.NPC_WAYPOINTS = new GameConstants.Position[]{
-            ITSHNIK_START, SERVER_TOP, COFFEE_MACHINE
-        };
-    }
 }
