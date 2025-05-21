@@ -1,0 +1,95 @@
+// Item.java
+package com.officescape.item;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.officescape.GameConstants;
+import com.officescape.TiledGraph;
+import com.officescape.unit.Player;
+
+public abstract class Item {
+    protected Sprite sprite;
+    protected boolean isHighlighted = false;
+    protected boolean isPickedUp = false;
+    protected float scale;
+    public Item(String texturePath, float x, float y, float scale) {
+        Texture texture = new Texture(texturePath);
+        sprite = new Sprite(texture);
+        this.scale=scale;
+        sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
+        sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
+    }
+
+    public void update(Player player, Array<Rectangle> walls) {
+        if (isPickedUp) return;
+
+        // Проверяем расстояние до игрока
+        float distance = Vector2.dst(getX(), getY(), player.getX(), player.getY());
+        isHighlighted = distance < GameConstants.ITEM_HIGHLIGHT_RANGE;
+
+        // Проверяем, можно ли подобрать предмет (достаточно близко и нет стен между игроком и предметом)
+        if (distance < GameConstants.ITEM_PICKUP_RANGE && !TiledGraph.getInstance().hasWallBetween(
+            new Vector2(player.getX(), player.getY()),
+            new Vector2(getX(), getY())
+        )) {
+            // Предмет можно подобрать
+            isHighlighted = true;
+        } else {
+            isHighlighted = false;
+        }
+    }
+
+    public boolean pickUp(Player player, Array<Rectangle> walls) {
+        if (isPickedUp) return false;
+
+        float distance = Vector2.dst(getX(), getY(), player.getX(), player.getY());
+        if (distance < GameConstants.ITEM_PICKUP_RANGE &&
+            !TiledGraph.getInstance().hasWallBetween(
+                new Vector2(player.getX(), player.getY()),
+                new Vector2(getX(), getY())
+            )) {
+            isPickedUp = true;
+            onPickUp(player);
+            return true;
+        }
+        return false;
+    }
+
+    public abstract void onPickUp(Player player);
+
+    public void draw(SpriteBatch batch) {
+        if (!isPickedUp) {
+            sprite.draw(batch);
+        }
+    }
+
+    public void drawHighlight(ShapeRenderer shapeRenderer) {
+        if (isHighlighted && !isPickedUp) {
+            shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(1, 1, 1, 1); // Белый цвет
+            shapeRenderer.rect(
+                sprite.getX() - 2,
+                sprite.getY() - 2,
+                sprite.getWidth() + 4,
+                sprite.getHeight() + 4
+            );
+        }
+    }
+
+    public float getX() {
+        return sprite.getX() + sprite.getWidth() / 2;
+    }
+
+    public float getY() {
+        return sprite.getY() + sprite.getHeight() / 2;
+    }
+
+    public void dispose() {
+        sprite.getTexture().dispose();
+    }
+}

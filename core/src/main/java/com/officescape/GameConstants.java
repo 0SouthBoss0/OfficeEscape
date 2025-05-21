@@ -75,6 +75,13 @@ public class GameConstants {
     public static final Position[] ITSHNIK_WAYPOINTS = {ITSHNIK_START, SERVER_TOP, COFFEE_MACHINE};
 
 
+    public static final float ITEM_PICKUP_RANGE = 100f; // Дистанция для подбора предмета
+    public static final float ITEM_HIGHLIGHT_RANGE = 100f; // Дистанция для подсветки предмета
+
+    public static final Position KEY_FROM_SERVER = new Position(1080, 30, Character.Direction.UP);
+    public static final Position STEPLER = new Position(300, 300, Character.Direction.UP);
+
+
 
     public record Position(int x, int y, Character.Direction direction) {
         // record автоматически создает конструктор, геттеры, equals, hashCode и toString

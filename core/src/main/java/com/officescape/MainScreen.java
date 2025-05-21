@@ -19,9 +19,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.officescape.item.Item;
+import com.officescape.item.Key;
+import com.officescape.item.Stepler;
 import com.officescape.unit.NPC;
 import com.officescape.unit.NPCFactory;
 import com.officescape.unit.Player;
@@ -38,6 +40,8 @@ public class MainScreen implements Screen {
     private Array<Rectangle> collisionRects = new Array<>();
     private Viewport viewport;
     private boolean showDebug = false;
+    private Array<Item> items;
+    private ShapeRenderer itemShapeRenderer;
 
     @Override
     public void show() {
@@ -51,11 +55,17 @@ public class MainScreen implements Screen {
         npcFactory.createCat(GameConstants.CAT_START.x(), GameConstants.CAT_START.y(), GameConstants.CAT_START.direction(), GameConstants.CAT_WAYPOINTS);
         npcFactory.createBoss(GameConstants.BOSS_START.x(), GameConstants.BOSS_START.y(), GameConstants.BOSS_START.direction(), GameConstants.BOSS_WAYPOINTS);
         npcFactory.createColleague(GameConstants.COLLEAGUE1_START.x(), GameConstants.COLLEAGUE1_START.y(), GameConstants.COLLEAGUE1_START.direction(), GameConstants.COLLEGUE1_WAYPOINTS);
+        npcFactory.createColleague(GameConstants.COLLEAGUE2_START.x(), GameConstants.COLLEAGUE2_START.y(), GameConstants.COLLEAGUE2_START.direction(), GameConstants.COLLEGUE2_WAYPOINTS);
+        npcFactory.createColleague(GameConstants.COLLEAGUE3_START.x(), GameConstants.COLLEAGUE3_START.y(), GameConstants.COLLEAGUE3_START.direction(), GameConstants.COLLEGUE3_WAYPOINTS);
+        npcFactory.createColleague(GameConstants.COLLEAGUE4_START.x(), GameConstants.COLLEAGUE4_START.y(), GameConstants.COLLEAGUE4_START.direction(), GameConstants.COLLEGUE4_WAYPOINTS);
+        npcFactory.createColleague(GameConstants.COLLEAGUE5_START.x(), GameConstants.COLLEAGUE5_START.y(), GameConstants.COLLEAGUE5_START.direction(), GameConstants.COLLEGUE5_WAYPOINTS);
         npcFactory.createItshnik(GameConstants.ITSHNIK_START.x(), GameConstants.ITSHNIK_START.y(), GameConstants.ITSHNIK_START.direction(), GameConstants.ITSHNIK_WAYPOINTS);
-
         npcs = npcFactory.getAllNPCs();
 
-
+        items = new Array<>();
+        items.add(new Key(GameConstants.KEY_FROM_SERVER.x(), GameConstants.KEY_FROM_SERVER.y()));
+        items.add(new Stepler(GameConstants.STEPLER.x(), GameConstants.STEPLER.y()));
+        itemShapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
@@ -111,6 +121,14 @@ public class MainScreen implements Screen {
             player.goToCoords(clickPos.x, clickPos.y);
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            for (Item item : items) {
+                if (item.pickUp(player, collisionRects)) {
+                    break;
+                }
+            }
+        }
+
         player.update(delta, collisionRects);
         for (NPC npc : npcs) {
             npc.update(delta, collisionRects);
@@ -127,7 +145,17 @@ public class MainScreen implements Screen {
         for (NPC npc : npcs) {
             npc.draw(batch);
         }
+        for (Item item : items) {
+            item.update(player, collisionRects);
+            item.draw(batch);
+        }
         batch.end();
+        itemShapeRenderer.setProjectionMatrix(camera.combined);
+        itemShapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        for (Item item : items) {
+            item.drawHighlight(itemShapeRenderer);
+        }
+        itemShapeRenderer.end();
 
         if (showDebug) {
             renderDebug();
@@ -204,6 +232,10 @@ public class MainScreen implements Screen {
         player.dispose();
         tiledMap.dispose();
         tiledMapRenderer.dispose();
+        itemShapeRenderer.dispose();
+        for (Item item : items) {
+            item.dispose();
+        }
     }
 
     // Остальные методы интерфейса Screen оставлены без изменений
