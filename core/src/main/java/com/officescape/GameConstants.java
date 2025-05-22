@@ -22,6 +22,7 @@ public class GameConstants {
     // Map
     public static final String MAP_FILE_PATH = "map.tmx";
     public static final String COLLISION_LAYER_NAME = "walls";
+    public static final String FURNITURE_LAYER_NAME = "furniture";
 
     // Graph
     public static final int TILED_GRAPH_WIDTH = 80;

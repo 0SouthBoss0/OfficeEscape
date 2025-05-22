@@ -15,6 +15,7 @@ public class TiledGraph implements IndexedGraph<Vector2> {
     private int height;
     private float tileSize;
     private Array<Rectangle> walls;
+    private Array<Rectangle> furniture;
     private float maxPlayerWidth;
     private float maxPlayerHeight;
 
@@ -22,7 +23,7 @@ public class TiledGraph implements IndexedGraph<Vector2> {
     }
 
     public static synchronized void init(int width, int height, float tileSize,
-                                         Array<Rectangle> walls) {
+                                         Array<Rectangle> walls, Array<Rectangle> furniture) {
         if (instance != null) {
             throw new IllegalStateException("TiledGraph already initialized!");
         }
@@ -31,6 +32,7 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         instance.height = height;
         instance.tileSize = tileSize;
         instance.walls = walls;
+        instance.furniture = furniture;
         instance.maxPlayerWidth = GameConstants.MAX_PLAYER_WIDTH;
         instance.maxPlayerHeight = GameConstants.MAX_PLAYER_HEIGHT;
         instance.nodes = new Array<>(width * height);
@@ -121,6 +123,26 @@ public class TiledGraph implements IndexedGraph<Vector2> {
 
     public boolean isWall(Vector2 node) {
         return isWall(node, tileSize * GameConstants.IS_WALL, tileSize * GameConstants.IS_WALL);
+    }
+
+    public boolean isFurniture(Vector2 position, float width, float height) {
+        Rectangle rect = new Rectangle(
+            position.x - width / 2,
+            position.y - height / 2,
+            width,
+            height
+        );
+
+        for (Rectangle furn : furniture) {
+            if (furn.overlaps(rect)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isFurniture(Vector2 node) {
+        return isFurniture(node, tileSize * GameConstants.IS_WALL, tileSize * GameConstants.IS_WALL);
     }
 
     private void checkAndAddConnection(Vector2 from, int fromX, int fromY, int toX, int toY) {

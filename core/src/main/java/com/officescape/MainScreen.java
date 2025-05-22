@@ -38,6 +38,7 @@ public class MainScreen implements Screen {
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
     private Array<Rectangle> collisionRects = new Array<>();
+    private Array<Rectangle> furnitureRects = new Array<>();
     private Viewport viewport;
     private boolean showDebug = false;
     private Array<Item> items;
@@ -87,16 +88,24 @@ public class MainScreen implements Screen {
 
     private void loadCollisions() {
         collisionRects.clear();
-        MapObjects objects = tiledMap.getLayers().get(GameConstants.COLLISION_LAYER_NAME).getObjects();
+        furnitureRects.clear();
 
+        MapObjects objects = tiledMap.getLayers().get(GameConstants.COLLISION_LAYER_NAME).getObjects();
         for (MapObject object : objects) {
             if (object instanceof RectangleMapObject) {
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
                 collisionRects.add(rect);
             }
         }
+        MapObjects furnObjects = tiledMap.getLayers().get(GameConstants.FURNITURE_LAYER_NAME).getObjects();
+        for (MapObject furnObject : furnObjects) {
+            if (furnObject instanceof RectangleMapObject) {
+                Rectangle rect = ((RectangleMapObject) furnObject).getRectangle();
+                furnitureRects.add(rect);
+            }
+        }
         TiledGraph.init(GameConstants.TILED_GRAPH_WIDTH, GameConstants.TILED_GRAPH_HEIGHT,
-            GameConstants.TILED_SIZE, collisionRects);
+            GameConstants.TILED_SIZE, collisionRects, furnitureRects);
         player.updateGraphWithNewWalls();
         for (NPC npc : npcs) {
             npc.updateGraphWithNewWalls();
