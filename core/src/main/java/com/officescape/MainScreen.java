@@ -180,6 +180,8 @@ public class MainScreen implements Screen {
         for (Vector2 node : graph.getNodes()) {
             if (graph.isWall(node, player.getCollisionWidth(), player.getCollisionHeight())) {
                 shapeRenderer.setColor(1, 0, 0, 0.3f); // Красный для стен
+            } else if (graph.isFurniture(node, player.getCollisionWidth(), player.getCollisionHeight())) {
+                shapeRenderer.setColor(1, 0.5f, 0, 0.3f); // Оранжевый для мебели
             } else {
                 shapeRenderer.setColor(0, 1, 0, 0.3f); // Зеленый для проходимых узлов
             }

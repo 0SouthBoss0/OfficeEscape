@@ -88,19 +88,21 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         }
     }
 
-
     private boolean isValidConnection(int fromX, int fromY, int toX, int toY) {
         Vector2 fromNode = getNodeAt(fromX, fromY);
         Vector2 toNode = getNodeAt(toX, toY);
 
         if (fromNode == null || toNode == null) return false;
-        if (isWall(fromNode) || isWall(toNode)) return false;
+        if (isWall(fromNode) || isWall(toNode) ||
+            isFurniture(fromNode) || isFurniture(toNode)) {
+            return false;
+        }
 
         if (fromX != toX && fromY != toY) {
             Vector2 corner1 = getNodeAt(fromX, toY);
             Vector2 corner2 = getNodeAt(toX, fromY);
-            return (corner1 == null || !isWall(corner1)) &&
-                (corner2 == null || !isWall(corner2));
+            return (corner1 == null || (!isWall(corner1) && !isFurniture(corner1))) &&
+                (corner2 == null || (!isWall(corner2) && !isFurniture(corner2)));
         }
         return true;
     }
@@ -149,7 +151,7 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         if (toX < 0 || toX >= width || toY < 0 || toY >= height) return;
 
         Vector2 to = getNodeAt(toX, toY);
-        if (to != null && !isWall(to) && !hasWallBetween(from, to)) {
+        if (to != null && !isWall(to) && !isFurniture(to) && !hasWallBetween(from, to) && !hasFurnitureBetween(from, to)) {
             connections.add(new DefaultConnection<>(from, to));
         }
     }
@@ -166,6 +168,23 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         for (float t = 0; t <= distance; t += step) {
             Vector2 point = new Vector2(from.x + dx * t, from.y + dy * t);
             if (isWall(point, this.maxPlayerWidth, this.maxPlayerHeight)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean hasFurnitureBetween(Vector2 from, Vector2 to) {
+        float step = tileSize / GameConstants.NODE_SEARCH_RADIUS;
+        float dx = to.x - from.x;
+        float dy = to.y - from.y;
+        float distance = (float) Math.sqrt(dx * dx + dy * dy);
+        if (distance == 0) return false;
+        dx /= distance;
+        dy /= distance;
+
+        for (float t = 0; t <= distance; t += step) {
+            Vector2 point = new Vector2(from.x + dx * t, from.y + dy * t);
+            if (isFurniture(point, this.maxPlayerWidth, this.maxPlayerHeight)) {
                 return true;
             }
         }

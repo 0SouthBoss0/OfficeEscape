@@ -116,7 +116,9 @@ public abstract class Character {
 
         // check for exact
         Vector2 exactNode = mapGraph.getNodeAt(nodeX, nodeY);
-        if (exactNode != null && !mapGraph.isWall(exactNode, this.collisionWidth, this.collisionHeight)) {
+        if (exactNode != null &&
+            !mapGraph.isWall(exactNode, this.collisionWidth, this.collisionHeight) &&
+            !mapGraph.isFurniture(exactNode, this.collisionWidth, this.collisionHeight)) {
             return exactNode;
         }
 
@@ -127,7 +129,9 @@ public abstract class Character {
         for (int dy = -2; dy <= 2; dy++) {
             for (int dx = -2; dx <= 2; dx++) {
                 Vector2 node = mapGraph.getNodeAt(nodeX + dx, nodeY + dy);
-                if (node != null && !mapGraph.isWall(node, this.collisionWidth, this.collisionHeight)) {
+                if (node != null &&
+                    !mapGraph.isWall(node, this.collisionWidth, this.collisionHeight) &&
+                    !mapGraph.isFurniture(node, this.collisionWidth, this.collisionHeight)) {
                     float dist = Vector2.dst2(x, y, node.x, node.y);
                     if (dist < bestDistance) {
                         bestDistance = dist;
@@ -321,6 +325,12 @@ public abstract class Character {
             if (collisionBox.overlaps(wall)) {
                 return true;
             }
+        }
+
+        TiledGraph graph = TiledGraph.getInstance();
+        if (graph != null) {
+            Vector2 center = new Vector2(collisionBox.x + collisionBox.width/2, collisionBox.y + collisionBox.height/2);
+            return graph.isFurniture(center, collisionBox.width, collisionBox.height);
         }
         return false;
     }

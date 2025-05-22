@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="9" infinite="0" nextlayerid="3" nextobjectid="96">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="9" infinite="0" nextlayerid="4" nextobjectid="102">
  <tileset firstgid="1" source="map.tsx"/>
  <layer id="1" name="Слой тайлов 1" width="80" height="80">
   <data encoding="csv">
@@ -172,5 +172,8 @@
   <object id="93" x="1233.27" y="-15.1818" width="53" height="15"/>
   <object id="94" x="880" y="-27" width="96" height="27"/>
   <object id="95" x="342.333" y="-22.3333" width="92.6667" height="21.6667"/>
+ </objectgroup>
+ <objectgroup id="3" name="furniture">
+  <object id="96" x="1039.25" y="602.5" width="56.5" height="101"/>
  </objectgroup>
 </map>
