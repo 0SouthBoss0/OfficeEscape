@@ -30,15 +30,13 @@ public abstract class Item {
 
         // Проверяем расстояние до игрока
         float distance = Vector2.dst(getX(), getY(), player.getX(), player.getY());
-        isHighlighted = distance < GameConstants.ITEM_HIGHLIGHT_RANGE;
 
         // Проверяем, можно ли подобрать предмет (достаточно близко и нет стен между игроком и предметом)
-        if (distance < GameConstants.ITEM_PICKUP_RANGE && !TiledGraph.getInstance().hasWallBetween(
-            new Vector2(player.getX(), player.getY()),
-            new Vector2(getX(), getY())
-        )) {
-            // Предмет можно подобрать
-            isHighlighted = true;
+        if (distance < GameConstants.ITEM_HIGHLIGHT_RANGE) {
+            isHighlighted = !TiledGraph.getInstance().hasWallBetween(
+                new Vector2(player.getX(), player.getY()),
+                new Vector2(getX(), getY())
+            );
         } else {
             isHighlighted = false;
         }
