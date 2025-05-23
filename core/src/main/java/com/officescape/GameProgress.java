@@ -2,10 +2,12 @@ package com.officescape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
@@ -19,12 +21,18 @@ public class GameProgress {
 
     public GameProgress(OrthographicCamera camera) {
         this.camera = camera;
-        font = new BitmapFont(Gdx.files.internal("fonts/cyrillic.fnt"));
-        font.getData().setScale(1.5f);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ArialRegular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 50 * Math.round(Gdx.graphics.getDensity());
+        parameter.characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!?()•-";
+        font = generator.generateFont(parameter);
+        generator.dispose();
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         font.setColor(Color.WHITE);
 
         shapeRenderer = new ShapeRenderer();
-        glyphLayout = new GlyphLayout(); // Инициализация для измерения текста
+        glyphLayout = new GlyphLayout();
 
         quests = new Array<>();
         quests.add(new Quest("Добыть диск от сервера", false));
@@ -44,8 +52,9 @@ public class GameProgress {
     public void render(SpriteBatch batch, float screenWidth, float screenHeight) {
         // Рассчитываем размеры текста
         float padding = 40f; // Отступы от краев
-        float lineHeight = 40f;
+        float lineHeight = 50f;
         float titleHeight = 50f;
+
 
         // Измеряем ширину заголовка
         glyphLayout.setText(font, "Прогресс игры:");
@@ -54,7 +63,7 @@ public class GameProgress {
         // Находим самую широкую строку квестов
         float maxQuestWidth = 0;
         for (Quest quest : quests) {
-            glyphLayout.setText(font, "✓ " + quest.description);
+            glyphLayout.setText(font, "• " + quest.description);
             maxQuestWidth = Math.max(maxQuestWidth, glyphLayout.width);
         }
 
