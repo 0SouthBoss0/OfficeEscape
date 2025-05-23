@@ -15,7 +15,7 @@ import com.officescape.unit.Player;
 public abstract class Item {
     protected Sprite sprite;
     protected boolean isHighlighted = false;
-    protected boolean isPickedUp = false;
+    public boolean isPickedUp = false;
     protected float scale;
     public Item(String texturePath, float x, float y, float scale) {
         Texture texture = new Texture(texturePath);

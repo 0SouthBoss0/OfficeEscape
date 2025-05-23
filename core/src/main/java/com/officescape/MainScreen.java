@@ -45,6 +45,8 @@ public class MainScreen implements Screen {
     private ShapeRenderer itemShapeRenderer;
     private GameProgress gameProgress;
     private boolean showProgress = false;
+    private InventoryPanel inventoryPanel;
+    private boolean showInventory = false;
 
     @Override
     public void show() {
@@ -75,6 +77,7 @@ public class MainScreen implements Screen {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         gameProgress = new GameProgress(camera);
+        inventoryPanel = new InventoryPanel(camera, items);
 
         int mapWidth = tiledMap.getProperties().get("width", Integer.class);
         int mapHeight = tiledMap.getProperties().get("height", Integer.class);
@@ -124,10 +127,14 @@ public class MainScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         showProgress = Gdx.input.isKeyPressed(Input.Keys.TAB);
+        showInventory = Gdx.input.isKeyPressed(Input.Keys.I);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
             showDebug = !showDebug;
         }
+
+        inventoryPanel.setVisible(showInventory);
+        inventoryPanel.update(items);
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             Vector3 clickPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -167,15 +174,19 @@ public class MainScreen implements Screen {
             item.draw(batch);
         }
         batch.end();
+
+        // Рендерим подсветку предметов
         itemShapeRenderer.setProjectionMatrix(camera.combined);
-        itemShapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        itemShapeRenderer.begin(ShapeType.Line);
         for (Item item : items) {
             item.drawHighlight(itemShapeRenderer);
         }
+        itemShapeRenderer.end();
+
         if (showProgress) {
             gameProgress.render(batch, viewport.getWorldWidth(), viewport.getWorldHeight());
         }
-        itemShapeRenderer.end();
+        inventoryPanel.render(batch, viewport.getWorldWidth(), viewport.getWorldHeight());
 
         if (showDebug) {
             renderDebug();
@@ -259,6 +270,7 @@ public class MainScreen implements Screen {
             item.dispose();
         }
         gameProgress.dispose();
+        inventoryPanel.dispose();
 
     }
 
