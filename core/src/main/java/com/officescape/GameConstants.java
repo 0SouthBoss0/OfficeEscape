@@ -39,6 +39,11 @@ public class GameConstants {
     public static final String COLLEAGUE_FILE_PATH = "player_skin/clerk_idle.png";
     public static final String ITSHNIK_FILE_PATH = "player_skin/it_idle.png";
 
+    //reactions
+    public static final String REACTION_ATTENTION_FILE_PATH = "player_skin/reaction_attention.png";
+    public static final String REACTION_SLEEP_FILE_PATH = "player_skin/reaction_sleep.png";
+    public static final String REACTION_STARS_FILE_PATH = "player_skin/reaction_stars.png";
+
     // NPC params
     public static final float NPC_DETECTION_RANGE = 200f;
     public static final float NPC_FOV_ANGLE = 90f;
@@ -84,8 +89,21 @@ public class GameConstants {
     public static final float ITEM_HIGHLIGHT_RANGE = 100f;
 
     // Items textures
-    public static final String STEPLER_FILE_PATH = "items/stepler.png";
-    public static final String KEY_FILE_PATH = "items/key.png";
+    public static final String STEPLER_FILE_PATH = "items/stapler.png";
+    public static final String KEY_CARD_FILE_PATH = "items/key_card.png";
+    public static final String FLASH_FILE_PATH = "items/flash.png";
+    public static final String CAMERA_GRAY_FILE_PATH = "items/camera_gray.png";
+    public static final String CAMERA_RED_FILE_PATH = "items/camera_red.png";
+    public static final String COFFEE_FILE_PATH = "items/coffee.png";
+    public static final String TURNSTILE_FILE_PATH = "items/turnstile.png";
+    public static final String FISH_FILE_PATH = "items/fish.png";
+    public static final String WARDROBE_FILE_PATH = "items/wardrobe.png";
+    public static final String COFFEE_MACHINE_FILE_PATH = "items/coffee_machine.png";
+    public static final String CRASHED_COFFEE_MACHINE_FILE_PATH = "items/crashed_coffee_machine.png";
+    public static final String PRINTER_FILE_PATH = "items/printer.png";
+    public static final String CRASHED_PRINTER_FILE_PATH = "items/crashed_printer.png";
+    public static final String TRASH_FILE_PATH = "items/trash.png";
+    public static final String FIRE_TRASH_FILE_PATH = "items/fire_trash.png";
 
     // Items scales
     public static final float STEPLER_SCALE = 0.05f;
