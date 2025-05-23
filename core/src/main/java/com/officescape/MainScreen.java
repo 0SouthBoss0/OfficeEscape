@@ -43,12 +43,15 @@ public class MainScreen implements Screen {
     private boolean showDebug = false;
     private Array<Item> items;
     private ShapeRenderer itemShapeRenderer;
+    private GameProgress gameProgress;
+    private boolean showProgress = false;
 
     @Override
     public void show() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         player = new Player(GameConstants.PLAYER_FILE_PATH);
+
 
         NPCFactory npcFactory = NPCFactory.getInstance();
         npcFactory.setPlayer(player);
@@ -70,6 +73,8 @@ public class MainScreen implements Screen {
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+
+        gameProgress = new GameProgress(camera);
 
         int mapWidth = tiledMap.getProperties().get("width", Integer.class);
         int mapHeight = tiledMap.getProperties().get("height", Integer.class);
@@ -114,8 +119,11 @@ public class MainScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        showProgress = Gdx.input.isKeyPressed(Input.Keys.TAB);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
             showDebug = !showDebug;
@@ -163,6 +171,9 @@ public class MainScreen implements Screen {
         itemShapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for (Item item : items) {
             item.drawHighlight(itemShapeRenderer);
+        }
+        if (showProgress) {
+            gameProgress.render(batch, viewport.getWorldWidth(), viewport.getWorldHeight());
         }
         itemShapeRenderer.end();
 
@@ -247,6 +258,8 @@ public class MainScreen implements Screen {
         for (Item item : items) {
             item.dispose();
         }
+        gameProgress.dispose();
+
     }
 
     // Остальные методы интерфейса Screen оставлены без изменений
