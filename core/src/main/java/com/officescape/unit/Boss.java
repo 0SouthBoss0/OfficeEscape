@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.officescape.GameConstants;
 
-import static com.officescape.GameConstants.*;
 
 public class Boss extends NPC {
     public Boss(String texturePath, int x, int y, GameConstants.Position[] waypoints) {

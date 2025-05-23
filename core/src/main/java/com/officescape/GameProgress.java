@@ -13,19 +13,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 
 public class GameProgress {
-    private Array<Quest> quests;
-    private BitmapFont font;
-    private ShapeRenderer shapeRenderer;
-    private OrthographicCamera camera;
-    private GlyphLayout glyphLayout; // Для измерения текста
+    private final Array<Quest> quests = new Array<>();
+    private final BitmapFont font;
+    private final ShapeRenderer shapeRenderer;
+    private final OrthographicCamera camera;
+    private final GlyphLayout glyphLayout;
 
     public GameProgress(OrthographicCamera camera) {
         this.camera = camera;
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ArialRegular.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(GameConstants.FONT_FILE_PATH));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 50 * Math.round(Gdx.graphics.getDensity());
-        parameter.characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
-            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!?()•-";
+        parameter.size = GameConstants.FONT_SIZE_PROGRESS * Math.round(Gdx.graphics.getDensity());
+        parameter.characters = GameConstants.FONT_CHARS;
         font = generator.generateFont(parameter);
         generator.dispose();
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -34,13 +33,9 @@ public class GameProgress {
         shapeRenderer = new ShapeRenderer();
         glyphLayout = new GlyphLayout();
 
-        quests = new Array<>();
-        quests.add(new Quest("Добыть диск от сервера", false));
-        quests.add(new Quest("На сервере отключить камеру", false));
-        quests.add(new Quest("Украсть ключ-карту у босса", false));
-        quests.add(new Quest("Прокрасться мимо бабки!", false));
-        quests.add(new Quest("Сбежать!", false));
-        quests.add(new Quest("Не попасться...", false));
+        for (String quest_desc : GameConstants.QUEST_LIST) {
+            quests.add(new Quest(quest_desc));
+        }
     }
 
     public void updateQuest(int index, boolean completed) {
@@ -49,35 +44,30 @@ public class GameProgress {
         }
     }
 
-    public void render(SpriteBatch batch, float screenWidth, float screenHeight) {
-        // Рассчитываем размеры текста
-        float padding = 40f; // Отступы от краев
-        float lineHeight = 50f;
-        float titleHeight = 50f;
+    public void render(SpriteBatch batch) {
+        float padding = GameConstants.PADDING_PROGRESS;
+        float lineHeight = GameConstants.LINE_HEIGHT_PROGRESS;
+        float titleHeight = GameConstants.TITLE_HEIGHT_PROGRESS;
 
-
-        // Измеряем ширину заголовка
         glyphLayout.setText(font, "Прогресс игры:");
         float titleWidth = glyphLayout.width;
 
-        // Находим самую широкую строку квестов
         float maxQuestWidth = 0;
         for (Quest quest : quests) {
             glyphLayout.setText(font, "• " + quest.description);
             maxQuestWidth = Math.max(maxQuestWidth, glyphLayout.width);
         }
 
-        // Определяем размеры панели
         float panelWidth = Math.max(titleWidth, maxQuestWidth) + 2 * padding;
         float panelHeight = titleHeight + (quests.size * lineHeight) + 2 * padding;
 
-        // Позиция панели (центрируем)
+        // center panel
         float cameraX = camera.position.x - camera.viewportWidth / 2;
         float cameraY = camera.position.y - camera.viewportHeight / 2;
         float panelX = cameraX + (camera.viewportWidth - panelWidth) / 2;
         float panelY = cameraY + (camera.viewportHeight - panelHeight) / 2;
 
-        // Отрисовка фона и рамки
+        // draw background and border
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeType.Filled);
         shapeRenderer.setColor(0.1f, 0.1f, 0.1f, 0.9f);
@@ -89,12 +79,12 @@ public class GameProgress {
         shapeRenderer.rect(panelX, panelY, panelWidth, panelHeight);
         shapeRenderer.end();
 
-        // Отрисовка текста
+        // draw text
         float startX = panelX + padding;
         float startY = panelY + panelHeight - padding;
 
         batch.begin();
-        font.draw(batch, "Прогресс игры:", startX, startY);
+        font.draw(batch, GameConstants.QUEST_LABEL, startX, startY);
 
         for (int i = 0; i < quests.size; i++) {
             Quest quest = quests.get(i);
@@ -112,15 +102,6 @@ public class GameProgress {
         batch.end();
     }
 
-    private static class Quest {
-        String description;
-        boolean completed;
-
-        Quest(String description, boolean completed) {
-            this.description = description;
-            this.completed = completed;
-        }
-    }
 
     public void dispose() {
         font.dispose();

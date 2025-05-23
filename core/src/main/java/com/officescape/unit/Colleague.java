@@ -4,8 +4,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.officescape.GameConstants;
 
-import static com.officescape.GameConstants.*;
-
 public class Colleague extends NPC {
     public Colleague(String texturePath, int x, int y, GameConstants.Position[] waypoints) {
         super(texturePath, x, y, waypoints);

@@ -1,4 +1,3 @@
-// Item.java
 package com.officescape.item;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -13,25 +12,26 @@ import com.officescape.TiledGraph;
 import com.officescape.unit.Player;
 
 public abstract class Item {
-    protected Sprite sprite;
+    public Sprite sprite;
     protected boolean isHighlighted = false;
     public boolean isPickedUp = false;
     protected float scale;
+
     public Item(String texturePath, float x, float y, float scale) {
         Texture texture = new Texture(texturePath);
         sprite = new Sprite(texture);
-        this.scale=scale;
+        this.scale = scale;
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
     }
 
-    public void update(Player player, Array<Rectangle> walls) {
+    public void update(Player player) {
         if (isPickedUp) return;
 
-        // Проверяем расстояние до игрока
+        // get distance to player
         float distance = Vector2.dst(getX(), getY(), player.getX(), player.getY());
 
-        // Проверяем, можно ли подобрать предмет (достаточно близко и нет стен между игроком и предметом)
+        // check if player can pick up
         if (distance < GameConstants.ITEM_HIGHLIGHT_RANGE) {
             isHighlighted = !TiledGraph.getInstance().hasWallBetween(
                 new Vector2(player.getX(), player.getY()),
@@ -42,7 +42,7 @@ public abstract class Item {
         }
     }
 
-    public boolean pickUp(Player player, Array<Rectangle> walls) {
+    public boolean pickUp(Player player) {
         if (isPickedUp) return false;
 
         float distance = Vector2.dst(getX(), getY(), player.getX(), player.getY());

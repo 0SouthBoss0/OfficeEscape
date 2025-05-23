@@ -19,7 +19,6 @@ import com.officescape.TiledGraph;
 
 public abstract class Character {
     private final Sprite sprite;
-    private float speed = GameConstants.PLAYER_DEFAULT_SPEED;
     private final Rectangle collisionBox;
     private float scale = GameConstants.PLAYER_DEFAULT_SCALE;
 
@@ -27,7 +26,6 @@ public abstract class Character {
     private final TextureRegion idleTexture;
     private final TextureRegion stepTexture;
     private float animationTimer = 0;
-    private final float stepDuration = GameConstants.STEP_DURATION;
     private boolean isMirrored = false;
 
     public void setCurrentDirection(Direction currentDirection) {
@@ -35,7 +33,6 @@ public abstract class Character {
     }
 
     private Direction currentDirection = Direction.DOWN;
-    private boolean isMoving = false;
 
     // for a* algo
     private GraphPath<Vector2> path;
@@ -149,9 +146,10 @@ public abstract class Character {
             updateCollisionBox();
         }
 
-        isMoving = false;
+        boolean isMoving = false;
         float moveX = 0, moveY = 0;
 
+        float speed = GameConstants.PLAYER_DEFAULT_SPEED;
         if (isMovingToTarget && path != null && currentPathIndex < path.getCount()) {
             Vector2 target = path.get(currentPathIndex);
             float dx = target.x - getX();
@@ -161,13 +159,11 @@ public abstract class Character {
             if (distance < GameConstants.PATH_REACH_THRESHOLD) {
                 currentPathIndex++;
                 if (currentPathIndex >= path.getCount()) {
-                    // Применяем конечное направление, если оно было задано
                     isMovingToTarget = false;
                     if (finalDirection != null) {
                         currentDirection = finalDirection;
-                        finalDirection = null; // сбрасываем, чтобы не применять повторно
+                        finalDirection = null;
                     } else {
-                        // Стандартная логика определения направления
                         float finalDx = targetPosition.x - getX();
                         float finalDy = targetPosition.y - getY();
                         updateDirection(finalDx, finalDy);
@@ -177,8 +173,6 @@ public abstract class Character {
                     float finalDistance = Vector2.dst(getX(), getY(), targetPosition.x, targetPosition.y);
                     if (finalDistance < GameConstants.PATH_REACH_THRESHOLD) {
                         isMovingToTarget = false;
-                    } else {
-                        isMoving = true;
                     }
                     return;
                 }
@@ -237,7 +231,6 @@ public abstract class Character {
                     sprite.setPosition(oldX, oldY + moveY);
                 } else {
                     sprite.setPosition(oldX, oldY);
-                    isMoving = false;
                 }
                 updateCollisionBox();
             }
@@ -260,6 +253,7 @@ public abstract class Character {
     private void updateAnimation(float deltaTime) {
         animationTimer += deltaTime;
 
+        float stepDuration = GameConstants.STEP_DURATION;
         if (animationTimer >= stepDuration) {
             animationTimer = 0;
             isMirrored = !isMirrored;
@@ -329,7 +323,7 @@ public abstract class Character {
 
         TiledGraph graph = TiledGraph.getInstance();
         if (graph != null) {
-            Vector2 center = new Vector2(collisionBox.x + collisionBox.width/2, collisionBox.y + collisionBox.height/2);
+            Vector2 center = new Vector2(collisionBox.x + collisionBox.width / 2, collisionBox.y + collisionBox.height / 2);
             return graph.isFurniture(center, collisionBox.width, collisionBox.height);
         }
         return false;
@@ -354,25 +348,23 @@ public abstract class Character {
     }
 
     public boolean canSee(Character other, Array<Rectangle> walls) {
-        // Проверяем расстояние
+        // check distance
         float distance = Vector2.dst(getX(), getY(), other.getX(), other.getY());
         if (distance > GameConstants.NPC_DETECTION_RANGE) {
             return false;
         }
 
-        // Проверяем, находится ли игрок в поле зрения NPC
+        // check direction
         Vector2 npcToPlayer = new Vector2(other.getX() - getX(), other.getY() - getY()).nor();
         Vector2 npcFacingDirection = getFacingDirection();
 
-        // Угол между направлением NPC и направлением на игрока
+        // check angle
         float angle = npcFacingDirection.angleDeg(npcToPlayer);
-
-        // Если угол больше половины FOV, игрок вне поля зрения
         if (Math.abs(angle) > GameConstants.NPC_FOV_ANGLE / 2f) {
             return false;
         }
 
-        // Проверяем, есть ли стены между NPC и игроком
+        // check walls
         TiledGraph graph = TiledGraph.getInstance();
         Vector2 start = new Vector2(getX(), getY());
         Vector2 end = new Vector2(other.getX(), other.getY());

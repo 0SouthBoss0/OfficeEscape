@@ -1,4 +1,3 @@
-// MainScreen.java
 package com.officescape;
 
 import com.badlogic.gdx.Gdx;
@@ -37,23 +36,20 @@ public class MainScreen implements Screen {
     private OrthographicCamera camera;
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
-    private Array<Rectangle> collisionRects = new Array<>();
-    private Array<Rectangle> furnitureRects = new Array<>();
+    private final Array<Rectangle> collisionRects = new Array<>();
+    private final Array<Rectangle> furnitureRects = new Array<>();
     private Viewport viewport;
     private boolean showDebug = false;
     private Array<Item> items;
     private ShapeRenderer itemShapeRenderer;
     private GameProgress gameProgress;
-    private boolean showProgress = false;
     private InventoryPanel inventoryPanel;
-    private boolean showInventory = false;
 
     @Override
     public void show() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         player = new Player(GameConstants.PLAYER_FILE_PATH);
-
 
         NPCFactory npcFactory = NPCFactory.getInstance();
         npcFactory.setPlayer(player);
@@ -87,7 +83,6 @@ public class MainScreen implements Screen {
         float mapPixelWidth = mapWidth * tileWidth;
         float mapPixelHeight = mapHeight * tileHeight;
 
-        // Используем StretchViewport для растягивания на весь экран
         viewport = new StretchViewport(mapPixelWidth, mapPixelHeight, camera);
         viewport.apply();
 
@@ -126,8 +121,8 @@ public class MainScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        showProgress = Gdx.input.isKeyPressed(Input.Keys.TAB);
-        showInventory = Gdx.input.isKeyPressed(Input.Keys.I);
+        boolean showProgress = Gdx.input.isKeyPressed(Input.Keys.TAB);
+        boolean showInventory = Gdx.input.isKeyPressed(Input.Keys.I);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
             showDebug = !showDebug;
@@ -147,7 +142,7 @@ public class MainScreen implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             for (Item item : items) {
-                if (item.pickUp(player, collisionRects)) {
+                if (item.pickUp(player)) {
                     break;
                 }
             }
@@ -170,12 +165,12 @@ public class MainScreen implements Screen {
             npc.draw(batch);
         }
         for (Item item : items) {
-            item.update(player, collisionRects);
+            item.update(player);
             item.draw(batch);
         }
         batch.end();
 
-        // Рендерим подсветку предметов
+        // render highlight of items
         itemShapeRenderer.setProjectionMatrix(camera.combined);
         itemShapeRenderer.begin(ShapeType.Line);
         for (Item item : items) {
@@ -184,9 +179,9 @@ public class MainScreen implements Screen {
         itemShapeRenderer.end();
 
         if (showProgress) {
-            gameProgress.render(batch, viewport.getWorldWidth(), viewport.getWorldHeight());
+            gameProgress.render(batch);
         }
-        inventoryPanel.render(batch, viewport.getWorldWidth(), viewport.getWorldHeight());
+        inventoryPanel.render(batch);
 
         if (showDebug) {
             renderDebug();
@@ -196,7 +191,7 @@ public class MainScreen implements Screen {
     private void renderDebug() {
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-        // Рисуем узлы графа
+        // draw nodes
         shapeRenderer.begin(ShapeType.Filled);
         TiledGraph graph = TiledGraph.getInstance();
         for (Vector2 node : graph.getNodes()) {
@@ -211,10 +206,10 @@ public class MainScreen implements Screen {
         }
         shapeRenderer.end();
 
-        // Рисуем путь
+        // draw path
         if (player.getCurrentPath() != null && player.getCurrentPath().getCount() > 0) {
             shapeRenderer.begin(ShapeType.Line);
-            shapeRenderer.setColor(1, 1, 1, 1); // Белый для пути
+            shapeRenderer.setColor(1, 1, 1, 1);
 
             Vector2 prev = player.getCurrentPath().get(0);
             for (int i = 1; i < player.getCurrentPath().getCount(); i++) {
@@ -225,21 +220,18 @@ public class MainScreen implements Screen {
             shapeRenderer.end();
         }
 
-        // Рисуем поле обзора NPC
+        // draw NPC view sector
         shapeRenderer.begin(ShapeType.Filled);
-        shapeRenderer.setColor(1, 1, 0, 0.3f); // Желтый полупрозрачный
+        shapeRenderer.setColor(1, 1, 0, 0.3f);
         for (NPC npc : npcs) {
             Vector2 pos = new Vector2(npc.getX(), npc.getY());
             Vector2 facingDir = npc.getFacingDirection();
 
-            // Базовый угол направления взгляда в градусах
             float baseAngle = facingDir.angleDeg();
 
-            // Угол обзора и радиус
             float fovAngle = GameConstants.NPC_FOV_ANGLE;
             float range = GameConstants.NPC_DETECTION_RANGE;
 
-            // Рассчитываем точки треугольника для сектора обзора
             Vector2 leftDir = new Vector2(1, 0).setAngleDeg(baseAngle - fovAngle / 2).scl(range);
             Vector2 rightDir = new Vector2(1, 0).setAngleDeg(baseAngle + fovAngle / 2).scl(range);
 
@@ -274,7 +266,6 @@ public class MainScreen implements Screen {
 
     }
 
-    // Остальные методы интерфейса Screen оставлены без изменений
     @Override
     public void pause() {
     }

@@ -31,11 +31,11 @@ public class InventoryPanel {
         String name;
         Texture icon;
 
-        InventoryItem(Item item, String name, Texture icon) {
+        InventoryItem(Item item) {
             this.item = item;
             this.count = 0;
-            this.name = name;
-            this.icon = icon;
+            this.name = item.getClass().getSimpleName();
+            this.icon = item.sprite.getTexture();
         }
     }
 
@@ -45,18 +45,17 @@ public class InventoryPanel {
         glyphLayout = new GlyphLayout();
         inventoryItems = new ObjectMap<>();
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ArialRegular.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(GameConstants.FONT_FILE_PATH));
 
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 20 * Math.round(Gdx.graphics.getDensity());
-        parameter.characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
-            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!?()•-";
+        parameter.size = GameConstants.FONT_SIZE_INVENTORY * Math.round(Gdx.graphics.getDensity());
+        parameter.characters = GameConstants.FONT_CHARS;
         font = generator.generateFont(parameter);
         font.setColor(Color.WHITE);
 
         FreeTypeFontGenerator.FreeTypeFontParameter countParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        countParameter.size = 30 * Math.round(Gdx.graphics.getDensity());
-        countParameter.characters = "0123456789";
+        countParameter.size = GameConstants.NUMS_SIZE_INVENTORY * Math.round(Gdx.graphics.getDensity());
+        countParameter.characters = GameConstants.FONT_NUMS;
         countFont = generator.generateFont(countParameter);
         countFont.setColor(Color.YELLOW);
 
@@ -65,13 +64,8 @@ public class InventoryPanel {
         countFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
         for (Item item : worldItems) {
-            if (item instanceof Key) {
-                inventoryItems.put(Key.class, new InventoryItem(item, "Key", new Texture("items/key.png")));
-            } else if (item instanceof Stepler) {
-                inventoryItems.put(Stepler.class, new InventoryItem(item, "Stepler", new Texture("items/stepler.png")));
-            }
+            inventoryItems.put(item.getClass(), new InventoryItem(item));
         }
-
     }
 
     public void update(Array<Item> worldItems) {
@@ -90,27 +84,30 @@ public class InventoryPanel {
         }
     }
 
-    public void render(SpriteBatch batch, float screenWidth, float screenHeight) {
+    public void render(SpriteBatch batch) {
         if (!visible || inventoryItems.size == 0) return;
 
         // Размеры элементов
-        float padding = 20f;
-        float itemWidth = 100f;
-        float itemHeight = 120f;
-        float spacing = 10f;
+        float padding = GameConstants.PADDING_INVENTORY;
+        float itemWidth = GameConstants.ITEM_WIDTH_INVENTORY;
+        float itemHeight = GameConstants.ITEM_HEIGHT_INVENTORY;
+        float spacing = GameConstants.SPACING_INVENTORY;
         float panelHeight = itemHeight + 2 * padding;
 
-        // Общая ширина панели
         float totalWidth = (inventoryItems.size * itemWidth) + ((inventoryItems.size - 1) * spacing) + 2 * padding;
 
-        // Позиция панели (низ экрана, по центру)
         float panelX = (camera.viewportWidth - totalWidth) / 2;
-        float panelY = 20f; // Отступ снизу
+        float panelY = GameConstants.PADDING_PANEL_DOWN_INVENTORY;
 
-        // Рисуем фон панели
+        // draw background and border
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeType.Filled);
         shapeRenderer.setColor(0.1f, 0.1f, 0.1f, 0.9f);
+        shapeRenderer.rect(panelX, panelY, totalWidth, panelHeight);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeType.Line);
+        shapeRenderer.setColor(0.5f, 0.5f, 0.8f, 1);
         shapeRenderer.rect(panelX, panelY, totalWidth, panelHeight);
         shapeRenderer.end();
 
@@ -121,41 +118,20 @@ public class InventoryPanel {
         for (InventoryItem invItem : inventoryItems.values()) {
             if (invItem == null || invItem.icon == null) continue;
 
-            // 1. Размер иконки (фиксированный, чтобы влезал в ячейку)
-            float iconSize = 64f; // Фиксированный размер иконки
-            float iconX = currentX + (itemWidth - iconSize) / 2; // Центрирование по горизонтали
-            float iconY = panelY + padding + (itemHeight - iconSize) / 2 + 10; // Центрирование по вертикали + небольшой отступ
+            float iconSize = GameConstants.ICON_SIZE_INVENTORY;
+            float iconX = currentX + (itemWidth - iconSize) / 2;
+            float iconY = panelY + padding + (itemHeight - iconSize) / 2 + GameConstants.PADDING_FOR_ICON_INVENTORY;
+            batch.draw(invItem.icon, iconX, iconY, iconSize, iconSize);
 
-            // 2. Рисуем иконку (с масштабированием)
-            batch.draw(
-                invItem.icon,
-                iconX,
-                iconY,
-                iconSize,
-                iconSize
-            );
-
-            // 3. Рисуем количество (желтым, если > 0)
-            if (invItem.count > 0) {
+            if (invItem.count >= 0) {
                 String countText = "" + invItem.count;
                 glyphLayout.setText(countFont, countText);
-                countFont.draw(
-                    batch,
-                    countText,
-                    currentX + (itemWidth - glyphLayout.width) / 2,
-                    panelY + padding + 30
-                );
+                countFont.draw(batch, countText, currentX + (itemWidth - glyphLayout.width) / 2,
+                    panelY + padding + 50);
             }
-
-            // 4. Рисуем название (белым)
             glyphLayout.setText(font, invItem.name);
-            font.draw(
-                batch,
-                invItem.name,
-                currentX + (itemWidth - glyphLayout.width) / 2,
-                panelY + padding + 15
+            font.draw(batch, invItem.name, currentX + (itemWidth - glyphLayout.width) / 2, panelY + padding + GameConstants.PADDING_FOR_NAME_INVENTORY
             );
-
             currentX += itemWidth + spacing;
         }
         batch.end();
