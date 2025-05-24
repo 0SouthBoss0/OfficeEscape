@@ -29,10 +29,9 @@ public abstract class Item {
             case UP:
                 break;
             case DOWN:
-                sprite.setFlip(false, true);
+                sprite.rotate(180);
                 break;
             case LEFT:
-                sprite.setFlip(true, false);
                 sprite.rotate(90);
                 break;
             case RIGHT:
