@@ -25,19 +25,8 @@ public abstract class Item {
     }
 
 
-    public boolean take(Player player) {
-        if (isTaken) return false;
-
-        float distance = Vector2.dst(getX(), getY(), player.getX(), player.getY());
-        if (distance < GameConstants.ITEM_PICKUP_RANGE &&
-            !TiledGraph.getInstance().hasWallBetween(
-                new Vector2(player.getX(), player.getY()),
-                new Vector2(getX(), getY())
-            )) {
-            isTaken = true;
-            return true;
-        }
-        return false;
+    public void take(Player player) {
+        isTaken = canBeTaken(player);
     }
 
 
@@ -85,7 +74,7 @@ public abstract class Item {
     }
 
     public boolean canBeHidden(Player player) {
-        return this instanceof HideableItem && !player.isPlayerHidden &&
+        return this instanceof HideableItem && !player.isHidden &&
             Vector2.dst(getX(), getY(), player.getX(), player.getY()) < GameConstants.HIDE_DISTANCE &&
             !TiledGraph.getInstance().hasWallBetween(
                 new Vector2(player.getX(), player.getY()),

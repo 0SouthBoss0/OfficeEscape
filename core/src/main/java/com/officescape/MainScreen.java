@@ -67,6 +67,7 @@ public class MainScreen implements Screen {
         items.add(new Flash(GameConstants.FLASH_FROM_SERVER.x(), GameConstants.FLASH_FROM_SERVER.y()));
         items.add(new Stapler(GameConstants.STEPLER.x(), GameConstants.STEPLER.y()));
         items.add(new Wardrobe(GameConstants.STEPLER.x() + 50, GameConstants.STEPLER.y() + 50));
+        items.add(new Stapler(GameConstants.STEPLER.x() -50, GameConstants.STEPLER.y() - 50));
         itemShapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);

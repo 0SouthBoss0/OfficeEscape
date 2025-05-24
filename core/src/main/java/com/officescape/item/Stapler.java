@@ -29,7 +29,7 @@ public class Stapler extends Item implements TakeableItem, ThrowableItem {
 
     @Override
     public void onThrow(Player player) {
-        if (isUsed) return; // Нельзя бросить использованный степлер
+        if (isUsed || player.isHidden) return;
 
         isTaken = false;
         this.flightDirection = player.getFacingDirection();
@@ -41,7 +41,7 @@ public class Stapler extends Item implements TakeableItem, ThrowableItem {
 
     @Override
     public void draw(SpriteBatch batch) {
-        if (!isTaken && !isReadyToDispose()) { // Не рисуем использованный степлер
+        if (!isTaken && !isReadyToDispose()) {
             super.draw(batch);
         }
     }
@@ -67,7 +67,7 @@ public class Stapler extends Item implements TakeableItem, ThrowableItem {
                 this.isUsed = true;
             }
         }
-        else if (isUsed) {
+        else {
             System.out.println("DISPOSING");
             disposeTimer += deltaTime;
         }

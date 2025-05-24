@@ -12,26 +12,26 @@ public class Wardrobe extends Item implements HideableItem {
 
     @Override
     public void onHide(Player player) {
-        if (!player.isPlayerHidden) {
+        if (!player.isHidden) {
             player.setVisible(false);
             player.setCanMove(false);
-            player.isPlayerHidden = true;
+            player.isHidden = true;
             System.out.println("Player hidden in wardrobe!");
         }
     }
 
     @Override
     public void onUnhide(Player player) {
-        if (player.isPlayerHidden) {
+        if (player.isHidden) {
             player.setVisible(true);
             player.setCanMove(true);
-            player.isPlayerHidden = false;
+            player.isHidden = false;
             System.out.println("Player left the wardrobe!");
         }
     }
 
     @Override
     public boolean isPlayerHidden(Player player) {
-        return player.isPlayerHidden;
+        return player.isHidden;
     }
 }
