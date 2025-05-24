@@ -67,7 +67,7 @@ public class GameConstants {
     public static final Position ITSHNIK_START = new Position(1113, 65, Character.Direction.UP);
 
     // NPC places positions
-    public static final Position COFFEE_MACHINE = new Position(747, 360, Character.Direction.RIGHT);
+    public static final Position COFFEE_MACHINE_PLACE = new Position(747, 360, Character.Direction.RIGHT);
     public static final Position COFFEE_CORNER = new Position(745, 425, Character.Direction.RIGHT);
     public static final Position COFFEE_EAT1 = new Position(598, 405, Character.Direction.DOWN);
     public static final Position COFFEE_EAT2 = new Position(677, 401, Character.Direction.DOWN);
@@ -79,8 +79,8 @@ public class GameConstants {
     public static final Position SERVER_BOTTOM = new Position(826, 598, Character.Direction.DOWN);
     public static final Position ARMCHAIR = new Position(994, 42, Character.Direction.LEFT);
     public static final Position PLAYER_WARDROBE = new Position(69, 516, Character.Direction.DOWN);
-    public static final Position TECHNICAL_ROOM_1 = new Position(48, 307, Character.Direction.RIGHT);
-    public static final Position TECHNICAL_ROOM_2 = new Position(124, 340, Character.Direction.LEFT);
+    public static final Position TECHNICAL_ROOM1 = new Position(48, 307, Character.Direction.RIGHT);
+    public static final Position TECHNICAL_ROOM2 = new Position(124, 340, Character.Direction.LEFT);
     public static final Position BOSS_WARDROBE = new Position(211, 62, Character.Direction.DOWN);
     public static final Position SOFA = new Position(593, 280, Character.Direction.RIGHT);
     public static final Position AIRHOCKEY = new Position(806, 296, Character.Direction.LEFT);
@@ -90,17 +90,22 @@ public class GameConstants {
     public static final Position MEET_2 = new Position(978, 307, Character.Direction.RIGHT);
     public static final Position MEET_3 = new Position(1015, 279, Character.Direction.LEFT);
     public static final Position MEET_4 = new Position(1030, 250, Character.Direction.UP);
+    public static final Position NEAR_PRINTER1 = new Position(417, 503, Character.Direction.LEFT);
+    public static final Position NEAR_PRINTER2 = new Position(738, 87, Character.Direction.LEFT);
+    public static final Position NEAR_AQUARIUM = new Position(1110, 534, Character.Direction.UP);
+
 
     // NPC waypoints
     public static final Position[] BABKA_WAYPOINTS = {BABKA_START};
-    public static final Position[] BOSS_WAYPOINTS = {BOSS_START, COFFEE_CORNER, TOILET, SMALL_MEET_CENTER};
-    public static final Position[] CAT_WAYPOINTS = {CAT_START, SERVER_BOTTOM, SMALL_MEET_LEFT};
+    public static final Position[] BOSS_WAYPOINTS = {BOSS_START, COFFEE_CORNER, TOILET, SMALL_MEET_CENTER,BOSS_WARDROBE, MEET_4};
+    public static final Position[] CAT_WAYPOINTS = {CAT_START, SERVER_BOTTOM, SMALL_MEET_LEFT,BABKA_WARDROBE};
     public static final Position[] COLLEGUE1_WAYPOINTS = {COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT};
-    public static final Position[] COLLEGUE2_WAYPOINTS = {COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT};
-    public static final Position[] COLLEGUE3_WAYPOINTS = {COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT};
-    public static final Position[] COLLEGUE4_WAYPOINTS = {COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT};
-    public static final Position[] COLLEGUE5_WAYPOINTS = {COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT};
-    public static final Position[] ITSHNIK_WAYPOINTS = {ITSHNIK_START, SERVER_TOP, COFFEE_MACHINE};
+    public static final Position[] COLLEGUE2_WAYPOINTS = {COLLEAGUE2_START, PLAYER_WARDROBE, MEET_1, COFFEE_EAT2 };
+    public static final Position[] COLLEGUE3_WAYPOINTS = {COLLEAGUE3_START, TECHNICAL_ROOM1, NEAR_PRINTER1  };
+    public static final Position[] COLLEGUE4_WAYPOINTS = {COLLEAGUE4_START, NEAR_AQUARIUM, MEET_2  };
+    public static final Position[] COLLEGUE5_WAYPOINTS = {COLLEAGUE5_START,SOFA, NEAR_PRINTER2, TECHNICAL_ROOM2 };
+    public static final Position[] COLLEGUE6_WAYPOINTS = {COLLEAGUE6_START, ARMCHAIR, AIRHOCKEY, MEET_3  };
+    public static final Position[] ITSHNIK_WAYPOINTS = {ITSHNIK_START, SERVER_TOP, COFFEE_MACHINE_PLACE, IT_WARDROBE};
 
     // Items params
     public static final float ITEM_PICKUP_RANGE = 100f;
@@ -125,29 +130,41 @@ public class GameConstants {
 
     // Items scales
     public static final float STAPLER_SCALE = 0.3f;
-    public static final float KEY_CARD_SCALE = 0.5f;
-    public static final float FLASH_SCALE = 0.05f;
-    public static final float CAMERA_GRAY_SCALE = 0.05f;
-    public static final float CAMERA_RED_SCALE = 0.05f;
-    public static final float COFFEE_SCALE = 0.05f;
+    public static final float KEY_CARD_SCALE = 1f;
+    public static final float FLASH_SCALE = 1f;
+    public static final float CAMERA_GRAY_SCALE = 1f;
+    public static final float CAMERA_RED_SCALE = 1f;
+    public static final float COFFEE_SCALE = 1f;
     public static final float TURNSTILE_SCALE = 0.05f;
-    public static final float FISH_FILE_SCALE = 0.05f;
-    public static final float WARDROBE_SCALE = 0.7f;
-    public static final float COFFEE_MACHINE_SCALE = 0.05f;
-    public static final float CRASHED_COFFEE_SCALE = 0.05f;
+    public static final float FISH_FILE_SCALE = 1f;
+    public static final float WARDROBE_SCALE = 1f;
+    public static final float COFFEE_MACHINE_SCALE = 1f;
+    public static final float CRASHED_COFFEE_MACHINE_SCALE = 1f;
     public static final float PRINTER_FILE_SCALE = 1f;
     public static final float CRASHED_PRINTER_SCALE = 0.05f;
-    public static final float TRASH_FILE_SCALE = 0.05f;
+    public static final float TRASH_FILE_SCALE =1f;
     public static final float FIRE_TRASH_SCALE = 0.05f;
 
 
     // Items positions
-    public static final Position FLASH_FROM_SERVER = new Position(1080, 30, Character.Direction.UP);
+    public static final Position FLASH_FROM_SERVER = new Position(1082, 100, Character.Direction.UP);
+    public static final Position KEY_CARD = new Position(45, 95, Character.Direction.UP);
     public static final Position STEPLER_1 = new Position(320, 335, Character.Direction.UP);
     public static final Position STEPLER_2 = new Position(910, 90, Character.Direction.UP);
     public static final Position PRINTER_1 = new Position(378, 505, Character.Direction.UP);
     public static final Position PRINTER_2 = new Position(698, 88, Character.Direction.UP);
-    public static final Position WARDROBE_1 = new Position(403, 251, Character.Direction.LEFT);
+    public static final Position WARDROBE_1 = new Position(411, 250, Character.Direction.DOWN);
+    public static final Position WARDROBE_2 = new Position(49, 198, Character.Direction.LEFT);
+    public static final Position WARDROBE_3 = new Position(533, 430, Character.Direction.UP);
+    public static final Position WARDROBE_4 = new Position(1220, 499, Character.Direction.RIGHT);
+    public static final Position TRASH_1 = new Position(359, 473, Character.Direction.RIGHT);
+    public static final Position TRASH_2 = new Position(575, 453, Character.Direction.RIGHT);
+    public static final Position TRASH_3 = new Position(679, 57, Character.Direction.RIGHT);
+    public static final Position COFFEE_1 = new Position(738, 448, Character.Direction.RIGHT);
+    public static final Position COFFEE_2 = new Position(414, 92, Character.Direction.RIGHT);
+    public static final Position FISH = new Position(690, 370, Character.Direction.RIGHT);
+    public static final Position CAMERA = new Position(5, 140, Character.Direction.LEFT);
+    public static final Position COFFEE_MACHINE = new Position(765, 366, Character.Direction.UP);
 
     // Font params
     public static String FONT_FILE_PATH = "fonts/ArialRegular.ttf";
