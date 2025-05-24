@@ -55,27 +55,41 @@ public class GameConstants {
     public static final float NPC_MAX_DELAY = 15f;
 
     // NPC start positions
-    public static final Position BABKA_START = new Position(1100, 600, Character.Direction.RIGHT);
+    public static final Position BABKA_START = new Position(1120, 629, Character.Direction.RIGHT);
     public static final Position BOSS_START = new Position(72, 67, Character.Direction.LEFT);
-    public static final Position CAT_START = new Position(730, 390, Character.Direction.UP);
+    public static final Position CAT_START = new Position(725, 362, Character.Direction.UP);
     public static final Position COLLEAGUE1_START = new Position(73, 550, Character.Direction.UP);
-    public static final Position COLLEAGUE2_START = new Position(279, 605, Character.Direction.LEFT);
-    public static final Position COLLEAGUE3_START = new Position(680, 630, Character.Direction.LEFT);
-    public static final Position COLLEAGUE4_START = new Position(1240, 416, Character.Direction.LEFT);
-    public static final Position COLLEAGUE5_START = new Position(590, 65, Character.Direction.LEFT);
-    public static final Position ITSHNIK_START = new Position(1113, 65, Character.Direction.LEFT);
+    public static final Position COLLEAGUE2_START = new Position(278, 490, Character.Direction.UP);
+    public static final Position COLLEAGUE3_START = new Position(268, 300, Character.Direction.UP);
+    public static final Position COLLEAGUE4_START = new Position(1234, 420, Character.Direction.LEFT);
+    public static final Position COLLEAGUE5_START = new Position(446, 60, Character.Direction.LEFT);
+    public static final Position COLLEAGUE6_START = new Position(878, 50, Character.Direction.RIGHT);
+    public static final Position ITSHNIK_START = new Position(1113, 65, Character.Direction.UP);
 
     // NPC places positions
     public static final Position COFFEE_MACHINE = new Position(747, 360, Character.Direction.RIGHT);
-    public static final Position COFFEE_CORNER = new Position(747, 425, Character.Direction.RIGHT);
+    public static final Position COFFEE_CORNER = new Position(745, 425, Character.Direction.RIGHT);
     public static final Position COFFEE_EAT1 = new Position(598, 405, Character.Direction.DOWN);
-    public static final Position COFFEE_EAT2 = new Position(681, 406, Character.Direction.DOWN);
+    public static final Position COFFEE_EAT2 = new Position(677, 401, Character.Direction.DOWN);
     public static final Position SMALL_MEET_CENTER = new Position(856, 365, Character.Direction.UP);
     public static final Position SMALL_MEET_LEFT = new Position(818, 400, Character.Direction.RIGHT);
     public static final Position SMALL_MEET_RIGHT = new Position(904, 400, Character.Direction.LEFT);
     public static final Position TOILET = new Position(483, 677, Character.Direction.LEFT);
-    public static final Position SERVER_TOP = new Position(792, 664, Character.Direction.LEFT);
+    public static final Position SERVER_TOP = new Position(796, 678, Character.Direction.LEFT);
     public static final Position SERVER_BOTTOM = new Position(826, 598, Character.Direction.DOWN);
+    public static final Position ARMCHAIR = new Position(994, 42, Character.Direction.LEFT);
+    public static final Position PLAYER_WARDROBE = new Position(69, 516, Character.Direction.DOWN);
+    public static final Position TECHNICAL_ROOM_1 = new Position(48, 307, Character.Direction.RIGHT);
+    public static final Position TECHNICAL_ROOM_2 = new Position(124, 340, Character.Direction.LEFT);
+    public static final Position BOSS_WARDROBE = new Position(211, 62, Character.Direction.DOWN);
+    public static final Position SOFA = new Position(593, 280, Character.Direction.RIGHT);
+    public static final Position AIRHOCKEY = new Position(806, 296, Character.Direction.LEFT);
+    public static final Position BABKA_WARDROBE = new Position(1024, 668, Character.Direction.UP);
+    public static final Position IT_WARDROBE = new Position(1225, 66, Character.Direction.RIGHT);
+    public static final Position MEET_1 = new Position(974, 277, Character.Direction.RIGHT);
+    public static final Position MEET_2 = new Position(978, 307, Character.Direction.RIGHT);
+    public static final Position MEET_3 = new Position(1015, 279, Character.Direction.LEFT);
+    public static final Position MEET_4 = new Position(1030, 250, Character.Direction.UP);
 
     // NPC waypoints
     public static final Position[] BABKA_WAYPOINTS = {BABKA_START};
@@ -110,7 +124,7 @@ public class GameConstants {
     public static final String FIRE_TRASH_FILE_PATH = "items/fire_trash.png";
 
     // Items scales
-    public static final float STAPLER_SCALE = 0.5f;
+    public static final float STAPLER_SCALE = 0.3f;
     public static final float KEY_CARD_SCALE = 0.5f;
     public static final float FLASH_SCALE = 0.05f;
     public static final float CAMERA_GRAY_SCALE = 0.05f;
@@ -121,7 +135,7 @@ public class GameConstants {
     public static final float WARDROBE_SCALE = 0.7f;
     public static final float COFFEE_MACHINE_SCALE = 0.05f;
     public static final float CRASHED_COFFEE_SCALE = 0.05f;
-    public static final float PRINTER_FILE_SCALE = 0.7f;
+    public static final float PRINTER_FILE_SCALE = 1f;
     public static final float CRASHED_PRINTER_SCALE = 0.05f;
     public static final float TRASH_FILE_SCALE = 0.05f;
     public static final float FIRE_TRASH_SCALE = 0.05f;
@@ -129,7 +143,11 @@ public class GameConstants {
 
     // Items positions
     public static final Position FLASH_FROM_SERVER = new Position(1080, 30, Character.Direction.UP);
-    public static final Position STEPLER = new Position(300, 300, Character.Direction.UP);
+    public static final Position STEPLER_1 = new Position(320, 335, Character.Direction.UP);
+    public static final Position STEPLER_2 = new Position(910, 90, Character.Direction.UP);
+    public static final Position PRINTER_1 = new Position(378, 505, Character.Direction.UP);
+    public static final Position PRINTER_2 = new Position(698, 88, Character.Direction.UP);
+    public static final Position WARDROBE_1 = new Position(403, 251, Character.Direction.LEFT);
 
     // Font params
     public static String FONT_FILE_PATH = "fonts/ArialRegular.ttf";
