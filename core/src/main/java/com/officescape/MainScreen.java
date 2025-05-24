@@ -67,8 +67,8 @@ public class MainScreen implements Screen {
         items.add(new Flash(GameConstants.FLASH_FROM_SERVER.x(), GameConstants.FLASH_FROM_SERVER.y()));
         items.add(new Stapler(GameConstants.STEPLER.x(), GameConstants.STEPLER.y()));
         items.add(new Wardrobe(GameConstants.STEPLER.x() + 50, GameConstants.STEPLER.y() + 50));
-        items.add(new Stapler(GameConstants.STEPLER.x() -50, GameConstants.STEPLER.y() - 50));
-        items.add(new Printer(GameConstants.STEPLER.x() +100, GameConstants.STEPLER.y() +100));
+        items.add(new Stapler(GameConstants.STEPLER.x() - 50, GameConstants.STEPLER.y() - 50));
+        items.add(new Printer(GameConstants.STEPLER.x() + 100, GameConstants.STEPLER.y() + 100));
         itemShapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
@@ -162,6 +162,9 @@ public class MainScreen implements Screen {
                 if (item.canBeTaken(player)) {
                     item.take(player);
                 }
+                if (item.canBeBroken(player)) {
+                    ((BreakableItem) item).onBreak(player);
+                }
             }
         }
 
@@ -218,10 +221,14 @@ public class MainScreen implements Screen {
         itemShapeRenderer.begin(ShapeType.Line);
         for (Item item : items) {
             if (item.canBeTaken(player)) {
-                item.drawHighlight(itemShapeRenderer, new Color(1,1,1,1));
+                item.drawHighlight(itemShapeRenderer, new Color(1, 1, 1, 1));
             }
             if (item.canBeHidden(player)) {
                 item.drawHighlight(itemShapeRenderer, new Color(0f, 1f, 1f, 1));
+            }
+            if (item.canBeBroken(player)){
+                item.drawHighlight(itemShapeRenderer, new Color(1f, 0f, 0f, 1));
+
             }
         }
         itemShapeRenderer.end();
