@@ -152,7 +152,7 @@ public class MainScreen implements Screen {
                 if (item instanceof HideableItem hideable) {
                     float distance = Vector2.dst(player.getX(), player.getY(), item.getX(), item.getY());
 
-                    if (distance < GameConstants.ITEM_THROW_DISTANCE) {
+                    if (distance < GameConstants.HIDE_DISTANCE) {
                         if (hideable.isPlayerHidden()) {
                             hideable.onUnhide(player);
                         } else {

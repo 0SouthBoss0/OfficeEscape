@@ -16,6 +16,7 @@ public class GameConstants {
     public static final float MAX_PLAYER_HEIGHT = 20.7f;
     public static final float STEP_DURATION = 0.2f;
     public static final int ITEM_THROW_DISTANCE = 100;
+    public static final float HIDE_DISTANCE = 50f;
 
     // Pathfinding
     public static final float PATH_REACH_THRESHOLD = 1f;
