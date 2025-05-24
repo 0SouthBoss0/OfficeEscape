@@ -157,6 +157,8 @@ public class GameConstants {
     public static int PADDING_FOR_ICON_INVENTORY = 30;
     public static int PADDING_FOR_NAME_INVENTORY = 15;
 
+    public static final float STAPLER_DISPOSE_DELAY = 2f; // 2 секунды до удаления
+
 
     public record Position(int x, int y, Character.Direction direction) {
     }

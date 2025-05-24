@@ -3,6 +3,7 @@ package com.officescape;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -65,7 +66,7 @@ public class MainScreen implements Screen {
         items = new Array<>();
         items.add(new Flash(GameConstants.FLASH_FROM_SERVER.x(), GameConstants.FLASH_FROM_SERVER.y()));
         items.add(new Stapler(GameConstants.STEPLER.x(), GameConstants.STEPLER.y()));
-        items.add(new Wardrobe(GameConstants.STEPLER.x()+50, GameConstants.STEPLER.y()+50));
+        items.add(new Wardrobe(GameConstants.STEPLER.x() + 50, GameConstants.STEPLER.y() + 50));
         itemShapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
@@ -116,6 +117,21 @@ public class MainScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Array<Item> itemsToRemove = new Array<>();
+        for (Item item : items) {
+            if (item instanceof Stapler stapler) {
+                stapler.updateFlight(delta);
+                if (stapler.isReadyToDispose()) {
+                    itemsToRemove.add(stapler);
+                }
+            }
+        }
+
+        for (Item item : itemsToRemove) {
+            item.dispose();
+            items.removeValue(item, true);
+        }
+
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -141,7 +157,7 @@ public class MainScreen implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             for (Item item : items) {
-                if (item.canBeTaken()) {
+                if (item.canBeTaken(player)) {
                     item.take(player);
                 }
             }
@@ -153,7 +169,7 @@ public class MainScreen implements Screen {
                     float distance = Vector2.dst(player.getX(), player.getY(), item.getX(), item.getY());
 
                     if (distance < GameConstants.HIDE_DISTANCE) {
-                        if (hideable.isPlayerHidden()) {
+                        if (hideable.isPlayerHidden(player)) {
                             hideable.onUnhide(player);
                         } else {
                             hideable.onHide(player);
@@ -166,7 +182,7 @@ public class MainScreen implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
             for (Item item : items) {
-                if (item.canBeThrown() && item.isTaken) {
+                if (item.canBeThrown(player) && item.isTaken) {
                     ((ThrowableItem) item).onThrow(player);
                     item.isTaken = false;
                     break;
@@ -191,7 +207,6 @@ public class MainScreen implements Screen {
             npc.draw(batch);
         }
         for (Item item : items) {
-            item.update(player);
             item.draw(batch);
         }
         batch.end();
@@ -200,7 +215,12 @@ public class MainScreen implements Screen {
         itemShapeRenderer.setProjectionMatrix(camera.combined);
         itemShapeRenderer.begin(ShapeType.Line);
         for (Item item : items) {
-            item.drawHighlight(itemShapeRenderer);
+            if (item.canBeTaken(player)) {
+                item.drawHighlight(itemShapeRenderer, new Color(1,1,1,1));
+            }
+            if (item.canBeHidden(player)) {
+                item.drawHighlight(itemShapeRenderer, new Color(0f, 1f, 1f, 1));
+            }
         }
         itemShapeRenderer.end();
 

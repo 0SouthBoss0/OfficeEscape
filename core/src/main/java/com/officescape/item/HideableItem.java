@@ -7,5 +7,5 @@ public interface HideableItem {
 
     void onUnhide(Player player);
 
-    boolean isPlayerHidden();
+    boolean isPlayerHidden(Player player);
 }

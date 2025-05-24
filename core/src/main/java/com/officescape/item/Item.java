@@ -1,5 +1,6 @@
 package com.officescape.item;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,9 +12,9 @@ import com.officescape.unit.Player;
 
 public abstract class Item {
     public Sprite sprite;
-    protected boolean isHighlighted = false;
     public boolean isTaken = false;
     protected float scale;
+    public boolean isUsed = false;
 
     public Item(String texturePath, float x, float y, float scale) {
         Texture texture = new Texture(texturePath);
@@ -23,22 +24,6 @@ public abstract class Item {
         sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
     }
 
-    public void update(Player player) {
-        if (isTaken) return;
-
-        // get distance to player
-        float distance = Vector2.dst(getX(), getY(), player.getX(), player.getY());
-
-        // check if player can pick up
-        if (distance < GameConstants.ITEM_HIGHLIGHT_RANGE) {
-            isHighlighted = !TiledGraph.getInstance().hasWallBetween(
-                new Vector2(player.getX(), player.getY()),
-                new Vector2(getX(), getY())
-            );
-        } else {
-            isHighlighted = false;
-        }
-    }
 
     public boolean take(Player player) {
         if (isTaken) return false;
@@ -62,18 +47,17 @@ public abstract class Item {
         }
     }
 
-    public void drawHighlight(ShapeRenderer shapeRenderer) {
-        if (isHighlighted && !isTaken) {
-            shapeRenderer.set(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setColor(1, 1, 1, 1); // Белый цвет
-            shapeRenderer.rect(
-                sprite.getX() - 2,
-                sprite.getY() - 2,
-                sprite.getWidth() + 4,
-                sprite.getHeight() + 4
-            );
-        }
+    public void drawHighlight(ShapeRenderer shapeRenderer, Color color) {
+        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(color);
+        shapeRenderer.rect(
+            sprite.getX() - 2,
+            sprite.getY() - 2,
+            sprite.getWidth() + 4,
+            sprite.getHeight() + 4
+        );
     }
+
 
     public float getX() {
         return sprite.getX() + sprite.getWidth() / 2;
@@ -87,15 +71,25 @@ public abstract class Item {
         sprite.getTexture().dispose();
     }
 
-    public boolean canBeTaken() {
-        return this instanceof TakeableItem && !isTaken;
+    public boolean canBeTaken(Player player) {
+        return this instanceof TakeableItem && !isTaken && !isUsed &&
+            Vector2.dst(getX(), getY(), player.getX(), player.getY()) < GameConstants.ITEM_HIGHLIGHT_RANGE &&
+            !TiledGraph.getInstance().hasWallBetween(
+                new Vector2(player.getX(), player.getY()),
+                new Vector2(getX(), getY())
+            );
     }
 
-    public boolean canBeThrown() {
-        return this instanceof ThrowableItem && isTaken;
+    public boolean canBeThrown(Player player) {
+        return this instanceof ThrowableItem && isTaken && !isUsed;
     }
 
-    public boolean canBeHidden() {
-        return this instanceof HideableItem && !isTaken;
+    public boolean canBeHidden(Player player) {
+        return this instanceof HideableItem && !player.isPlayerHidden &&
+            Vector2.dst(getX(), getY(), player.getX(), player.getY()) < GameConstants.HIDE_DISTANCE &&
+            !TiledGraph.getInstance().hasWallBetween(
+                new Vector2(player.getX(), player.getY()),
+                new Vector2(getX(), getY())
+            );
     }
 }

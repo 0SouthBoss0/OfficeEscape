@@ -49,6 +49,9 @@ public abstract class Character {
         UP, DOWN, LEFT, RIGHT
     }
 
+    public Rectangle getCollisionBox() {
+        return collisionBox;
+    }
     private Direction finalDirection = null;
 
     public Character(String texturePath, int x, int y) {
