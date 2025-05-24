@@ -14,7 +14,6 @@ public class Stapler extends Item implements TakeableItem, ThrowableItem {
     private Vector2 flightDirection;
     private float flightDistance;
     private float flightProgress;
-    private float flightSpeed = 500f;
     private float disposeTimer = 0;
 
     public Stapler(float x, float y) {
@@ -29,8 +28,6 @@ public class Stapler extends Item implements TakeableItem, ThrowableItem {
 
     @Override
     public void onThrow(Player player) {
-        if (isUsed || player.isHidden) return;
-
         isTaken = false;
         this.flightDirection = player.getFacingDirection();
         this.flightStart = new Vector2(player.getX(), player.getY());
@@ -51,6 +48,7 @@ public class Stapler extends Item implements TakeableItem, ThrowableItem {
         if (!isFlying && !isUsed) return;
 
         if (isFlying) {
+            float flightSpeed = GameConstants.STAPLER_FLIGHT_SPEED;
             flightProgress += flightSpeed * deltaTime;
             float progress = Math.min(flightProgress / flightDistance, 1f);
 

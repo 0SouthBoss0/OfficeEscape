@@ -15,6 +15,8 @@ public abstract class Item {
     public boolean isTaken = false;
     protected float scale;
     public boolean isUsed = false;
+    boolean isBroken = false;
+
 
     public Item(String texturePath, float x, float y, float scale) {
         Texture texture = new Texture(texturePath);
@@ -60,25 +62,27 @@ public abstract class Item {
         sprite.getTexture().dispose();
     }
 
-    public boolean canBeTaken(Player player) {
-        return this instanceof TakeableItem && !isTaken && !isUsed &&
-            Vector2.dst(getX(), getY(), player.getX(), player.getY()) < GameConstants.ITEM_HIGHLIGHT_RANGE &&
+    private boolean isCloserThanToPlayer(Player player, float distance) {
+        return Vector2.dst(getX(), getY(), player.getX(), player.getY()) < distance &&
             !TiledGraph.getInstance().hasWallBetween(
                 new Vector2(player.getX(), player.getY()),
                 new Vector2(getX(), getY())
             );
+    }
+
+    public boolean canBeTaken(Player player) {
+        return this instanceof TakeableItem && !isTaken && !isUsed && isCloserThanToPlayer(player, GameConstants.ITEM_PICKUP_RANGE);
     }
 
     public boolean canBeThrown(Player player) {
-        return this instanceof ThrowableItem && isTaken && !isUsed;
+        return this instanceof ThrowableItem && isTaken && !player.isHidden;
     }
 
     public boolean canBeHidden(Player player) {
-        return this instanceof HideableItem && !player.isHidden &&
-            Vector2.dst(getX(), getY(), player.getX(), player.getY()) < GameConstants.HIDE_DISTANCE &&
-            !TiledGraph.getInstance().hasWallBetween(
-                new Vector2(player.getX(), player.getY()),
-                new Vector2(getX(), getY())
-            );
+        return this instanceof HideableItem && !player.isHidden && isCloserThanToPlayer(player, GameConstants.HIDE_DISTANCE);
+    }
+
+    public boolean canBeBroken(Player player) {
+        return this instanceof BreakableItem && !isBroken && isCloserThanToPlayer(player, GameConstants.BROKE_DISTANCE);
     }
 }

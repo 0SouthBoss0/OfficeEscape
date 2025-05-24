@@ -17,6 +17,7 @@ public class GameConstants {
     public static final float STEP_DURATION = 0.2f;
     public static final int ITEM_THROW_DISTANCE = 100;
     public static final float HIDE_DISTANCE = 50f;
+    public static final float BROKE_DISTANCE = 50f;
 
     // Pathfinding
     public static final float PATH_REACH_THRESHOLD = 1f;
@@ -120,7 +121,7 @@ public class GameConstants {
     public static final float WARDROBE_SCALE = 0.7f;
     public static final float COFFEE_MACHINE_SCALE = 0.05f;
     public static final float CRASHED_COFFEE_SCALE = 0.05f;
-    public static final float PRINTER_FILE_SCALE = 0.05f;
+    public static final float PRINTER_FILE_SCALE = 0.7f;
     public static final float CRASHED_PRINTER_SCALE = 0.05f;
     public static final float TRASH_FILE_SCALE = 0.05f;
     public static final float FIRE_TRASH_SCALE = 0.05f;
@@ -157,7 +158,8 @@ public class GameConstants {
     public static int PADDING_FOR_ICON_INVENTORY = 30;
     public static int PADDING_FOR_NAME_INVENTORY = 15;
 
-    public static final float STAPLER_DISPOSE_DELAY = 2f; // 2 секунды до удаления
+    public static final float STAPLER_DISPOSE_DELAY = 2f;
+    public static final float STAPLER_FLIGHT_SPEED = 500f;
 
 
     public record Position(int x, int y, Character.Direction direction) {
