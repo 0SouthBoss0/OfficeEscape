@@ -5,7 +5,7 @@ import com.officescape.unit.Player;
 
 public class Key extends Item {
     public Key(float x, float y) {
-        super(GameConstants.KEY_FILE_PATH, x, y, GameConstants.KEY_SCALE);
+        super(GameConstants.KEY_CARD_FILE_PATH, x, y, GameConstants.KEY_SCALE);
     }
 
     @Override

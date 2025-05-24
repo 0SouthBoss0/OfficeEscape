@@ -144,7 +144,7 @@ public class TiledGraph implements IndexedGraph<Vector2> {
     }
 
     public boolean isFurniture(Vector2 node) {
-        return isFurniture(node, tileSize * GameConstants.IS_WALL, tileSize * GameConstants.IS_WALL);
+        return isFurniture(node, tileSize * GameConstants.IS_FURNUTURE, tileSize * GameConstants.IS_WALL);
     }
 
     private void checkAndAddConnection(Vector2 from, int fromX, int fromY, int toX, int toY) {
