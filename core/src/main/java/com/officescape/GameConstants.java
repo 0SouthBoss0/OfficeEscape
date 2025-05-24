@@ -116,7 +116,7 @@ public class GameConstants {
     public static final float COFFEE_SCALE = 0.05f;
     public static final float TURNSTILE_SCALE = 0.05f;
     public static final float FISH_FILE_SCALE = 0.05f;
-    public static final float WARDROBE_SCALE = 0.05f;
+    public static final float WARDROBE_SCALE = 0.7f;
     public static final float COFFEE_MACHINE_SCALE = 0.05f;
     public static final float CRASHED_COFFEE_SCALE = 0.05f;
     public static final float PRINTER_FILE_SCALE = 0.05f;

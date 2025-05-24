@@ -20,10 +20,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.officescape.item.Item;
-import com.officescape.item.Flash;
-import com.officescape.item.Stapler;
-import com.officescape.item.ThrowableItem;
+import com.officescape.item.*;
 import com.officescape.unit.NPC;
 import com.officescape.unit.NPCFactory;
 import com.officescape.unit.Player;
@@ -68,6 +65,7 @@ public class MainScreen implements Screen {
         items = new Array<>();
         items.add(new Flash(GameConstants.FLASH_FROM_SERVER.x(), GameConstants.FLASH_FROM_SERVER.y()));
         items.add(new Stapler(GameConstants.STEPLER.x(), GameConstants.STEPLER.y()));
+        items.add(new Wardrobe(GameConstants.STEPLER.x()+50, GameConstants.STEPLER.y()+50));
         itemShapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
@@ -145,6 +143,23 @@ public class MainScreen implements Screen {
             for (Item item : items) {
                 if (item.canBeTaken()) {
                     item.take(player);
+                }
+            }
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.H)) {
+            for (Item item : items) {
+                if (item instanceof HideableItem hideable) {
+                    float distance = Vector2.dst(player.getX(), player.getY(), item.getX(), item.getY());
+
+                    if (distance < GameConstants.ITEM_THROW_DISTANCE) {
+                        if (hideable.isPlayerHidden()) {
+                            hideable.onUnhide(player);
+                        } else {
+                            hideable.onHide(player);
+                        }
+                        break;
+                    }
                 }
             }
         }
