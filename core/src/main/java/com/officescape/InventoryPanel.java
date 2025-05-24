@@ -13,8 +13,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.officescape.item.Item;
-import com.officescape.item.Key;
-import com.officescape.item.Stepler;
+import com.officescape.item.Flash;
+import com.officescape.item.Stapler;
 
 public class InventoryPanel {
     private final ObjectMap<Class<? extends Item>, InventoryItem> inventoryItems;
@@ -74,11 +74,11 @@ public class InventoryPanel {
         }
 
         for (Item worldItem : worldItems) {
-            if (worldItem.isPickedUp) {
-                if (worldItem instanceof Key) {
-                    inventoryItems.get(Key.class).count++;
-                } else if (worldItem instanceof Stepler) {
-                    inventoryItems.get(Stepler.class).count++;
+            if (worldItem.isTaken) {
+                if (worldItem instanceof Flash) {
+                    inventoryItems.get(Flash.class).count++;
+                } else if (worldItem instanceof Stapler) {
+                    inventoryItems.get(Stapler.class).count++;
                 }
             }
         }

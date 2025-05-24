@@ -15,6 +15,7 @@ public class GameConstants {
     public static final float MAX_PLAYER_WIDTH = 20.7f;
     public static final float MAX_PLAYER_HEIGHT = 20.7f;
     public static final float STEP_DURATION = 0.2f;
+    public static final int ITEM_THROW_DISTANCE = 100;
 
     // Pathfinding
     public static final float PATH_REACH_THRESHOLD = 1f;
@@ -90,7 +91,7 @@ public class GameConstants {
     public static final float ITEM_HIGHLIGHT_RANGE = 100f;
 
     // Items textures
-    public static final String STEPLER_FILE_PATH = "items/stapler.png";
+    public static final String STAPLER_FILE_PATH = "items/stapler.png";
     public static final String KEY_CARD_FILE_PATH = "items/key_card.png";
     public static final String FLASH_FILE_PATH = "items/flash.png";
     public static final String CAMERA_GRAY_FILE_PATH = "items/camera_gray.png";
@@ -107,11 +108,25 @@ public class GameConstants {
     public static final String FIRE_TRASH_FILE_PATH = "items/fire_trash.png";
 
     // Items scales
-    public static final float STEPLER_SCALE = 0.05f;
-    public static final float KEY_SCALE = 0.03f;
+    public static final float STAPLER_SCALE = 0.5f;
+    public static final float KEY_CARD_SCALE = 0.5f;
+    public static final float FLASH_SCALE = 0.05f;
+    public static final float CAMERA_GRAY_SCALE = 0.05f;
+    public static final float CAMERA_RED_SCALE = 0.05f;
+    public static final float COFFEE_SCALE = 0.05f;
+    public static final float TURNSTILE_SCALE = 0.05f;
+    public static final float FISH_FILE_SCALE = 0.05f;
+    public static final float WARDROBE_SCALE = 0.05f;
+    public static final float COFFEE_MACHINE_SCALE = 0.05f;
+    public static final float CRASHED_COFFEE_SCALE = 0.05f;
+    public static final float PRINTER_FILE_SCALE = 0.05f;
+    public static final float CRASHED_PRINTER_SCALE = 0.05f;
+    public static final float TRASH_FILE_SCALE = 0.05f;
+    public static final float FIRE_TRASH_SCALE = 0.05f;
+
 
     // Items positions
-    public static final Position KEY_FROM_SERVER = new Position(1080, 30, Character.Direction.UP);
+    public static final Position FLASH_FROM_SERVER = new Position(1080, 30, Character.Direction.UP);
     public static final Position STEPLER = new Position(300, 300, Character.Direction.UP);
 
     // Font params

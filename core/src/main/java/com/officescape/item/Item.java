@@ -4,9 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.officescape.GameConstants;
 import com.officescape.TiledGraph;
 import com.officescape.unit.Player;
@@ -14,7 +12,7 @@ import com.officescape.unit.Player;
 public abstract class Item {
     public Sprite sprite;
     protected boolean isHighlighted = false;
-    public boolean isPickedUp = false;
+    public boolean isTaken = false;
     protected float scale;
 
     public Item(String texturePath, float x, float y, float scale) {
@@ -26,7 +24,7 @@ public abstract class Item {
     }
 
     public void update(Player player) {
-        if (isPickedUp) return;
+        if (isTaken) return;
 
         // get distance to player
         float distance = Vector2.dst(getX(), getY(), player.getX(), player.getY());
@@ -42,8 +40,8 @@ public abstract class Item {
         }
     }
 
-    public boolean pickUp(Player player) {
-        if (isPickedUp) return false;
+    public boolean take(Player player) {
+        if (isTaken) return false;
 
         float distance = Vector2.dst(getX(), getY(), player.getX(), player.getY());
         if (distance < GameConstants.ITEM_PICKUP_RANGE &&
@@ -51,23 +49,21 @@ public abstract class Item {
                 new Vector2(player.getX(), player.getY()),
                 new Vector2(getX(), getY())
             )) {
-            isPickedUp = true;
-            onPickUp(player);
+            isTaken = true;
             return true;
         }
         return false;
     }
 
-    public abstract void onPickUp(Player player);
 
     public void draw(SpriteBatch batch) {
-        if (!isPickedUp) {
+        if (!isTaken) {
             sprite.draw(batch);
         }
     }
 
     public void drawHighlight(ShapeRenderer shapeRenderer) {
-        if (isHighlighted && !isPickedUp) {
+        if (isHighlighted && !isTaken) {
             shapeRenderer.set(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(1, 1, 1, 1); // Белый цвет
             shapeRenderer.rect(
@@ -89,5 +85,17 @@ public abstract class Item {
 
     public void dispose() {
         sprite.getTexture().dispose();
+    }
+
+    public boolean canBeTaken() {
+        return this instanceof TakeableItem && !isTaken;
+    }
+
+    public boolean canBeThrown() {
+        return this instanceof ThrowableItem && isTaken;
+    }
+
+    public boolean canBeHidden() {
+        return this instanceof HideableItem && !isTaken;
     }
 }

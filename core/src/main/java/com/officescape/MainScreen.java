@@ -21,8 +21,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.officescape.item.Item;
-import com.officescape.item.Key;
-import com.officescape.item.Stepler;
+import com.officescape.item.Flash;
+import com.officescape.item.Stapler;
+import com.officescape.item.ThrowableItem;
 import com.officescape.unit.NPC;
 import com.officescape.unit.NPCFactory;
 import com.officescape.unit.Player;
@@ -65,8 +66,8 @@ public class MainScreen implements Screen {
         npcs = npcFactory.getAllNPCs();
 
         items = new Array<>();
-        items.add(new Key(GameConstants.KEY_FROM_SERVER.x(), GameConstants.KEY_FROM_SERVER.y()));
-        items.add(new Stepler(GameConstants.STEPLER.x(), GameConstants.STEPLER.y()));
+        items.add(new Flash(GameConstants.FLASH_FROM_SERVER.x(), GameConstants.FLASH_FROM_SERVER.y()));
+        items.add(new Stapler(GameConstants.STEPLER.x(), GameConstants.STEPLER.y()));
         itemShapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
@@ -142,7 +143,17 @@ public class MainScreen implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             for (Item item : items) {
-                if (item.pickUp(player)) {
+                if (item.canBeTaken()) {
+                    item.take(player);
+                }
+            }
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+            for (Item item : items) {
+                if (item.canBeThrown() && item.isTaken) {
+                    ((ThrowableItem) item).onThrow(player);
+                    item.isTaken = false;
                     break;
                 }
             }
