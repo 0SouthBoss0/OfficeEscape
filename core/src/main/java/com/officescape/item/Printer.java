@@ -2,11 +2,12 @@ package com.officescape.item;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.officescape.GameConstants;
+import com.officescape.unit.Character;
 import com.officescape.unit.Player;
 
 public class Printer extends Item implements BreakableItem{
-    public Printer(float x, float y) {
-        super(GameConstants.PRINTER_FILE_PATH, x, y, GameConstants.PRINTER_FILE_SCALE);
+    public Printer(float x, float y, Character.Direction direction) {
+        super(GameConstants.PRINTER_FILE_PATH, x, y, GameConstants.PRINTER_FILE_SCALE, direction);
     }
 
     @Override

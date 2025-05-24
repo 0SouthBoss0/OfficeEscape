@@ -1,13 +1,14 @@
 package com.officescape.item;
 
 import com.officescape.GameConstants;
+import com.officescape.unit.Character;
 import com.officescape.unit.Player;
 
 public class Wardrobe extends Item implements HideableItem {
 
 
-    public Wardrobe(float x, float y) {
-        super(GameConstants.WARDROBE_FILE_PATH, x, y, GameConstants.WARDROBE_SCALE);
+    public Wardrobe(float x, float y, Character.Direction direction) {
+        super(GameConstants.WARDROBE_FILE_PATH, x, y, GameConstants.WARDROBE_SCALE, direction);
     }
 
     @Override

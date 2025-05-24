@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.officescape.GameConstants;
 import com.officescape.TiledGraph;
+import com.officescape.unit.Character;
 import com.officescape.unit.NPC;
 import com.officescape.unit.NPCFactory;
 import com.officescape.unit.Player;
@@ -16,8 +17,8 @@ public class Stapler extends Item implements TakeableItem, ThrowableItem {
     private float flightProgress;
     private float disposeTimer = 0;
 
-    public Stapler(float x, float y) {
-        super(GameConstants.STAPLER_FILE_PATH, x, y, GameConstants.STAPLER_SCALE);
+    public Stapler(float x, float y, Character.Direction direction) {
+        super(GameConstants.STAPLER_FILE_PATH, x, y, GameConstants.STAPLER_SCALE, direction);
     }
 
 

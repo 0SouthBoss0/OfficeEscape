@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.officescape.GameConstants;
 import com.officescape.TiledGraph;
+import com.officescape.unit.Character;
 import com.officescape.unit.Player;
 
 public abstract class Item {
@@ -18,12 +19,26 @@ public abstract class Item {
     boolean isBroken = false;
 
 
-    public Item(String texturePath, float x, float y, float scale) {
+    public Item(String texturePath, float x, float y, float scale, Character.Direction direction) {
         Texture texture = new Texture(texturePath);
         sprite = new Sprite(texture);
         this.scale = scale;
         sprite.setSize(texture.getWidth() * scale, texture.getHeight() * scale);
         sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
+        switch (direction) {
+            case UP:
+                break;
+            case DOWN:
+                sprite.setFlip(false, true);
+                break;
+            case LEFT:
+                sprite.setFlip(true, false);
+                sprite.rotate(90);
+                break;
+            case RIGHT:
+                sprite.rotate(-90);
+                break;
+        }
     }
 
 
@@ -41,14 +56,18 @@ public abstract class Item {
     public void drawHighlight(ShapeRenderer shapeRenderer, Color color) {
         shapeRenderer.set(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(color);
-        shapeRenderer.rect(
-            sprite.getX() - 2,
-            sprite.getY() - 2,
-            sprite.getWidth() + 4,
-            sprite.getHeight() + 4
-        );
-    }
+        float[] vertices = sprite.getVertices();
 
+        float x1 = vertices[0], y1 = vertices[1];
+        float x2 = vertices[5], y2 = vertices[6];
+        float x3 = vertices[10], y3 = vertices[11];
+        float x4 = vertices[15], y4 = vertices[16];
+
+        shapeRenderer.line(x1, y1, x2, y2);
+        shapeRenderer.line(x2, y2, x3, y3);
+        shapeRenderer.line(x3, y3, x4, y4);
+        shapeRenderer.line(x4, y4, x1, y1);
+    }
 
     public float getX() {
         return sprite.getX() + sprite.getWidth() / 2;

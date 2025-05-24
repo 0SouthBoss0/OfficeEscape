@@ -64,12 +64,12 @@ public class MainScreen implements Screen {
         npcs = npcFactory.getAllNPCs();
 
         items = new Array<>();
-        items.add(new Flash(GameConstants.FLASH_FROM_SERVER.x(), GameConstants.FLASH_FROM_SERVER.y()));
-        items.add(new Stapler(GameConstants.STEPLER_1.x(), GameConstants.STEPLER_1.y()));
-        items.add(new Stapler(GameConstants.STEPLER_2.x(), GameConstants.STEPLER_2.y()));
-        items.add(new Printer(GameConstants.PRINTER_1.x(), GameConstants.PRINTER_1.y()));
-        items.add(new Printer(GameConstants.PRINTER_2.x(), GameConstants.PRINTER_2.y()));
-        items.add(new Wardrobe(GameConstants.WARDROBE_1.x(), GameConstants.WARDROBE_1.y()));
+        items.add(new Flash(GameConstants.FLASH_FROM_SERVER.x(), GameConstants.FLASH_FROM_SERVER.y(), GameConstants.FLASH_FROM_SERVER.direction()));
+        items.add(new Stapler(GameConstants.STEPLER_1.x(), GameConstants.STEPLER_1.y(), GameConstants.STEPLER_1.direction()));
+        items.add(new Stapler(GameConstants.STEPLER_2.x(), GameConstants.STEPLER_2.y(), GameConstants.STEPLER_2.direction()));
+        items.add(new Printer(GameConstants.PRINTER_1.x(), GameConstants.PRINTER_1.y(), GameConstants.PRINTER_1.direction()));
+        items.add(new Printer(GameConstants.PRINTER_2.x(), GameConstants.PRINTER_2.y(), GameConstants.PRINTER_2.direction()));
+        items.add(new Wardrobe(GameConstants.WARDROBE_1.x(), GameConstants.WARDROBE_1.y(), GameConstants.WARDROBE_1.direction()));
         itemShapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
@@ -227,7 +227,7 @@ public class MainScreen implements Screen {
             if (item.canBeHidden(player)) {
                 item.drawHighlight(itemShapeRenderer, new Color(0f, 1f, 1f, 1));
             }
-            if (item.canBeBroken(player)){
+            if (item.canBeBroken(player)) {
                 item.drawHighlight(itemShapeRenderer, new Color(1f, 0f, 0f, 1));
 
             }

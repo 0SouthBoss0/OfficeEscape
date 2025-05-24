@@ -1,5 +1,6 @@
 package com.officescape.item;
 
+import com.officescape.unit.Character;
 import com.officescape.unit.Player;
 
 public interface BreakableItem {
