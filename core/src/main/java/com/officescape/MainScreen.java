@@ -180,8 +180,8 @@ public class MainScreen implements Screen {
                 if (item.canBeBroken(player)) {
                     ((BreakableItem) item).onBreak(player);
                 }
-                if (item.canBeUsed(player)) {
-                    ((UsableItem) item).onUse(player);
+                if (item.canBeUsed(player, inventoryPanel.getInventoryItems())) {
+                    ((UsableItem) item).onUse(gameProgress);
                 }
             }
         }
@@ -247,7 +247,7 @@ public class MainScreen implements Screen {
             if (item.canBeBroken(player)) {
                 item.drawHighlight(itemShapeRenderer, new Color(1f, 0f, 0f, 1));
             }
-            if (item.canBeUsed(player)) {
+            if (item.canBeUsed(player, inventoryPanel.getInventoryItems())) {
                 item.drawHighlight(itemShapeRenderer, new Color(1f, 1f, 0f, 1));
             }
         }

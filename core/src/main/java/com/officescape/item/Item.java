@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.officescape.GameConstants;
+import com.officescape.InventoryPanel;
 import com.officescape.TiledGraph;
 import com.officescape.unit.Character;
 import com.officescape.unit.Player;
@@ -104,7 +106,17 @@ public abstract class Item {
         return this instanceof BreakableItem && !isBroken && isCloserThanToPlayer(player, GameConstants.BROKE_DISTANCE);
     }
 
-    public boolean canBeUsed(Player player) {
-        return this instanceof UsableItem && isCloserThanToPlayer(player, GameConstants.BROKE_DISTANCE);
+    public boolean canBeUsed(Player player, ObjectMap<Class<? extends Item>, InventoryPanel.InventoryItem> items) {
+        return this instanceof UsableItem && !isUsed && validateUsage(items) && isCloserThanToPlayer(player, GameConstants.BROKE_DISTANCE);
+    }
+
+    public boolean validateUsage(ObjectMap<Class<? extends Item>, InventoryPanel.InventoryItem> items){
+        if (this instanceof ButtonServer){
+            return  (items.get(Flash.class).count>0);
+        }
+        if (this instanceof TurnStile){
+            return  (items.get(KeyCard.class).count>0);
+        }
+        return false;
     }
 }

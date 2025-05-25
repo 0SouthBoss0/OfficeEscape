@@ -1,7 +1,7 @@
 package com.officescape.item;
 
-import com.officescape.unit.Player;
+import com.officescape.GameProgress;
 
 public interface UsableItem {
-    void onUse(Player player);
+    void onUse(GameProgress gameProgress);
 }

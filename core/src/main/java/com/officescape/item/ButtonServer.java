@@ -1,6 +1,7 @@
 package com.officescape.item;
 
 import com.officescape.GameConstants;
+import com.officescape.GameProgress;
 import com.officescape.unit.Character;
 import com.officescape.unit.Player;
 
@@ -10,8 +11,10 @@ public class ButtonServer extends Item implements UsableItem {
     }
 
 
+
     @Override
-    public void onUse(Player player) {
-        
+    public void onUse(GameProgress gameProgress) {
+        this.isUsed = true;
+        gameProgress.updateQuest(1, true);
     }
 }

@@ -18,6 +18,10 @@ import com.officescape.item.Stapler;
 import com.officescape.item.TakeableItem;
 
 public class InventoryPanel {
+    public ObjectMap<Class<? extends Item>, InventoryItem> getInventoryItems() {
+        return inventoryItems;
+    }
+
     private final ObjectMap<Class<? extends Item>, InventoryItem> inventoryItems;
     private final BitmapFont font;
     private final BitmapFont countFont;
@@ -26,9 +30,9 @@ public class InventoryPanel {
     private boolean visible = false;
     private final OrthographicCamera camera;
 
-    private static class InventoryItem {
+    public static class InventoryItem {
         Item item;
-        int count;
+        public int count;
         String name;
         Texture icon;
 
@@ -77,12 +81,9 @@ public class InventoryPanel {
         }
 
         for (Item worldItem : worldItems) {
-            if (worldItem.isTaken) {
-                if (worldItem instanceof Flash) {
-                    inventoryItems.get(Flash.class).count++;
-                } else if (worldItem instanceof Stapler) {
-                    inventoryItems.get(Stapler.class).count++;
-                }
+            if (worldItem instanceof TakeableItem && worldItem.isTaken) {
+                inventoryItems.get(worldItem.getClass()).count++;
+
             }
         }
     }
