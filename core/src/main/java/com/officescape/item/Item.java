@@ -103,4 +103,8 @@ public abstract class Item {
     public boolean canBeBroken(Player player) {
         return this instanceof BreakableItem && !isBroken && isCloserThanToPlayer(player, GameConstants.BROKE_DISTANCE);
     }
+
+    public boolean canBeUsed(Player player) {
+        return this instanceof UsableItem && isCloserThanToPlayer(player, GameConstants.BROKE_DISTANCE);
+    }
 }

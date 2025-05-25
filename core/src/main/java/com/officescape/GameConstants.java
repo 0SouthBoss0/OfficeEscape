@@ -18,6 +18,7 @@ public class GameConstants {
     public static final int ITEM_THROW_DISTANCE = 100;
     public static final float HIDE_DISTANCE = 50f;
     public static final float BROKE_DISTANCE = 50f;
+    public static final float USE_DISTANCE = 50f;
 
     // Pathfinding
     public static final float PATH_REACH_THRESHOLD = 1f;
