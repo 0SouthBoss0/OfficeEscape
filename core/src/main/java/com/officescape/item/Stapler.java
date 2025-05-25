@@ -3,6 +3,7 @@ package com.officescape.item;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.officescape.GameConstants;
+import com.officescape.GameProgress;
 import com.officescape.TiledGraph;
 import com.officescape.unit.Character;
 import com.officescape.unit.NPC;
@@ -21,11 +22,6 @@ public class Stapler extends Item implements TakeableItem, ThrowableItem {
         super(GameConstants.STAPLER_FILE_PATH, x, y, GameConstants.STAPLER_SCALE, direction);
     }
 
-
-    @Override
-    public void onTake(Player player) {
-        take(player);
-    }
 
     @Override
     public void onThrow(Player player) {
@@ -89,5 +85,10 @@ public class Stapler extends Item implements TakeableItem, ThrowableItem {
 
     public boolean isReadyToDispose() {
         return isUsed && disposeTimer >= GameConstants.STAPLER_DISPOSE_DELAY;
+    }
+
+    @Override
+    public void onTake(Player player, GameProgress gameProgress) {
+        take(player);
     }
 }

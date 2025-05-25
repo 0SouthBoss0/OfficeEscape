@@ -43,7 +43,7 @@ public abstract class Item {
     }
 
 
-    public void take(Player player) {
+    public void take(Player player ) {
         isTaken = canBeTaken(player);
     }
 

@@ -1,6 +1,7 @@
 package com.officescape.item;
 
 import com.officescape.GameConstants;
+import com.officescape.GameProgress;
 import com.officescape.unit.Character;
 import com.officescape.unit.Player;
 
@@ -9,9 +10,8 @@ public class Fish extends Item implements TakeableItem {
         super(GameConstants.FISH_FILE_PATH, x, y, GameConstants.FISH_FILE_SCALE, direction);
     }
 
-
     @Override
-    public void onTake(Player player) {
+    public void onTake(Player player, GameProgress gameProgress) {
         take(player);
     }
 }

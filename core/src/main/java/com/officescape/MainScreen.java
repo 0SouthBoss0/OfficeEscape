@@ -175,7 +175,7 @@ public class MainScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             for (Item item : items) {
                 if (item.canBeTaken(player)) {
-                    item.take(player);
+                    ((TakeableItem) item).onTake(player, gameProgress);
                 }
                 if (item.canBeBroken(player)) {
                     ((BreakableItem) item).onBreak(player);

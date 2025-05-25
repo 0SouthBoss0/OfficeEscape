@@ -1,6 +1,7 @@
 package com.officescape.item;
 
 import com.officescape.GameConstants;
+import com.officescape.GameProgress;
 import com.officescape.unit.Character;
 import com.officescape.unit.Player;
 
@@ -9,9 +10,9 @@ public class KeyCard extends Item implements TakeableItem {
         super(GameConstants.KEY_CARD_FILE_PATH, x, y, GameConstants.KEY_CARD_SCALE, direction);
     }
 
-
-    @Override
-    public void onTake(Player player) {
+    @Override   
+    public void onTake(Player player, GameProgress gameProgress) {
+        gameProgress.updateQuest(2, true);
         take(player);
     }
 }
