@@ -52,15 +52,15 @@ public class MainScreen implements Screen {
 
         NPCFactory npcFactory = NPCFactory.getInstance();
         npcFactory.setPlayer(player);
-//        npcFactory.createBabka(GameConstants.BABKA_START.x(), GameConstants.BABKA_START.y(), GameConstants.BABKA_START.direction(), GameConstants.BABKA_WAYPOINTS);
-//        npcFactory.createCat(GameConstants.CAT_START.x(), GameConstants.CAT_START.y(), GameConstants.CAT_START.direction(), GameConstants.CAT_WAYPOINTS);
-//        npcFactory.createBoss(GameConstants.BOSS_START.x(), GameConstants.BOSS_START.y(), GameConstants.BOSS_START.direction(), GameConstants.BOSS_WAYPOINTS);
-//        npcFactory.createColleague(GameConstants.COLLEAGUE1_START.x(), GameConstants.COLLEAGUE1_START.y(), GameConstants.COLLEAGUE1_START.direction(), GameConstants.COLLEGUE1_WAYPOINTS);
-//        npcFactory.createColleague(GameConstants.COLLEAGUE2_START.x(), GameConstants.COLLEAGUE2_START.y(), GameConstants.COLLEAGUE2_START.direction(), GameConstants.COLLEGUE2_WAYPOINTS);
-//        npcFactory.createColleague(GameConstants.COLLEAGUE3_START.x(), GameConstants.COLLEAGUE3_START.y(), GameConstants.COLLEAGUE3_START.direction(), GameConstants.COLLEGUE3_WAYPOINTS);
-//        npcFactory.createColleague(GameConstants.COLLEAGUE4_START.x(), GameConstants.COLLEAGUE4_START.y(), GameConstants.COLLEAGUE4_START.direction(), GameConstants.COLLEGUE4_WAYPOINTS);
-//        npcFactory.createColleague(GameConstants.COLLEAGUE5_START.x(), GameConstants.COLLEAGUE5_START.y(), GameConstants.COLLEAGUE5_START.direction(), GameConstants.COLLEGUE5_WAYPOINTS);
-//        npcFactory.createItshnik(GameConstants.ITSHNIK_START.x(), GameConstants.ITSHNIK_START.y(), GameConstants.ITSHNIK_START.direction(), GameConstants.ITSHNIK_WAYPOINTS);
+        npcFactory.createBabka(GameConstants.BABKA_START.x(), GameConstants.BABKA_START.y(), GameConstants.BABKA_START.direction(), GameConstants.BABKA_WAYPOINTS);
+        npcFactory.createCat(GameConstants.CAT_START.x(), GameConstants.CAT_START.y(), GameConstants.CAT_START.direction(), GameConstants.CAT_WAYPOINTS);
+        npcFactory.createBoss(GameConstants.BOSS_START.x(), GameConstants.BOSS_START.y(), GameConstants.BOSS_START.direction(), GameConstants.BOSS_WAYPOINTS);
+        npcFactory.createColleague(GameConstants.COLLEAGUE1_START.x(), GameConstants.COLLEAGUE1_START.y(), GameConstants.COLLEAGUE1_START.direction(), GameConstants.COLLEGUE1_WAYPOINTS);
+        npcFactory.createColleague(GameConstants.COLLEAGUE2_START.x(), GameConstants.COLLEAGUE2_START.y(), GameConstants.COLLEAGUE2_START.direction(), GameConstants.COLLEGUE2_WAYPOINTS);
+        npcFactory.createColleague(GameConstants.COLLEAGUE3_START.x(), GameConstants.COLLEAGUE3_START.y(), GameConstants.COLLEAGUE3_START.direction(), GameConstants.COLLEGUE3_WAYPOINTS);
+        npcFactory.createColleague(GameConstants.COLLEAGUE4_START.x(), GameConstants.COLLEAGUE4_START.y(), GameConstants.COLLEAGUE4_START.direction(), GameConstants.COLLEGUE4_WAYPOINTS);
+        npcFactory.createColleague(GameConstants.COLLEAGUE5_START.x(), GameConstants.COLLEAGUE5_START.y(), GameConstants.COLLEAGUE5_START.direction(), GameConstants.COLLEGUE5_WAYPOINTS);
+        npcFactory.createItshnik(GameConstants.ITSHNIK_START.x(), GameConstants.ITSHNIK_START.y(), GameConstants.ITSHNIK_START.direction(), GameConstants.ITSHNIK_WAYPOINTS);
         npcs = npcFactory.getAllNPCs();
 
         items = new Array<>();

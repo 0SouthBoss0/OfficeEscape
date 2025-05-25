@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.officescape.item.Item;
 import com.officescape.item.Flash;
 import com.officescape.item.Stapler;
+import com.officescape.item.TakeableItem;
 
 public class InventoryPanel {
     private final ObjectMap<Class<? extends Item>, InventoryItem> inventoryItems;
@@ -64,7 +65,9 @@ public class InventoryPanel {
         countFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
         for (Item item : worldItems) {
-            inventoryItems.put(item.getClass(), new InventoryItem(item));
+            if (item instanceof TakeableItem) {
+                inventoryItems.put(item.getClass(), new InventoryItem(item));
+            }
         }
     }
 
