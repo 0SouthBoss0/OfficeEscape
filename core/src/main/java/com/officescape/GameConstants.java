@@ -108,8 +108,8 @@ public class GameConstants {
     public static final Position[] ITSHNIK_WAYPOINTS = {ITSHNIK_START, SERVER_TOP, COFFEE_MACHINE_PLACE, IT_WARDROBE};
 
     // Items params
-    public static final float ITEM_PICKUP_RANGE = 100f;
-    public static final float ITEM_HIGHLIGHT_RANGE = 100f;
+    public static final float ITEM_PICKUP_RANGE = 50f;
+    public static final float ITEM_HIGHLIGHT_RANGE = 50f;
 
     // Items textures
     public static final String STAPLER_FILE_PATH = "items/stapler.png";
@@ -127,6 +127,7 @@ public class GameConstants {
     public static final String CRASHED_PRINTER_FILE_PATH = "items/crashed_printer.png";
     public static final String TRASH_FILE_PATH = "items/trash.png";
     public static final String FIRE_TRASH_FILE_PATH = "items/fire_trash.png";
+    public static final String BUTTON_SERVER_FILE_PATH = "items/button_server.png";
 
     // Items scales
     public static final float STAPLER_SCALE = 0.3f;
@@ -135,15 +136,16 @@ public class GameConstants {
     public static final float CAMERA_GRAY_SCALE = 1f;
     public static final float CAMERA_RED_SCALE = 1f;
     public static final float COFFEE_SCALE = 1f;
-    public static final float TURNSTILE_SCALE = 0.05f;
+    public static final float TURNSTILE_SCALE = 1f;
     public static final float FISH_FILE_SCALE = 1f;
     public static final float WARDROBE_SCALE = 1f;
-    public static final float COFFEE_MACHINE_SCALE = 1f;
-    public static final float CRASHED_COFFEE_MACHINE_SCALE = 1f;
+    public static final float COFFEE_MACHINE_SCALE = 0.65f;
+    public static final float CRASHED_COFFEE_MACHINE_SCALE = 0.65f;
     public static final float PRINTER_FILE_SCALE = 1f;
-    public static final float CRASHED_PRINTER_SCALE = 0.05f;
+    public static final float CRASHED_PRINTER_SCALE = 1f;
     public static final float TRASH_FILE_SCALE =1f;
-    public static final float FIRE_TRASH_SCALE = 0.05f;
+    public static final float FIRE_TRASH_SCALE = 1f;
+    public static final float BUTTON_SERVER_SCALE = 0.8f;
 
 
     // Items positions
@@ -157,14 +159,16 @@ public class GameConstants {
     public static final Position WARDROBE_2 = new Position(49, 198, Character.Direction.LEFT);
     public static final Position WARDROBE_3 = new Position(533, 430, Character.Direction.UP);
     public static final Position WARDROBE_4 = new Position(1220, 499, Character.Direction.RIGHT);
-    public static final Position TRASH_1 = new Position(359, 473, Character.Direction.RIGHT);
-    public static final Position TRASH_2 = new Position(575, 453, Character.Direction.RIGHT);
-    public static final Position TRASH_3 = new Position(679, 57, Character.Direction.RIGHT);
+    public static final Position TRASH_1 = new Position(360, 593, Character.Direction.RIGHT);
+    public static final Position TRASH_2 = new Position(577, 452, Character.Direction.RIGHT);
+    public static final Position TRASH_3 = new Position(680, 30, Character.Direction.RIGHT);
     public static final Position COFFEE_1 = new Position(738, 448, Character.Direction.RIGHT);
     public static final Position COFFEE_2 = new Position(414, 92, Character.Direction.RIGHT);
     public static final Position FISH = new Position(690, 370, Character.Direction.RIGHT);
     public static final Position CAMERA = new Position(5, 140, Character.Direction.LEFT);
-    public static final Position COFFEE_MACHINE = new Position(765, 366, Character.Direction.UP);
+    public static final Position COFFEE_MACHINE = new Position(769, 366, Character.Direction.UP);
+    public static final Position TURNSTILE = new Position(1262, 661, Character.Direction.UP);
+    public static final Position BUTTON_SERVER = new Position(775, 678, Character.Direction.UP);
 
     // Font params
     public static String FONT_FILE_PATH = "fonts/ArialRegular.ttf";

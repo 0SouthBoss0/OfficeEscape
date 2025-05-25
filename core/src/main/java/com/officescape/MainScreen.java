@@ -82,6 +82,8 @@ public class MainScreen implements Screen {
         items.add(new Fish(GameConstants.FISH.x(), GameConstants.FISH.y(), GameConstants.FISH.direction()));
         items.add(new Camera(GameConstants.CAMERA.x(), GameConstants.CAMERA.y(), GameConstants.CAMERA.direction()));
         items.add(new CoffeeMachine(GameConstants.COFFEE_MACHINE.x(), GameConstants.COFFEE_MACHINE.y(), GameConstants.COFFEE_MACHINE.direction()));
+        items.add(new TurnStile(GameConstants.TURNSTILE.x(), GameConstants.TURNSTILE.y(), GameConstants.TURNSTILE.direction()));
+        items.add(new ButtonServer(GameConstants.BUTTON_SERVER.x(), GameConstants.BUTTON_SERVER.y(), GameConstants.BUTTON_SERVER.direction()));
         itemShapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
