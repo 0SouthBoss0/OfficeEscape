@@ -65,11 +65,25 @@ public class MainScreen implements Screen {
 
         items = new Array<>();
         items.add(new Flash(GameConstants.FLASH_FROM_SERVER.x(), GameConstants.FLASH_FROM_SERVER.y(), GameConstants.FLASH_FROM_SERVER.direction()));
+        items.add(new KeyCard(GameConstants.KEY_CARD.x(), GameConstants.KEY_CARD.y(), GameConstants.KEY_CARD.direction()));
         items.add(new Stapler(GameConstants.STEPLER_1.x(), GameConstants.STEPLER_1.y(), GameConstants.STEPLER_1.direction()));
         items.add(new Stapler(GameConstants.STEPLER_2.x(), GameConstants.STEPLER_2.y(), GameConstants.STEPLER_2.direction()));
         items.add(new Printer(GameConstants.PRINTER_1.x(), GameConstants.PRINTER_1.y(), GameConstants.PRINTER_1.direction()));
         items.add(new Printer(GameConstants.PRINTER_2.x(), GameConstants.PRINTER_2.y(), GameConstants.PRINTER_2.direction()));
         items.add(new Wardrobe(GameConstants.WARDROBE_1.x(), GameConstants.WARDROBE_1.y(), GameConstants.WARDROBE_1.direction()));
+        items.add(new Wardrobe(GameConstants.WARDROBE_2.x(), GameConstants.WARDROBE_2.y(), GameConstants.WARDROBE_2.direction()));
+        items.add(new Wardrobe(GameConstants.WARDROBE_3.x(), GameConstants.WARDROBE_3.y(), GameConstants.WARDROBE_3.direction()));
+        items.add(new Wardrobe(GameConstants.WARDROBE_4.x(), GameConstants.WARDROBE_4.y(), GameConstants.WARDROBE_4.direction()));
+        items.add(new Trash(GameConstants.TRASH_1.x(), GameConstants.TRASH_1.y(), GameConstants.TRASH_1.direction()));
+        items.add(new Trash(GameConstants.TRASH_2.x(), GameConstants.TRASH_2.y(), GameConstants.TRASH_2.direction()));
+        items.add(new Trash(GameConstants.TRASH_3.x(), GameConstants.TRASH_3.y(), GameConstants.TRASH_3.direction()));
+        items.add(new Coffee(GameConstants.COFFEE_1.x(), GameConstants.COFFEE_1.y(), GameConstants.COFFEE_1.direction()));
+        items.add(new Coffee(GameConstants.COFFEE_2.x(), GameConstants.COFFEE_2.y(), GameConstants.COFFEE_2.direction()));
+        items.add(new Fish(GameConstants.FISH.x(), GameConstants.FISH.y(), GameConstants.FISH.direction()));
+        items.add(new Camera(GameConstants.CAMERA.x(), GameConstants.CAMERA.y(), GameConstants.CAMERA.direction()));
+        items.add(new CoffeeMachine(GameConstants.COFFEE_MACHINE.x(), GameConstants.COFFEE_MACHINE.y(), GameConstants.COFFEE_MACHINE.direction()));
+        items.add(new TurnStile(GameConstants.TURNSTILE.x(), GameConstants.TURNSTILE.y(), GameConstants.TURNSTILE.direction()));
+        items.add(new ButtonServer(GameConstants.BUTTON_SERVER.x(), GameConstants.BUTTON_SERVER.y(), GameConstants.BUTTON_SERVER.direction()));
         itemShapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
