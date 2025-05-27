@@ -13,8 +13,8 @@ public abstract class NPC extends Character {
     private float moveTimer = 0;
     private float delay = 0;
     private static final Random random = new Random();
-    private static BreakableItem currentBrokenItem = null;
-    private boolean isRespondingToEmergency = false;
+    public static BreakableItem currentBrokenItem = null;
+    public boolean isResponding = false;
     private float fixingTimer = 0;
     private static final float FIXING_TIME = 5f;
     public GameConstants.Position[] NPC_WAYPOINTS;
@@ -35,6 +35,7 @@ public abstract class NPC extends Character {
         if (currentBrokenItem != null) {
             handleEmergencyResponse(deltaTime, walls);
         } else {
+            isResponding = false;
             onCustomUpdate(deltaTime, walls);
         }
         super.update(deltaTime, walls);
@@ -46,20 +47,16 @@ public abstract class NPC extends Character {
         Vector2 targetPos = currentBrokenItem.getPosition();
         float distanceToItem = Vector2.dst(getX(), getY(), targetPos.x, targetPos.y);
 
-        if (!isRespondingToEmergency) {
+        if (!isResponding) {
             this.goToCoords(targetPos.x, targetPos.y);
-            isRespondingToEmergency = true;
-            return;
+            isResponding = true;
         }
-
-        if (this instanceof Itshnik &&distanceToItem < 20f) {
+        if (this instanceof Itshnik && distanceToItem < 20f) {
             fixingTimer += deltaTime;
             if (fixingTimer >= FIXING_TIME) {
                 currentBrokenItem.onFix(this);
                 currentBrokenItem = null;
                 fixingTimer = 0;
-                isRespondingToEmergency = false;
-
             }
         }
     }

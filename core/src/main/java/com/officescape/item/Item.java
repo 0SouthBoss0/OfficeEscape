@@ -11,6 +11,7 @@ import com.officescape.GameConstants;
 import com.officescape.InventoryPanel;
 import com.officescape.TiledGraph;
 import com.officescape.unit.Character;
+import com.officescape.unit.NPC;
 import com.officescape.unit.Player;
 
 public abstract class Item {
@@ -43,7 +44,7 @@ public abstract class Item {
     }
 
 
-    public void take(Player player ) {
+    public void take(Player player) {
         isTaken = canBeTaken(player);
     }
 
@@ -103,24 +104,24 @@ public abstract class Item {
     }
 
     public boolean canBeBroken(Player player) {
-        return this instanceof BreakableItem && !isBroken && isCloserThanToPlayer(player, GameConstants.BROKE_DISTANCE);
+        return this instanceof BreakableItem && !isBroken && NPC.currentBrokenItem == null && isCloserThanToPlayer(player, GameConstants.BROKE_DISTANCE);
     }
 
     public boolean canBeUsed(Player player, ObjectMap<Class<? extends Item>, InventoryPanel.InventoryItem> items) {
         return this instanceof UsableItem && !isUsed && validateUsage(items) && isCloserThanToPlayer(player, GameConstants.BROKE_DISTANCE);
     }
 
-    public boolean validateUsage(ObjectMap<Class<? extends Item>, InventoryPanel.InventoryItem> items){
-        if (this instanceof ButtonServer){
-            return  (items.get(Flash.class).count>0);
+    public boolean validateUsage(ObjectMap<Class<? extends Item>, InventoryPanel.InventoryItem> items) {
+        if (this instanceof ButtonServer) {
+            return (items.get(Flash.class).count > 0);
         }
-        if (this instanceof TurnStile){
-            return  (items.get(KeyCard.class).count>0);
+        if (this instanceof TurnStile) {
+            return (items.get(KeyCard.class).count > 0);
         }
         return false;
     }
 
     public Vector2 getPosition() {
-        return new Vector2(getX()+50, getY()+50);
+        return new Vector2(getX() + 50, getY() + 50);
     }
 }
