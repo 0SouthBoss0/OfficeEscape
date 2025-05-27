@@ -190,6 +190,8 @@ public class MainScreen implements Screen {
                 }
                 if (item.canBeBroken(player)) {
                     ((BreakableItem) item).onBreak(player);
+                    NPC.reportBrokenItem((BreakableItem) item);
+                    break;
                 }
                 if (item.canBeUsed(player, inventoryPanel.getInventoryItems())) {
                     ((UsableItem) item).onUse(gameProgress);

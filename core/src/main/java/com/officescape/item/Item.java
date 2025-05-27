@@ -119,4 +119,8 @@ public abstract class Item {
         }
         return false;
     }
+
+    public Vector2 getPosition() {
+        return new Vector2(getX()+50, getY()+50);
+    }
 }

@@ -5,7 +5,7 @@ import com.officescape.GameConstants;
 import com.officescape.unit.Character;
 import com.officescape.unit.Player;
 
-public class Printer extends Item implements BreakableItem{
+public class Printer extends Item implements BreakableItem {
     public Printer(float x, float y, Character.Direction direction) {
         super(GameConstants.PRINTER_FILE_PATH, x, y, GameConstants.PRINTER_FILE_SCALE, direction);
     }
@@ -19,4 +19,5 @@ public class Printer extends Item implements BreakableItem{
     public void onFix(Character character) {
         sprite.setTexture(new Texture(GameConstants.PRINTER_FILE_PATH));
     }
+
 }

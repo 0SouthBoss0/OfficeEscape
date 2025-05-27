@@ -2,8 +2,10 @@
 package com.officescape.unit;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.officescape.GameConstants;
+import com.officescape.item.BreakableItem;
 
 import java.util.Random;
 
@@ -11,7 +13,10 @@ public abstract class NPC extends Character {
     private float moveTimer = 0;
     private float delay = 0;
     private static final Random random = new Random();
-
+    private static BreakableItem currentBrokenItem = null;
+    private boolean isRespondingToEmergency = false;
+    private float fixingTimer = 0;
+    private static final float FIXING_TIME = 5f;
     public GameConstants.Position[] NPC_WAYPOINTS;
 
     public NPC(String texturePath, int x, int y, GameConstants.Position[] waypoints) {
@@ -19,22 +24,55 @@ public abstract class NPC extends Character {
         this.NPC_WAYPOINTS = waypoints;
     }
 
+    public static void reportBrokenItem(BreakableItem item) {
+        if (currentBrokenItem == null) {
+            currentBrokenItem = item;
+        }
+    }
+
     @Override
     public void update(float deltaTime, Array<Rectangle> walls) {
-        onCustomUpdate(deltaTime, walls);
+        if (currentBrokenItem != null) {
+            handleEmergencyResponse(deltaTime, walls);
+        } else {
+            onCustomUpdate(deltaTime, walls);
+        }
         super.update(deltaTime, walls);
     }
 
     protected abstract void onCustomUpdate(float deltaTime, Array<Rectangle> walls);
 
+    private void handleEmergencyResponse(float deltaTime, Array<Rectangle> walls) {
+        Vector2 targetPos = currentBrokenItem.getPosition();
+        float distanceToItem = Vector2.dst(getX(), getY(), targetPos.x, targetPos.y);
+
+        if (!isRespondingToEmergency) {
+            this.goToCoords(targetPos.x, targetPos.y);
+            isRespondingToEmergency = true;
+            return;
+        }
+
+        if (this instanceof Itshnik &&distanceToItem < 20f) {
+            fixingTimer += deltaTime;
+            if (fixingTimer >= FIXING_TIME) {
+                currentBrokenItem.onFix(this);
+                currentBrokenItem = null;
+                fixingTimer = 0;
+                isRespondingToEmergency = false;
+
+            }
+        }
+    }
 
     protected void walkThrough(float deltaTime) {
-        if (!isMovingToTarget) {
-            moveTimer += deltaTime;
-            if (moveTimer >= delay) {
-                moveTimer = 0;
-                moveToRandomWaypoint();
-                delay = generateDelay();
+        if (currentBrokenItem == null) {
+            if (!isMovingToTarget) {
+                moveTimer += deltaTime;
+                if (moveTimer >= delay) {
+                    moveTimer = 0;
+                    moveToRandomWaypoint();
+                    delay = generateDelay();
+                }
             }
         }
     }
