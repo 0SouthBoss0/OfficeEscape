@@ -124,6 +124,17 @@ public class MainScreen implements Screen {
                 furnitureRects.add(rect);
             }
         }
+        for (int i = 0; i < items.size; i++) {
+            Item item = items.get(i);
+            if (item instanceof Wardrobe || item instanceof Printer || item instanceof Trash) {
+                float[] vertices = item.sprite.getVertices();
+                float minX = Math.min(Math.min(vertices[0], vertices[5]), Math.min(vertices[10], vertices[15]));
+                float maxX = Math.max(Math.max(vertices[0], vertices[5]), Math.max(vertices[10], vertices[15]));
+                float minY = Math.min(Math.min(vertices[1], vertices[6]), Math.min(vertices[11], vertices[16]));
+                float maxY = Math.max(Math.max(vertices[1], vertices[6]), Math.max(vertices[11], vertices[16]));
+                furnitureRects.add(new Rectangle(minX, minY, maxX - minX, maxY - minY));
+            }
+        }
         TiledGraph.init(GameConstants.TILED_GRAPH_WIDTH, GameConstants.TILED_GRAPH_HEIGHT,
             GameConstants.TILED_SIZE, collisionRects, furnitureRects);
         player.updateGraphWithNewWalls();
