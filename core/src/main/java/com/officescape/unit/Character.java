@@ -37,7 +37,7 @@ public abstract class Character {
     // for a* algo
     private GraphPath<Vector2> path;
     private int currentPathIndex;
-    protected boolean isMovingToTarget = false;
+    public boolean isMovingToTarget = false;
     private TiledGraph mapGraph;
     private IndexedAStarPathFinder<Vector2> pathFinder;
     private final Heuristic<Vector2> heuristic;

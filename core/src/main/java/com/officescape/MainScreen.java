@@ -227,8 +227,8 @@ public class MainScreen implements Screen {
         }
 
         player.update(delta, collisionRects);
-        for (NPC npc : npcs) {
-            npc.update(delta, collisionRects);
+        for (int i = 0; i< npcs.size; i++) {
+            npcs.get(i).update(delta, collisionRects);
         }
 
         camera.update();

@@ -10,6 +10,17 @@ import com.officescape.item.BreakableItem;
 import java.util.Random;
 
 public abstract class NPC extends Character {
+    public enum NPCState {
+        NORMAL,
+        STUNNED,
+        PANIC
+    }
+    public NPCState currentState = NPCState.NORMAL;
+    public float stunTimer = 0;
+    private float panicTimer = 0;
+    private static final float STUN_DURATION = 3f;
+    private static final float PANIC_DURATION = 15f;
+
     private float moveTimer = 0;
     private float delay = 0;
     private static final Random random = new Random();
@@ -32,11 +43,42 @@ public abstract class NPC extends Character {
 
     @Override
     public void update(float deltaTime, Array<Rectangle> walls) {
-        if (currentBrokenItem != null) {
-            handleEmergencyResponse(deltaTime, walls);
-        } else {
-            isResponding = false;
-            onCustomUpdate(deltaTime, walls);
+        switch (currentState) {
+            case STUNNED:
+                stunTimer += deltaTime;
+                if (stunTimer >= STUN_DURATION) {
+                    currentState = NPCState.PANIC;
+                    panicTimer = 0;
+                    // При панике все NPC начинают быстро перемещаться
+                    for (NPC npc : NPCFactory.getInstance().getAllNPCs()) {
+                        if (npc != this) {
+                            npc.currentState = NPCState.PANIC;
+                            npc.panicTimer = 0;
+                        }
+                    }
+                }
+                break;
+            case PANIC:
+                panicTimer += deltaTime;
+                if (panicTimer >= PANIC_DURATION) {
+                    currentState = NPCState.NORMAL;
+                    moveTimer = 0;
+                    delay = generateDelay(); // Возвращаем нормальную задержку
+                } else {
+                    // В режиме паники NPC быстро перемещаются между точками без задержки
+                    if (!isMovingToTarget) {
+                        moveToRandomWaypoint();
+                    }
+                }
+                break;
+            case NORMAL:
+                if (currentBrokenItem != null) {
+                    handleEmergencyResponse(deltaTime, walls);
+                } else {
+                    isResponding = false;
+                    onCustomUpdate(deltaTime, walls);
+                }
+                break;
         }
         super.update(deltaTime, walls);
     }
@@ -44,6 +86,8 @@ public abstract class NPC extends Character {
     protected abstract void onCustomUpdate(float deltaTime, Array<Rectangle> walls);
 
     private void handleEmergencyResponse(float deltaTime, Array<Rectangle> walls) {
+        if (currentState != NPCState.NORMAL) return;
+
         Vector2 targetPos = currentBrokenItem.getPosition();
         float distanceToItem = Vector2.dst(getX(), getY(), targetPos.x, targetPos.y);
 
@@ -62,7 +106,7 @@ public abstract class NPC extends Character {
     }
 
     protected void walkThrough(float deltaTime) {
-        if (currentBrokenItem == null) {
+        if (currentBrokenItem == null && currentState == NPCState.NORMAL) {
             if (!isMovingToTarget) {
                 moveTimer += deltaTime;
                 if (moveTimer >= delay) {

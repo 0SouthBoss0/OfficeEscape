@@ -76,7 +76,9 @@ public class Stapler extends Item implements TakeableItem, ThrowableItem {
     private boolean checkNPCHit(float x, float y) {
         for (NPC npc : NPCFactory.getInstance().getAllNPCs()) {
             if (npc.getCollisionBox().contains(x, y)) {
-                System.out.println("KILLED: " + npc.getClass().getSimpleName());
+                npc.currentState = NPC.NPCState.STUNNED;
+                npc.stunTimer = 0;
+                npc.isMovingToTarget = false; // Останавливаем текущее движение
                 return true;
             }
         }
