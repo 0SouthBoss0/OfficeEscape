@@ -51,7 +51,7 @@ public abstract class NPC extends Character {
             this.goToCoords(targetPos.x, targetPos.y);
             isResponding = true;
         }
-        if (this instanceof Itshnik && distanceToItem < 20f) {
+        if (this instanceof Itshnik && distanceToItem < 1.5 * GameConstants.MAX_APPROACH_DISTANCE) {
             fixingTimer += deltaTime;
             if (fixingTimer >= FIXING_TIME) {
                 currentBrokenItem.onFix(this);

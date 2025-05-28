@@ -14,12 +14,15 @@ import com.officescape.unit.Character;
 import com.officescape.unit.NPC;
 import com.officescape.unit.Player;
 
+import java.util.Random;
+
 public abstract class Item {
     public Sprite sprite;
     public boolean isTaken = false;
     protected float scale;
     public boolean isUsed = false;
     boolean isBroken = false;
+    private static final Random random = new Random();
 
 
     public Item(String texturePath, float x, float y, float scale, Character.Direction direction) {
@@ -120,8 +123,24 @@ public abstract class Item {
         }
         return false;
     }
-
     public Vector2 getPosition() {
-        return new Vector2(getX() + 50, getY() + 50);
+        TiledGraph graph = TiledGraph.getInstance();
+        Vector2 validPosition = null;
+        int attempts = 0;
+
+        while (validPosition == null && attempts < GameConstants.MAX_ATTEMPTS_WALL) {
+            float angle = random.nextFloat() * 360f;
+            float distance = GameConstants.MIN_APPROACH_DISTANCE +
+                random.nextFloat() * (GameConstants.MAX_APPROACH_DISTANCE - GameConstants.MIN_APPROACH_DISTANCE);
+            float x = getX() + (float) Math.cos(Math.toRadians(angle)) * distance;
+            float y = getY() + (float) Math.sin(Math.toRadians(angle)) * distance;
+            Vector2 position = new Vector2(x, y);
+            if (!graph.isWall(position, GameConstants.MAX_PLAYER_WIDTH, GameConstants.MAX_PLAYER_HEIGHT) &&
+                !graph.isFurniture(position, GameConstants.MAX_PLAYER_WIDTH, GameConstants.MAX_PLAYER_HEIGHT)) {
+                validPosition = position;
+            }
+            attempts++;
+        }
+        return validPosition != null ? validPosition : new Vector2(getX(), getY());
     }
 }

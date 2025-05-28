@@ -54,6 +54,9 @@ public class GameConstants {
     public static final float NPC_FOV_ANGLE = 90f;
     public static final float NPC_MIN_DELAY = 5f;
     public static final float NPC_MAX_DELAY = 15f;
+    public static final float MIN_APPROACH_DISTANCE = 30f;
+    public static final float MAX_APPROACH_DISTANCE = 50f;
+    public static final float MAX_ATTEMPTS_WALL = 20;
 
     // NPC start positions
     public static final Position BABKA_START = new Position(1120, 629, Character.Direction.RIGHT);
@@ -98,14 +101,14 @@ public class GameConstants {
 
     // NPC waypoints
     public static final Position[] BABKA_WAYPOINTS = {BABKA_START};
-    public static final Position[] BOSS_WAYPOINTS = {BOSS_START, COFFEE_CORNER, TOILET, SMALL_MEET_CENTER,BOSS_WARDROBE, MEET_4};
-    public static final Position[] CAT_WAYPOINTS = {CAT_START, SERVER_BOTTOM, SMALL_MEET_LEFT,BABKA_WARDROBE};
+    public static final Position[] BOSS_WAYPOINTS = {BOSS_START, COFFEE_CORNER, TOILET, SMALL_MEET_CENTER, BOSS_WARDROBE, MEET_4};
+    public static final Position[] CAT_WAYPOINTS = {CAT_START, SERVER_BOTTOM, SMALL_MEET_LEFT, BABKA_WARDROBE};
     public static final Position[] COLLEGUE1_WAYPOINTS = {COLLEAGUE1_START, COFFEE_EAT1, SMALL_MEET_RIGHT};
-    public static final Position[] COLLEGUE2_WAYPOINTS = {COLLEAGUE2_START, PLAYER_WARDROBE, MEET_1, COFFEE_EAT2 };
-    public static final Position[] COLLEGUE3_WAYPOINTS = {COLLEAGUE3_START, TECHNICAL_ROOM1, NEAR_PRINTER1  };
-    public static final Position[] COLLEGUE4_WAYPOINTS = {COLLEAGUE4_START, NEAR_AQUARIUM, MEET_2  };
-    public static final Position[] COLLEGUE5_WAYPOINTS = {COLLEAGUE5_START,SOFA, NEAR_PRINTER2, TECHNICAL_ROOM2 };
-    public static final Position[] COLLEGUE6_WAYPOINTS = {COLLEAGUE6_START, ARMCHAIR, AIRHOCKEY, MEET_3  };
+    public static final Position[] COLLEGUE2_WAYPOINTS = {COLLEAGUE2_START, PLAYER_WARDROBE, MEET_1, COFFEE_EAT2};
+    public static final Position[] COLLEGUE3_WAYPOINTS = {COLLEAGUE3_START, TECHNICAL_ROOM1, NEAR_PRINTER1};
+    public static final Position[] COLLEGUE4_WAYPOINTS = {COLLEAGUE4_START, NEAR_AQUARIUM, MEET_2};
+    public static final Position[] COLLEGUE5_WAYPOINTS = {COLLEAGUE5_START, SOFA, NEAR_PRINTER2, TECHNICAL_ROOM2};
+    public static final Position[] COLLEGUE6_WAYPOINTS = {COLLEAGUE6_START, ARMCHAIR, AIRHOCKEY, MEET_3};
     public static final Position[] ITSHNIK_WAYPOINTS = {ITSHNIK_START, SERVER_TOP, COFFEE_MACHINE_PLACE, IT_WARDROBE};
 
     // Items params
@@ -144,7 +147,7 @@ public class GameConstants {
     public static final float CRASHED_COFFEE_MACHINE_SCALE = 0.65f;
     public static final float PRINTER_FILE_SCALE = 1f;
     public static final float CRASHED_PRINTER_SCALE = 1f;
-    public static final float TRASH_FILE_SCALE =1f;
+    public static final float TRASH_FILE_SCALE = 1f;
     public static final float FIRE_TRASH_SCALE = 1f;
     public static final float BUTTON_SERVER_SCALE = 0.8f;
 
