@@ -44,6 +44,10 @@ public class GameProgress {
         }
     }
 
+    public BitmapFont getFont() {
+        return font;
+    }
+
     public void render(SpriteBatch batch) {
         float padding = GameConstants.PADDING_PROGRESS;
         float lineHeight = GameConstants.LINE_HEIGHT_PROGRESS;
@@ -106,5 +110,14 @@ public class GameProgress {
     public void dispose() {
         font.dispose();
         shapeRenderer.dispose();
+    }
+
+    public boolean areAllQuestsCompleted() {
+        for (Quest quest : quests) {
+            if (!quest.completed) {
+                return false;
+            }
+        }
+        return true;
     }
 }

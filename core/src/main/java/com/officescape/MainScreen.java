@@ -6,6 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -37,18 +39,28 @@ public class MainScreen implements Screen {
     private OrthogonalTiledMapRenderer tiledMapRenderer;
     private final Array<Rectangle> collisionRects = new Array<>();
     private final Array<Rectangle> furnitureRects = new Array<>();
+    private final Array<Rectangle> forbiddenZones = new Array<>();
     private Viewport viewport;
     private boolean showDebug = false;
     private Array<Item> items;
     private ShapeRenderer itemShapeRenderer;
     private GameProgress gameProgress;
     private InventoryPanel inventoryPanel;
+    private boolean gameOver = false;
+    private boolean gameWon = false;
+    private OfficeEscape game;
+
+    public MainScreen(OfficeEscape game) {
+        this.game = game;
+    }
 
     @Override
     public void show() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         player = new Player(GameConstants.PLAYER_FILE_PATH);
+
+        forbiddenZones.add(new Rectangle(100, 100, 50, 50));
 
         NPCFactory npcFactory = NPCFactory.getInstance();
         npcFactory.setPlayer(player);
@@ -145,6 +157,32 @@ public class MainScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        if (gameOver || gameWon) {
+            renderGameEndScreen();
+            return;
+        }
+
+        if (gameProgress.areAllQuestsCompleted()) {
+            gameWon = true;
+            return;
+        }
+
+        // Проверка на проигрыш
+        for (NPC npc : npcs) {
+            if (npc.currentState == NPC.NPCState.PANIC && npc.isPlayerNearby(collisionRects)) {
+                gameOver = true;
+                return;
+            }
+        }
+
+        for (Rectangle zone : forbiddenZones) {
+            if (player.getCollisionBox().overlaps(zone) && isPlayerSeenByAnyNPC()) {
+                gameOver = true;
+                return;
+            }
+        }
+
+
         Array<Item> itemsToRemove = new Array<>();
         for (Item item : items) {
             if (item instanceof Stapler stapler) {
@@ -227,7 +265,7 @@ public class MainScreen implements Screen {
         }
 
         player.update(delta, collisionRects);
-        for (int i = 0; i< npcs.size; i++) {
+        for (int i = 0; i < npcs.size; i++) {
             npcs.get(i).update(delta, collisionRects);
         }
 
@@ -330,6 +368,13 @@ public class MainScreen implements Screen {
             );
         }
         shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeType.Filled);
+        shapeRenderer.setColor(1, 0, 1, 0.3f); // Фиолетовый с прозрачностью
+        for (Rectangle zone : forbiddenZones) {
+            shapeRenderer.rect(zone.x, zone.y, zone.width, zone.height);
+        }
+        shapeRenderer.end();
     }
 
     @Override
@@ -351,6 +396,7 @@ public class MainScreen implements Screen {
         }
         gameProgress.dispose();
         inventoryPanel.dispose();
+        npcs.clear();
 
     }
 
@@ -364,5 +410,81 @@ public class MainScreen implements Screen {
 
     @Override
     public void hide() {
+    }
+
+    private boolean isPlayerSeenByAnyNPC() {
+        for (NPC npc : npcs) {
+            if (npc.isPlayerNearby(collisionRects)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void renderGameEndScreen() {
+        // Приостанавливаем движение всех объектов
+        player.setCanMove(false);
+
+        // Параметры рамки
+        float frameWidth = 800;
+        float frameHeight = 500;
+        float frameX = camera.position.x - frameWidth / 2;
+        float frameY = camera.position.y - frameHeight / 2;
+        float padding = 20;
+
+        // Рендерим полупрозрачную рамку
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeType.Filled);
+
+        // Внешняя рамка (темная)
+        shapeRenderer.setColor(0, 0, 0, 0.7f);
+        shapeRenderer.rect(frameX - 5, frameY - 5, frameWidth + 10, frameHeight + 10);
+
+        // Внутренняя рамка (цвет зависит от победы/поражения)
+        if (gameWon) {
+            shapeRenderer.setColor(0, 0.8f, 0, 0.9f); // Зеленый для победы
+        } else {
+            shapeRenderer.setColor(0.8f, 0, 0, 0.9f); // Красный для поражения
+        }
+        shapeRenderer.rect(frameX, frameY, frameWidth, frameHeight);
+        shapeRenderer.end();
+
+        // Текст сообщения
+        batch.begin();
+        String message = gameWon ? "ПОБЕДА! Все квесты выполнены!" : "ПОРАЖЕНИЕ! Вас обнаружили!";
+        String restartMessage = "Нажмите R для перезапуска";
+
+        // Используем шрифт из GameProgress
+        BitmapFont font = gameProgress.getFont(); // Нужно добавить геттер в GameProgress
+
+        // Рассчитываем позицию текста по центру
+        GlyphLayout layout = new GlyphLayout();
+        layout.setText(font, message);
+        float textX = camera.position.x - layout.width / 2;
+        float textY = camera.position.y + layout.height / 2;
+
+        font.draw(batch, message, textX, textY);
+
+        // Текст перезапуска ниже
+        layout.setText(font, restartMessage);
+        textX = camera.position.x - layout.width / 2;
+        textY = camera.position.y - layout.height;
+        font.draw(batch, restartMessage, textX, textY);
+
+        batch.end();
+
+        // Возможность перезапустить игру
+        // Возможность перезапустить игру
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            gameOver = false;
+            gameWon = false;
+
+            // Сбрасываем синглтон TiledGraph
+            TiledGraph.reset();
+
+            // Перезагрузка экрана
+            dispose();
+            game.setScreen(new MainScreen(game));
+        }
     }
 }

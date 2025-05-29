@@ -136,9 +136,9 @@ public abstract class NPC extends Character {
         }
     }
 
-    protected boolean isPlayerNearby(Array<Rectangle> walls) {
+    public boolean isPlayerNearby(Array<Rectangle> walls) {
         Player player = findPlayerInRange();
-        if (player != null && this.canSee(player, walls)) {
+        if (player != null && player.visible && this.canSee(player, walls)) {
             System.out.println(this.getClass().getSimpleName() + " sees me!");
             return true;
         }

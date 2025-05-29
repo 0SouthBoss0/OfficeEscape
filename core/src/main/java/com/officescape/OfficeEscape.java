@@ -8,6 +8,9 @@ import com.badlogic.gdx.Game;
 public class OfficeEscape extends Game {
     @Override
     public void create() {
-        setScreen(new MainScreen());
+        if (screen != null) {
+            screen.dispose();
+        }
+        setScreen(new MainScreen(this));
     }
 }

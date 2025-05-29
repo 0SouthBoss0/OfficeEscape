@@ -48,6 +48,10 @@ public class TiledGraph implements IndexedGraph<Vector2> {
         instance.buildConnections();
     }
 
+    public static synchronized void reset() {
+        instance = null;
+    }
+
     public static synchronized TiledGraph getInstance() {
         if (instance == null) {
             throw new IllegalStateException("TiledGraph is not initialized! Call init() first.");

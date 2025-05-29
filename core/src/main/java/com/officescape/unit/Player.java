@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.officescape.GameConstants;
 
 public class Player extends Character {
-    private boolean visible = true;
+    protected boolean visible = true;
     private boolean canMove = true;
     public boolean isHidden = false;
 
