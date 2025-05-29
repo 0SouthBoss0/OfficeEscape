@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -49,6 +50,8 @@ public class MainScreen implements Screen {
     private boolean gameOver = false;
     private boolean gameWon = false;
     private OfficeEscape game;
+    private Texture gameOverTexture = new Texture(Gdx.files.internal("potracheno.png"));
+    private Texture gameWonTexture = new Texture(Gdx.files.internal("potracheno.png"));
 
     public MainScreen(OfficeEscape game) {
         this.game = game;
@@ -453,7 +456,6 @@ public class MainScreen implements Screen {
         batch.begin();
         String message = gameWon ? "ПОБЕДА! Все квесты выполнены!" : "ПОРАЖЕНИЕ! Вас обнаружили!";
         String restartMessage = "Нажмите R для перезапуска";
-
         // Используем шрифт из GameProgress
         BitmapFont font = gameProgress.getFont(); // Нужно добавить геттер в GameProgress
 
@@ -473,7 +475,19 @@ public class MainScreen implements Screen {
 
         batch.end();
 
-        // Возможность перезапустить игру
+        batch.begin();
+        // Рисуем соответствующую текстуру
+        if (gameWon) {
+            batch.draw(gameWonTexture,
+                camera.position.x - gameWonTexture.getWidth() / 2,
+                camera.position.y - gameWonTexture.getHeight() / 2);
+        } else {
+            batch.draw(gameOverTexture,
+                camera.position.x - gameOverTexture.getWidth() / 2,
+                camera.position.y - gameOverTexture.getHeight() / 2);
+        }
+        batch.end();
+
         // Возможность перезапустить игру
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             gameOver = false;
