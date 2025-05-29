@@ -51,7 +51,9 @@ public abstract class NPC extends Character {
     @Override
     public void draw(SpriteBatch batch) {
         if (currentState == NPCState.STUNNED) {
-            stars.setPosition(this.sprite.getX()+GameConstants.NPC_STUNNED_OFFSET_HORIZONTAL, this.sprite.getY()+GameConstants.NPC_STUNNED_OFFSET_VERTICAL);
+            float starsX = getX() - stars.getWidth() / 2;
+            float starsY = getY() + sprite.getHeight() * GameConstants.NPC_STUNNED_OFFSET;
+            stars.setPosition(starsX, starsY);
             stars.draw(batch);
         }
         sprite.draw(batch);
