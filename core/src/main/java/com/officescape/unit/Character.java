@@ -18,7 +18,7 @@ import com.officescape.ManhattanDistance;
 import com.officescape.TiledGraph;
 
 public abstract class Character {
-    private final Sprite sprite;
+    protected final Sprite sprite;
     private final Rectangle collisionBox;
     private float scale = GameConstants.PLAYER_DEFAULT_SCALE;
 

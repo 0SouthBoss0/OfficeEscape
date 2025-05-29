@@ -1,6 +1,11 @@
 
 package com.officescape.unit;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.GeometryUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -15,6 +20,7 @@ public abstract class NPC extends Character {
         STUNNED,
         PANIC
     }
+
     public NPCState currentState = NPCState.NORMAL;
     public float stunTimer = 0;
     private float panicTimer = 0;
@@ -29,6 +35,7 @@ public abstract class NPC extends Character {
     private float fixingTimer = 0;
     private static final float FIXING_TIME = 5f;
     public GameConstants.Position[] NPC_WAYPOINTS;
+    private Sprite stars = new Sprite(new Texture(Gdx.files.internal(GameConstants.REACTION_STARS_FILE_PATH)));
 
     public NPC(String texturePath, int x, int y, GameConstants.Position[] waypoints) {
         super(texturePath, x, y);
@@ -39,6 +46,15 @@ public abstract class NPC extends Character {
         if (currentBrokenItem == null) {
             currentBrokenItem = item;
         }
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+        if (currentState == NPCState.STUNNED) {
+            stars.setPosition(this.sprite.getX()+GameConstants.NPC_STUNNED_OFFSET_HORIZONTAL, this.sprite.getY()+GameConstants.NPC_STUNNED_OFFSET_VERTICAL);
+            stars.draw(batch);
+        }
+        sprite.draw(batch);
     }
 
     @Override
