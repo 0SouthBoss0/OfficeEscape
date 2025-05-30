@@ -52,6 +52,9 @@ public class MainScreen implements Screen {
     private OfficeEscape game;
     private Texture gameOverTexture = new Texture(Gdx.files.internal("potracheno.png"));
     private Texture gameWonTexture = new Texture(Gdx.files.internal("potracheno.png"));
+    private float coffeeSpeedBoostTimer = 0;
+    private boolean isCoffeeBoostActive = false;
+    private float originalPlayerSpeed;
 
     public MainScreen(OfficeEscape game) {
         this.game = game;
@@ -170,6 +173,14 @@ public class MainScreen implements Screen {
             return;
         }
 
+        if (isCoffeeBoostActive) {
+            coffeeSpeedBoostTimer -= delta;
+            if (coffeeSpeedBoostTimer <= 0) {
+                player.speed = originalPlayerSpeed;
+                isCoffeeBoostActive = false;
+            }
+        }
+
         // Проверка на проигрыш
         for (NPC npc : npcs) {
             if (npc.currentState == NPC.NPCState.PANIC && npc.isPlayerNearby(collisionRects)) {
@@ -257,6 +268,21 @@ public class MainScreen implements Screen {
                         }
                         break;
                     }
+                }
+            }
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            for (Item item : items) {
+                if (item instanceof Coffee) {
+                    if (!isCoffeeBoostActive) {
+                        items.removeValue(item, true);
+                        originalPlayerSpeed = player.speed;
+                        player.speed *= 2;
+                        isCoffeeBoostActive = true;
+                        coffeeSpeedBoostTimer = 15f;
+                    }
+                    break;
                 }
             }
         }
