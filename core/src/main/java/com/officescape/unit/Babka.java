@@ -15,4 +15,7 @@ public class Babka extends NPC {
         isPlayerNearby(walls);
     }
 
+    @Override
+    protected void handleEmergencyResponse(float deltaTime, Array<Rectangle> walls) {
+    }
 }

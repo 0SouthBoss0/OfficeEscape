@@ -103,7 +103,7 @@ public abstract class NPC extends Character {
 
     protected abstract void onCustomUpdate(float deltaTime, Array<Rectangle> walls);
 
-    private void handleEmergencyResponse(float deltaTime, Array<Rectangle> walls) {
+    protected void handleEmergencyResponse(float deltaTime, Array<Rectangle> walls) {
         if (currentState != NPCState.NORMAL) return;
 
         Vector2 targetPos = currentBrokenItem.getPosition();
