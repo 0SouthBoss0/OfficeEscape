@@ -150,13 +150,13 @@
   <object id="70" x="968" y="0" width="15" height="175.5"/>
   <object id="71" x="979" y="159.5" width="28.5" height="15.5"/>
   <object id="72" x="970.5" y="0" width="116" height="14.5"/>
-  <object id="73" x="1071.5" y="14" width="16.5" height="49.5"/>
-  <object id="74" x="1081.5" y="36" width="61.5" height="15.5"/>
+  <object id="73" x="1071.5" y="14" width="16.5" height="47.25"/>
+  <object id="74" x="1081.5" y="36" width="61.5" height="12.75"/>
   <object id="75" x="1129.5" y="35.5" width="14" height="27.5"/>
-  <object id="76" x="1071.5" y="111.5" width="16" height="63.75"/>
+  <object id="76" x="1071.5" y="113.25" width="16" height="62"/>
   <object id="77" x="1055.5" y="160.5" width="32" height="15"/>
-  <object id="78" x="1087.5" y="131" width="56" height="14.5"/>
-  <object id="79" x="1128" y="112" width="16" height="33"/>
+  <object id="78" x="1087.5" y="132.75" width="56" height="12.75"/>
+  <object id="79" x="1130" y="112" width="14" height="33"/>
   <object id="81" x="1152.5" y="-0.5" width="8" height="17"/>
   <object id="82" x="1152" y="8.25" width="23.5" height="7.75"/>
   <object id="83" x="1216.13" y="7.5" width="23.375" height="8.5"/>
@@ -211,6 +211,6 @@
   <object id="136" x="1184" y="256.25" width="42.5" height="90.5"/>
   <object id="137" x="1221" y="412" width="43" height="84.5"/>
   <object id="138" x="1232" y="603" width="33.3333" height="100.667"/>
-  <object id="139" x="1136.25" y="63" width="7.5625" height="48.5"/>
+  <object id="139" x="1138.25" y="63" width="5.5625" height="48.5"/>
  </objectgroup>
 </map>
