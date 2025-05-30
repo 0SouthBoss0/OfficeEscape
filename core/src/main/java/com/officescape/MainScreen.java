@@ -485,47 +485,51 @@ public class MainScreen implements Screen {
 
         // Внутренняя рамка (цвет зависит от победы/поражения)
         if (gameWon) {
-            shapeRenderer.setColor(0, 0.8f, 0, 0.9f); // Зеленый для победы
+            shapeRenderer.setColor(161/255f, 159/255f, 124/255f, 0.9f);
         } else {
-            shapeRenderer.setColor(0.8f, 0, 0, 0.9f); // Красный для поражения
+            shapeRenderer.setColor(79/ 255f, 82 / 255f, 119 / 255f, 0.9f);
         }
         shapeRenderer.rect(frameX, frameY, frameWidth, frameHeight);
         shapeRenderer.end();
 
         // Текст сообщения
         batch.begin();
-        String message = gameWon ? "ПОБЕДА! Все квесты выполнены!" : "Вас обнаружили!\n +8 часов переработки";
+
+        String message = gameWon ? "ПОБЕДА! Все квесты выполнены!" : "Вас обнаружили!";
         String restartMessage = "Нажмите R для перезапуска";
-        // Используем шрифт из GameProgress
-        BitmapFont font = gameProgress.getFont(); // Нужно добавить геттер в GameProgress
+        String winLoseText = gameWon ? "YOU WIN" : "GAME OVER";
 
-        // Рассчитываем позицию текста по центру
-        GlyphLayout layout = new GlyphLayout();
-        layout.setText(font, message);
-        float textX = camera.position.x - layout.width / 2;
-        float textY = camera.position.y + layout.height / 2;
 
-        font.draw(batch, message, textX, textY);
+        BitmapFont font = gameProgress.getFont();
+        BitmapFont bigFont = new BitmapFont(font.getData(), font.getRegion(), font.usesIntegerPositions()); // Использует стандартный шрифт LibGDX
+        bigFont.getData().setScale(3.0f);
 
-        // Текст перезапуска ниже
-        layout.setText(font, restartMessage);
-        textX = camera.position.x - layout.width / 2;
-        textY = camera.position.y - layout.height;
-        font.draw(batch, restartMessage, textX, textY);
+        GlyphLayout bigLayout = new GlyphLayout(bigFont, winLoseText);
 
-        batch.end();
+        float bigTextX = camera.position.x - bigLayout.width / 2;
+        float bigTextY = camera.position.y + 50; // Выше центра
 
-        batch.begin();
-        // Рисуем соответствующую текстуру
-        if (gameWon) {
-            batch.draw(gameWonTexture,
-                camera.position.x - gameWonTexture.getWidth() / 2,
-                camera.position.y - gameWonTexture.getHeight() / 2);
-        } else {
-            batch.draw(gameOverTexture,
-                camera.position.x - gameOverTexture.getWidth() / 2,
-                camera.position.y - gameOverTexture.getHeight() / 2);
-        }
+        bigFont.setColor(gameWon ?
+            new Color(33 / 255f, 59 / 255f, 37 / 255f, 0.9f) :
+              new Color(23 / 255f, 14 / 255f, 25 / 255f, 0.9f));
+        bigFont.draw(batch, winLoseText, bigTextX, bigTextY);
+
+
+        font.getData().setScale(1.0f);
+        GlyphLayout mainLayout = new GlyphLayout(font, message);
+
+        float mainTextX = camera.position.x - mainLayout.width / 2;
+        float mainTextY = bigTextY - 100;
+
+        font.draw(batch, message, mainTextX, mainTextY);
+
+        GlyphLayout restartLayout = new GlyphLayout(font, restartMessage);
+
+        float restartTextX = camera.position.x - restartLayout.width / 2;
+        float restartTextY = mainTextY - 50;
+
+        font.draw(batch, restartMessage, restartTextX, restartTextY);
+
         batch.end();
 
         // Возможность перезапустить игру
