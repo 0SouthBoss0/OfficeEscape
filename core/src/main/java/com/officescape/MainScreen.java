@@ -231,6 +231,10 @@ public class MainScreen implements Screen {
                 }
                 if (item.canBeBroken(player)) {
                     ((BreakableItem) item).onBreak(player);
+                    if (isPlayerSeenByAnyNPC()) {
+                        gameOver = true;
+                        return;
+                    }
                     NPC.reportBrokenItem((BreakableItem) item);
                     break;
                 }
