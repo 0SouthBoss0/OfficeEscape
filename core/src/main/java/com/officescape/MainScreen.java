@@ -113,7 +113,6 @@ public class MainScreen implements Screen {
         items.add(new TurnStile(GameConstants.TURNSTILE.x(), GameConstants.TURNSTILE.y(), GameConstants.TURNSTILE.direction()));
         items.add(new ButtonServer(GameConstants.BUTTON_SERVER.x(), GameConstants.BUTTON_SERVER.y(), GameConstants.BUTTON_SERVER.direction()));
 
-        gameProgress = new GameProgress(camera);
         inventoryPanel = new InventoryPanel(camera, items);
         int mapWidth = tiledMap.getProperties().get("width", Integer.class);
         int mapHeight = tiledMap.getProperties().get("height", Integer.class);

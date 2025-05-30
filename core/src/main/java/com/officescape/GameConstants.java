@@ -2,6 +2,9 @@ package com.officescape;
 
 import com.officescape.unit.Character;
 
+/**
+ * Class for managing game parameters
+ */
 public class GameConstants {
     // Player
     public static final float PLAYER_DEFAULT_SPEED = 200f;
@@ -112,7 +115,8 @@ public class GameConstants {
 
     // Items params
     public static final float ITEM_PICKUP_RANGE = 50f;
-    public static final float ITEM_HIGHLIGHT_RANGE = 50f;
+    public static final float STAPLER_DISPOSE_DELAY = 2f;
+    public static final float STAPLER_FLIGHT_SPEED = 500f;
 
     // Items textures
     public static final String STAPLER_FILE_PATH = "items/stapler.png";
@@ -200,8 +204,6 @@ public class GameConstants {
     public static int PADDING_FOR_ICON_INVENTORY = 30;
     public static int PADDING_FOR_NAME_INVENTORY = 15;
 
-    public static final float STAPLER_DISPOSE_DELAY = 2f;
-    public static final float STAPLER_FLIGHT_SPEED = 500f;
     //Rules Screen
     public static final int FONT_SIZE_RULES = 18;
     public static final float PADDING_RULES = 20f;
