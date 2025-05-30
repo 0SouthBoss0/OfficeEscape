@@ -123,6 +123,7 @@ public abstract class Item {
         }
         return false;
     }
+
     public Vector2 getPosition() {
         TiledGraph graph = TiledGraph.getInstance();
         Vector2 validPosition = null;
@@ -140,6 +141,9 @@ public abstract class Item {
                 validPosition = position;
             }
             attempts++;
+        }
+        if (!(attempts < GameConstants.MAX_ATTEMPTS_WALL)) {
+            System.out.println("CRITICAL ERROR: ATTEMPTS >= MAX");
         }
         return validPosition != null ? validPosition : new Vector2(getX(), getY());
     }
