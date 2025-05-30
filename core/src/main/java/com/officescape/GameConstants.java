@@ -58,6 +58,7 @@ public class GameConstants {
     public static final float MAX_APPROACH_DISTANCE = 50f;
     public static final float MAX_ATTEMPTS_WALL = 20;
     public static final float NPC_STUNNED_OFFSET = 0.8f;
+    public static final float BABKA_SLEEP_OFFSET = 0.8f;
 
     // NPC start positions
     public static final Position BABKA_START = new Position(1120, 629, Character.Direction.RIGHT);
