@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.GeometryUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -69,10 +68,8 @@ public abstract class NPC extends Character {
                     panicTimer = 0;
                     // При панике все NPC начинают быстро перемещаться
                     for (NPC npc : NPCFactory.getInstance().getAllNPCs()) {
-                        if (npc != this) {
-                            npc.currentState = NPCState.PANIC;
-                            npc.panicTimer = 0;
-                        }
+                        npc.currentState = NPCState.PANIC;
+                        npc.panicTimer = 0;
                     }
                 }
                 break;
