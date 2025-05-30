@@ -100,8 +100,8 @@
   <object id="16" x="0" y="0" width="352" height="14.5455"/>
   <object id="17" x="-0.5" y="16.5" width="16" height="254.5"/>
   <object id="18" x="11" y="256" width="132.5" height="15.5"/>
-  <object id="19" x="208" y="256" width="143.5" height="15"/>
-  <object id="20" x="336" y="0" width="13.5" height="269.5"/>
+  <object id="19" x="208" y="258.25" width="143.5" height="12.75"/>
+  <object id="20" x="337.455" y="0" width="12.0455" height="269.5"/>
   <object id="21" x="0" y="335.5" width="15.5" height="167.5"/>
   <object id="22" x="80" y="336" width="64.5" height="15.5"/>
   <object id="23" x="89" y="335.5" width="15.5" height="167.5"/>
@@ -180,7 +180,7 @@
   <object id="105" x="172.875" y="16.25" width="20.25" height="19.75"/>
   <object id="106" x="16" y="217" width="100" height="38"/>
   <object id="107" x="236" y="16.3636" width="99.6364" height="38.1818"/>
-  <object id="108" x="223.091" y="127.818" width="112.364" height="87.8182"/>
+  <object id="108" x="223.091" y="127.818" width="112.364" height="84.0682"/>
   <object id="109" x="15.75" y="456.75" width="72.75" height="30.75"/>
   <object id="110" x="64" y="351.75" width="24" height="111.75"/>
   <object id="111" x="56.75" y="401.25" width="10.5" height="20"/>
