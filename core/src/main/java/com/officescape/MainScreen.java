@@ -41,7 +41,7 @@ public class MainScreen implements Screen {
     private final Array<Rectangle> collisionRects = new Array<>();
     private final Array<Rectangle> furnitureRects = new Array<>();
     private final Array<Rectangle> forbiddenZones = new Array<>();
-    private final Rectangle cameraZone = new Rectangle(200, 200, 50, 50);
+    private final Rectangle cameraZone = new Rectangle(97, 102, 62, 30);
     private Viewport viewport;
     private boolean showDebug = false;
     private Array<Item> items;
@@ -51,8 +51,7 @@ public class MainScreen implements Screen {
     private boolean gameOver = false;
     private boolean gameWon = false;
     private OfficeEscape game;
-    private Texture gameOverTexture = new Texture(Gdx.files.internal("potracheno.png"));
-    private Texture gameWonTexture = new Texture(Gdx.files.internal("potracheno.png"));
+
     private float coffeeSpeedBoostTimer = 0;
     private boolean isCoffeeBoostActive = false;
     private float originalPlayerSpeed;
@@ -67,7 +66,8 @@ public class MainScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         player = new Player(GameConstants.PLAYER_FILE_PATH);
 
-        forbiddenZones.add(new Rectangle(100, 100, 50, 50));
+        forbiddenZones.add(new Rectangle(97, 60, 62, 80));
+        forbiddenZones.add(new Rectangle(800, 636, 100, 50));
 
         NPCFactory npcFactory = NPCFactory.getInstance();
         npcFactory.setPlayer(player);
@@ -510,8 +510,8 @@ public class MainScreen implements Screen {
         float bigTextY = camera.position.y + 50; // Выше центра
 
         bigFont.setColor(gameWon ?
-            new Color(33 / 255f, 59 / 255f, 37 / 255f, 0.9f) :
-              new Color(23 / 255f, 14 / 255f, 25 / 255f, 0.9f));
+            new Color(85 / 255f, 10 / 255f, 7 / 255f, 0.9f) :
+           new Color(23 / 255f, 14 / 255f, 25 / 255f, 0.9f));
         bigFont.draw(batch, winLoseText, bigTextX, bigTextY);
 
 
