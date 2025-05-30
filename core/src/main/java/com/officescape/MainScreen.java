@@ -68,6 +68,7 @@ public class MainScreen implements Screen {
 
         forbiddenZones.add(new Rectangle(97, 60, 62, 80));
         forbiddenZones.add(new Rectangle(800, 636, 100, 50));
+        forbiddenZones.add(new Rectangle(1150, 610, 100, 90));
 
         NPCFactory npcFactory = NPCFactory.getInstance();
         npcFactory.setPlayer(player);
@@ -108,6 +109,7 @@ public class MainScreen implements Screen {
         camera = new OrthographicCamera();
         tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+
 
         gameProgress = new GameProgress(camera);
         inventoryPanel = new InventoryPanel(camera, items);
@@ -165,6 +167,8 @@ public class MainScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+
         if (gameOver || gameWon) {
             renderGameEndScreen();
             return;
@@ -482,13 +486,7 @@ public class MainScreen implements Screen {
         // Внешняя рамка (темная)
         shapeRenderer.setColor(0, 0, 0, 0.7f);
         shapeRenderer.rect(frameX - 5, frameY - 5, frameWidth + 10, frameHeight + 10);
-
-        // Внутренняя рамка (цвет зависит от победы/поражения)
-        if (gameWon) {
-            shapeRenderer.setColor(161/255f, 159/255f, 124/255f, 0.9f);
-        } else {
-            shapeRenderer.setColor(79/ 255f, 82 / 255f, 119 / 255f, 0.9f);
-        }
+        shapeRenderer.setColor(0, 0, 0, 0.5f);
         shapeRenderer.rect(frameX, frameY, frameWidth, frameHeight);
         shapeRenderer.end();
 
@@ -507,11 +505,11 @@ public class MainScreen implements Screen {
         GlyphLayout bigLayout = new GlyphLayout(bigFont, winLoseText);
 
         float bigTextX = camera.position.x - bigLayout.width / 2;
-        float bigTextY = camera.position.y + 50; // Выше центра
+        float bigTextY = camera.position.y + 80; // Выше центра
 
         bigFont.setColor(gameWon ?
-            new Color(85 / 255f, 10 / 255f, 7 / 255f, 0.9f) :
-           new Color(23 / 255f, 14 / 255f, 25 / 255f, 0.9f));
+            new Color(33 / 255f, 59 / 255f, 37 / 255f, 0.9f) :
+            new Color(85 / 255f, 10 / 255f, 7 / 255f, 0.9f));
         bigFont.draw(batch, winLoseText, bigTextX, bigTextY);
 
 
@@ -519,7 +517,7 @@ public class MainScreen implements Screen {
         GlyphLayout mainLayout = new GlyphLayout(font, message);
 
         float mainTextX = camera.position.x - mainLayout.width / 2;
-        float mainTextY = bigTextY - 100;
+        float mainTextY = bigTextY - 120;
 
         font.draw(batch, message, mainTextX, mainTextY);
 
@@ -536,13 +534,9 @@ public class MainScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             gameOver = false;
             gameWon = false;
-
-            // Сбрасываем синглтон TiledGraph
             TiledGraph.reset();
-
-            // Перезагрузка экрана
             dispose();
-            game.setScreen(new MainScreen(game));
+            game.restartGame(); // Будет вызван напрямую MainScreen без правил
         }
     }
 }
