@@ -41,6 +41,7 @@ public class MainScreen implements Screen {
     private final Array<Rectangle> collisionRects = new Array<>();
     private final Array<Rectangle> furnitureRects = new Array<>();
     private final Array<Rectangle> forbiddenZones = new Array<>();
+    private final Rectangle cameraZone = new Rectangle(200, 200, 50, 50);
     private Viewport viewport;
     private boolean showDebug = false;
     private Array<Item> items;
@@ -170,6 +171,11 @@ public class MainScreen implements Screen {
 
         if (gameProgress.areAllQuestsCompleted()) {
             gameWon = true;
+            return;
+        }
+
+        if (player.getCollisionBox().overlaps(cameraZone) && !gameProgress.getQuestStatus(1)) {
+            gameOver = true;
             return;
         }
 
@@ -407,6 +413,9 @@ public class MainScreen implements Screen {
         for (Rectangle zone : forbiddenZones) {
             shapeRenderer.rect(zone.x, zone.y, zone.width, zone.height);
         }
+        shapeRenderer.setColor(0, 0, 1, 0.3f);
+        shapeRenderer.rect(cameraZone.x, cameraZone.y, cameraZone.width, cameraZone.height);
+
         shapeRenderer.end();
     }
 
