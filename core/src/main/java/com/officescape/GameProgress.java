@@ -44,6 +44,12 @@ public class GameProgress {
         }
     }
 
+
+    public boolean getQuestStatus(int index) {
+        return quests.get(index).completed;
+
+    }
+
     public BitmapFont getFont() {
         return font;
     }

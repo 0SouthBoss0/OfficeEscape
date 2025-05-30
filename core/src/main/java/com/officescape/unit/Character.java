@@ -44,6 +44,7 @@ public abstract class Character {
     private Vector2 targetPosition;
     private final float collisionWidth;
     private final float collisionHeight;
+    public float speed = GameConstants.PLAYER_DEFAULT_SPEED;
 
     public enum Direction {
         UP, DOWN, LEFT, RIGHT
@@ -52,6 +53,7 @@ public abstract class Character {
     public Rectangle getCollisionBox() {
         return collisionBox;
     }
+
     private Direction finalDirection = null;
 
     public Character(String texturePath, int x, int y) {
@@ -152,7 +154,6 @@ public abstract class Character {
         boolean isMoving = false;
         float moveX = 0, moveY = 0;
 
-        float speed = GameConstants.PLAYER_DEFAULT_SPEED;
         if (isMovingToTarget && path != null && currentPathIndex < path.getCount()) {
             Vector2 target = path.get(currentPathIndex);
             float dx = target.x - getX();

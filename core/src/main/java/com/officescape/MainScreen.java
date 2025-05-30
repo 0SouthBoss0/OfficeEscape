@@ -41,6 +41,7 @@ public class MainScreen implements Screen {
     private final Array<Rectangle> collisionRects = new Array<>();
     private final Array<Rectangle> furnitureRects = new Array<>();
     private final Array<Rectangle> forbiddenZones = new Array<>();
+    private final Rectangle cameraZone = new Rectangle(200, 200, 50, 50);
     private Viewport viewport;
     private boolean showDebug = false;
     private Array<Item> items;
@@ -52,6 +53,9 @@ public class MainScreen implements Screen {
     private OfficeEscape game;
     private Texture gameOverTexture = new Texture(Gdx.files.internal("potracheno.png"));
     private Texture gameWonTexture = new Texture(Gdx.files.internal("potracheno.png"));
+    private float coffeeSpeedBoostTimer = 0;
+    private boolean isCoffeeBoostActive = false;
+    private float originalPlayerSpeed;
 
     public MainScreen(OfficeEscape game) {
         this.game = game;
@@ -171,6 +175,19 @@ public class MainScreen implements Screen {
             return;
         }
 
+        if (player.getCollisionBox().overlaps(cameraZone) && !gameProgress.getQuestStatus(1)) {
+            gameOver = true;
+            return;
+        }
+
+        if (isCoffeeBoostActive) {
+            coffeeSpeedBoostTimer -= delta;
+            if (coffeeSpeedBoostTimer <= 0) {
+                player.speed = originalPlayerSpeed;
+                isCoffeeBoostActive = false;
+            }
+        }
+
         // Проверка на проигрыш
         for (NPC npc : npcs) {
             if (npc.currentState == NPC.NPCState.PANIC && npc.isPlayerNearby(collisionRects)) {
@@ -232,6 +249,10 @@ public class MainScreen implements Screen {
                 }
                 if (item.canBeBroken(player)) {
                     ((BreakableItem) item).onBreak(player);
+                    if (isPlayerSeenByAnyNPC()) {
+                        gameOver = true;
+                        return;
+                    }
                     NPC.reportBrokenItem((BreakableItem) item);
                     break;
                 }
@@ -254,6 +275,21 @@ public class MainScreen implements Screen {
                         }
                         break;
                     }
+                }
+            }
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            for (Item item : items) {
+                if (item instanceof Coffee) {
+                    if (!isCoffeeBoostActive) {
+                        items.removeValue(item, true);
+                        originalPlayerSpeed = player.speed;
+                        player.speed *= 2;
+                        isCoffeeBoostActive = true;
+                        coffeeSpeedBoostTimer = 15f;
+                    }
+                    break;
                 }
             }
         }
@@ -378,6 +414,9 @@ public class MainScreen implements Screen {
         for (Rectangle zone : forbiddenZones) {
             shapeRenderer.rect(zone.x, zone.y, zone.width, zone.height);
         }
+        shapeRenderer.setColor(0, 0, 1, 0.3f);
+        shapeRenderer.rect(cameraZone.x, cameraZone.y, cameraZone.width, cameraZone.height);
+
         shapeRenderer.end();
     }
 
