@@ -83,6 +83,13 @@ public class MainScreen implements Screen {
         npcFactory.createItshnik(GameConstants.ITSHNIK_START.x(), GameConstants.ITSHNIK_START.y(), GameConstants.ITSHNIK_START.direction(), GameConstants.ITSHNIK_WAYPOINTS);
         npcs = npcFactory.getAllNPCs();
 
+        itemShapeRenderer = new ShapeRenderer();
+        camera = new OrthographicCamera();
+        tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+
+        gameProgress = new GameProgress(camera);
+        
         items = new Array<>();
         items.add(new Flash(GameConstants.FLASH_FROM_SERVER.x(), GameConstants.FLASH_FROM_SERVER.y(), GameConstants.FLASH_FROM_SERVER.direction()));
         items.add(new KeyCard(GameConstants.KEY_CARD.x(), GameConstants.KEY_CARD.y(), GameConstants.KEY_CARD.direction()));
@@ -100,18 +107,12 @@ public class MainScreen implements Screen {
         items.add(new Coffee(GameConstants.COFFEE_1.x(), GameConstants.COFFEE_1.y(), GameConstants.COFFEE_1.direction()));
         items.add(new Coffee(GameConstants.COFFEE_2.x(), GameConstants.COFFEE_2.y(), GameConstants.COFFEE_2.direction()));
         items.add(new Fish(GameConstants.FISH.x(), GameConstants.FISH.y(), GameConstants.FISH.direction()));
-        items.add(new Camera(GameConstants.CAMERA.x(), GameConstants.CAMERA.y(), GameConstants.CAMERA.direction()));
+        items.add(new Camera(GameConstants.CAMERA.x(), GameConstants.CAMERA.y(), GameConstants.CAMERA.direction(), gameProgress));
         items.add(new CoffeeMachine(GameConstants.COFFEE_MACHINE.x(), GameConstants.COFFEE_MACHINE.y(), GameConstants.COFFEE_MACHINE.direction()));
         items.add(new TurnStile(GameConstants.TURNSTILE.x(), GameConstants.TURNSTILE.y(), GameConstants.TURNSTILE.direction()));
         items.add(new ButtonServer(GameConstants.BUTTON_SERVER.x(), GameConstants.BUTTON_SERVER.y(), GameConstants.BUTTON_SERVER.direction()));
-        itemShapeRenderer = new ShapeRenderer();
-        camera = new OrthographicCamera();
-        tiledMap = new TmxMapLoader().load(GameConstants.MAP_FILE_PATH);
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
-        gameProgress = new GameProgress(camera);
         inventoryPanel = new InventoryPanel(camera, items);
-
         int mapWidth = tiledMap.getProperties().get("width", Integer.class);
         int mapHeight = tiledMap.getProperties().get("height", Integer.class);
         int tileWidth = tiledMap.getProperties().get("tilewidth", Integer.class);
