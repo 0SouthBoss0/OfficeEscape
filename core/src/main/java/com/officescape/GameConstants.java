@@ -60,16 +60,16 @@ public class GameConstants {
     public static final float NPC_STUNNED_OFFSET = 0.8f;
 
     // NPC start positions
-    public static final Position BABKA_START = new Position(1120, 629, Character.Direction.RIGHT);
+    public static final Position BABKA_START = new Position(1100, 610, Character.Direction.RIGHT);
     public static final Position BOSS_START = new Position(72, 67, Character.Direction.LEFT);
     public static final Position CAT_START = new Position(725, 362, Character.Direction.UP);
-    public static final Position COLLEAGUE1_START = new Position(73, 550, Character.Direction.UP);
-    public static final Position COLLEAGUE2_START = new Position(278, 490, Character.Direction.UP);
+    public static final Position COLLEAGUE1_START = new Position(73, 545, Character.Direction.UP);
+    public static final Position COLLEAGUE2_START = new Position(278, 480, Character.Direction.UP);
     public static final Position COLLEAGUE3_START = new Position(268, 300, Character.Direction.UP);
     public static final Position COLLEAGUE4_START = new Position(1234, 420, Character.Direction.LEFT);
     public static final Position COLLEAGUE5_START = new Position(446, 60, Character.Direction.LEFT);
-    public static final Position COLLEAGUE6_START = new Position(878, 50, Character.Direction.RIGHT);
-    public static final Position ITSHNIK_START = new Position(1113, 65, Character.Direction.UP);
+    public static final Position COLLEAGUE6_START = new Position(878, 46, Character.Direction.UP);
+    public static final Position ITSHNIK_START = new Position(1113, 65, Character.Direction.LEFT);
 
     // NPC places positions
     public static final Position COFFEE_MACHINE_PLACE = new Position(747, 360, Character.Direction.RIGHT);
@@ -86,7 +86,7 @@ public class GameConstants {
     public static final Position PLAYER_WARDROBE = new Position(69, 516, Character.Direction.DOWN);
     public static final Position TECHNICAL_ROOM1 = new Position(48, 307, Character.Direction.RIGHT);
     public static final Position TECHNICAL_ROOM2 = new Position(124, 340, Character.Direction.LEFT);
-    public static final Position BOSS_WARDROBE = new Position(211, 62, Character.Direction.DOWN);
+    public static final Position BOSS_WARDROBE = new Position(211, 62, Character.Direction.RIGHT);
     public static final Position SOFA = new Position(593, 280, Character.Direction.RIGHT);
     public static final Position AIRHOCKEY = new Position(806, 296, Character.Direction.LEFT);
     public static final Position BABKA_WARDROBE = new Position(1024, 668, Character.Direction.UP);

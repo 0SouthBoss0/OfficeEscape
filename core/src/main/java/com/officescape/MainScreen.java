@@ -75,6 +75,7 @@ public class MainScreen implements Screen {
         npcFactory.createColleague(GameConstants.COLLEAGUE3_START.x(), GameConstants.COLLEAGUE3_START.y(), GameConstants.COLLEAGUE3_START.direction(), GameConstants.COLLEGUE3_WAYPOINTS);
         npcFactory.createColleague(GameConstants.COLLEAGUE4_START.x(), GameConstants.COLLEAGUE4_START.y(), GameConstants.COLLEAGUE4_START.direction(), GameConstants.COLLEGUE4_WAYPOINTS);
         npcFactory.createColleague(GameConstants.COLLEAGUE5_START.x(), GameConstants.COLLEAGUE5_START.y(), GameConstants.COLLEAGUE5_START.direction(), GameConstants.COLLEGUE5_WAYPOINTS);
+        npcFactory.createColleague(GameConstants.COLLEAGUE6_START.x(), GameConstants.COLLEAGUE6_START.y(), GameConstants.COLLEAGUE6_START.direction(), GameConstants.COLLEGUE6_WAYPOINTS);
         npcFactory.createItshnik(GameConstants.ITSHNIK_START.x(), GameConstants.ITSHNIK_START.y(), GameConstants.ITSHNIK_START.direction(), GameConstants.ITSHNIK_WAYPOINTS);
         npcs = npcFactory.getAllNPCs();
 
