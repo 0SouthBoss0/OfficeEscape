@@ -41,7 +41,7 @@ public class MainScreen implements Screen {
     private final Array<Rectangle> collisionRects = new Array<>();
     private final Array<Rectangle> furnitureRects = new Array<>();
     private final Array<Rectangle> forbiddenZones = new Array<>();
-    private final Rectangle cameraZone = new Rectangle(200, 200, 50, 50);
+    private final Rectangle cameraZone = new Rectangle(97, 102, 62, 30);
     private Viewport viewport;
     private boolean showDebug = false;
     private Array<Item> items;
@@ -51,8 +51,7 @@ public class MainScreen implements Screen {
     private boolean gameOver = false;
     private boolean gameWon = false;
     private OfficeEscape game;
-    private Texture gameOverTexture = new Texture(Gdx.files.internal("potracheno.png"));
-    private Texture gameWonTexture = new Texture(Gdx.files.internal("potracheno.png"));
+
     private float coffeeSpeedBoostTimer = 0;
     private boolean isCoffeeBoostActive = false;
     private float originalPlayerSpeed;
@@ -67,7 +66,8 @@ public class MainScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         player = new Player(GameConstants.PLAYER_FILE_PATH);
 
-        forbiddenZones.add(new Rectangle(100, 100, 50, 50));
+        forbiddenZones.add(new Rectangle(97, 60, 62, 80));
+        forbiddenZones.add(new Rectangle(800, 636, 100, 50));
 
         NPCFactory npcFactory = NPCFactory.getInstance();
         npcFactory.setPlayer(player);
@@ -490,47 +490,51 @@ public class MainScreen implements Screen {
 
         // Внутренняя рамка (цвет зависит от победы/поражения)
         if (gameWon) {
-            shapeRenderer.setColor(0, 0.8f, 0, 0.9f); // Зеленый для победы
+            shapeRenderer.setColor(161/255f, 159/255f, 124/255f, 0.9f);
         } else {
-            shapeRenderer.setColor(0.8f, 0, 0, 0.9f); // Красный для поражения
+            shapeRenderer.setColor(79/ 255f, 82 / 255f, 119 / 255f, 0.9f);
         }
         shapeRenderer.rect(frameX, frameY, frameWidth, frameHeight);
         shapeRenderer.end();
 
         // Текст сообщения
         batch.begin();
-        String message = gameWon ? "ПОБЕДА! Все квесты выполнены!" : "ПОРАЖЕНИЕ! Вас обнаружили!";
+
+        String message = gameWon ? "ПОБЕДА! Все квесты выполнены!" : "Вас обнаружили!";
         String restartMessage = "Нажмите R для перезапуска";
-        // Используем шрифт из GameProgress
-        BitmapFont font = gameProgress.getFont(); // Нужно добавить геттер в GameProgress
+        String winLoseText = gameWon ? "YOU WIN" : "GAME OVER";
 
-        // Рассчитываем позицию текста по центру
-        GlyphLayout layout = new GlyphLayout();
-        layout.setText(font, message);
-        float textX = camera.position.x - layout.width / 2;
-        float textY = camera.position.y + layout.height / 2;
 
-        font.draw(batch, message, textX, textY);
+        BitmapFont font = gameProgress.getFont();
+        BitmapFont bigFont = new BitmapFont(font.getData(), font.getRegion(), font.usesIntegerPositions()); // Использует стандартный шрифт LibGDX
+        bigFont.getData().setScale(3.0f);
 
-        // Текст перезапуска ниже
-        layout.setText(font, restartMessage);
-        textX = camera.position.x - layout.width / 2;
-        textY = camera.position.y - layout.height;
-        font.draw(batch, restartMessage, textX, textY);
+        GlyphLayout bigLayout = new GlyphLayout(bigFont, winLoseText);
 
-        batch.end();
+        float bigTextX = camera.position.x - bigLayout.width / 2;
+        float bigTextY = camera.position.y + 50; // Выше центра
 
-        batch.begin();
-        // Рисуем соответствующую текстуру
-        if (gameWon) {
-            batch.draw(gameWonTexture,
-                camera.position.x - gameWonTexture.getWidth() / 2,
-                camera.position.y - gameWonTexture.getHeight() / 2);
-        } else {
-            batch.draw(gameOverTexture,
-                camera.position.x - gameOverTexture.getWidth() / 2,
-                camera.position.y - gameOverTexture.getHeight() / 2);
-        }
+        bigFont.setColor(gameWon ?
+            new Color(85 / 255f, 10 / 255f, 7 / 255f, 0.9f) :
+           new Color(23 / 255f, 14 / 255f, 25 / 255f, 0.9f));
+        bigFont.draw(batch, winLoseText, bigTextX, bigTextY);
+
+
+        font.getData().setScale(1.0f);
+        GlyphLayout mainLayout = new GlyphLayout(font, message);
+
+        float mainTextX = camera.position.x - mainLayout.width / 2;
+        float mainTextY = bigTextY - 100;
+
+        font.draw(batch, message, mainTextX, mainTextY);
+
+        GlyphLayout restartLayout = new GlyphLayout(font, restartMessage);
+
+        float restartTextX = camera.position.x - restartLayout.width / 2;
+        float restartTextY = mainTextY - 50;
+
+        font.draw(batch, restartMessage, restartTextX, restartTextY);
+
         batch.end();
 
         // Возможность перезапустить игру

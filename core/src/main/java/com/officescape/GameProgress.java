@@ -54,6 +54,7 @@ public class GameProgress {
         return font;
     }
 
+
     public void render(SpriteBatch batch) {
         float padding = GameConstants.PADDING_PROGRESS;
         float lineHeight = GameConstants.LINE_HEIGHT_PROGRESS;
