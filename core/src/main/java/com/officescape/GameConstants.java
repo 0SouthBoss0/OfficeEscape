@@ -176,7 +176,7 @@ public class GameConstants {
     // Font params
     public static String FONT_FILE_PATH = "fonts/visitor2.otf";
     public static String FONT_CHARS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!?()•-";
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!?()•-,:";
     public static String FONT_NUMS = "0123456789";
 
     // Game progress panel
@@ -202,6 +202,10 @@ public class GameConstants {
 
     public static final float STAPLER_DISPOSE_DELAY = 2f;
     public static final float STAPLER_FLIGHT_SPEED = 500f;
+    //Rules Screen
+    public static final int FONT_SIZE_RULES = 18;
+    public static final float PADDING_RULES = 20f;
+    public static final float LINE_HEIGHT_RULES = 30f;
 
 
     public record Position(int x, int y, Character.Direction direction) {
