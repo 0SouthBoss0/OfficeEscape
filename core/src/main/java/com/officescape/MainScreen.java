@@ -271,6 +271,11 @@ public class MainScreen implements Screen {
                             hideable.onUnhide(player);
                         } else {
                             hideable.onHide(player);
+
+                        }
+                        if (isPlayerSeenByAnyNPC()) {
+                            gameOver = true;
+                            return;
                         }
                         break;
                     }
