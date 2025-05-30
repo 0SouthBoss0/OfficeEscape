@@ -35,6 +35,8 @@ public abstract class NPC extends Character {
     private static final float FIXING_TIME = 5f;
     public GameConstants.Position[] NPC_WAYPOINTS;
     private Sprite stars = new Sprite(new Texture(Gdx.files.internal(GameConstants.REACTION_STARS_FILE_PATH)));
+    private Vector2 brokenItemPosition = null;
+
 
     public NPC(String texturePath, int x, int y, GameConstants.Position[] waypoints) {
         super(texturePath, x, y);
@@ -44,6 +46,11 @@ public abstract class NPC extends Character {
     public static void reportBrokenItem(BreakableItem item) {
         if (currentBrokenItem == null) {
             currentBrokenItem = item;
+            // Сбрасываем позицию для всех NPC
+            for (NPC npc : NPCFactory.getInstance().getAllNPCs()) {
+                npc.brokenItemPosition = new Vector2(item.getPosition());
+                npc.isResponding = false; // Сбрасываем флаг, чтобы начали двигаться к предмету
+            }
         }
     }
 
@@ -78,7 +85,13 @@ public abstract class NPC extends Character {
                 if (panicTimer >= PANIC_DURATION) {
                     currentState = NPCState.NORMAL;
                     moveTimer = 0;
-                    delay = generateDelay(); // Возвращаем нормальную задержку
+                    delay = generateDelay();
+
+                    // После паники возвращаемся к починке, если предмет еще сломан
+                    if (currentBrokenItem != null && brokenItemPosition != null) {
+                        isResponding = true;
+                        this.goToCoords(brokenItemPosition.x, brokenItemPosition.y);
+                    }
                 } else {
                     // В режиме паники NPC быстро перемещаются между точками без задержки
                     if (!isMovingToTarget) {
@@ -103,19 +116,31 @@ public abstract class NPC extends Character {
     protected void handleEmergencyResponse(float deltaTime, Array<Rectangle> walls) {
         if (currentState != NPCState.NORMAL) return;
 
-        Vector2 targetPos = currentBrokenItem.getPosition();
-        float distanceToItem = Vector2.dst(getX(), getY(), targetPos.x, targetPos.y);
+        if (currentBrokenItem == null) {
+            isResponding = false;
+            return;
+        }
+
+        // Сохраняем позицию сломанного предмета, если это первый вызов
+        if (brokenItemPosition == null) {
+            brokenItemPosition = new Vector2(currentBrokenItem.getPosition());
+        }
+
+        float distanceToItem = Vector2.dst(getX(), getY(), brokenItemPosition.x, brokenItemPosition.y);
 
         if (!isResponding) {
-            this.goToCoords(targetPos.x, targetPos.y);
+            this.goToCoords(brokenItemPosition.x, brokenItemPosition.y);
             isResponding = true;
         }
+
         if (this instanceof Itshnik && distanceToItem < 1.5 * GameConstants.MAX_APPROACH_DISTANCE) {
             fixingTimer += deltaTime;
             if (fixingTimer >= FIXING_TIME) {
                 currentBrokenItem.onFix(this);
                 currentBrokenItem = null;
+                brokenItemPosition = null;
                 fixingTimer = 0;
+                isResponding = false;
             }
         }
     }

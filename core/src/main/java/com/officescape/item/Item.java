@@ -126,25 +126,31 @@ public abstract class Item {
 
     public Vector2 getPosition() {
         TiledGraph graph = TiledGraph.getInstance();
-        Vector2 validPosition = null;
-        int attempts = 0;
 
-        while (validPosition == null && attempts < GameConstants.MAX_ATTEMPTS_WALL) {
-            float angle = random.nextFloat() * 360f;
-            float distance = GameConstants.MIN_APPROACH_DISTANCE +
-                random.nextFloat() * (GameConstants.MAX_APPROACH_DISTANCE - GameConstants.MIN_APPROACH_DISTANCE);
-            float x = getX() + (float) Math.cos(Math.toRadians(angle)) * distance;
-            float y = getY() + (float) Math.sin(Math.toRadians(angle)) * distance;
-            Vector2 position = new Vector2(x, y);
-            if (!graph.isWall(position, GameConstants.MAX_PLAYER_WIDTH, GameConstants.MAX_PLAYER_HEIGHT) &&
-                !graph.isFurniture(position, GameConstants.MAX_PLAYER_WIDTH, GameConstants.MAX_PLAYER_HEIGHT)) {
-                validPosition = position;
+        // Начинаем с минимального расстояния и постепенно увеличиваем его
+        float currentDistance = GameConstants.MIN_APPROACH_DISTANCE;
+
+        while (true) {
+            // Пробуем несколько случайных углов для текущего расстояния
+            for (int i = 0; i < 360; i += 10) { // Проверяем каждые 10 градусов
+                float angle = i + random.nextFloat() * 10f; // Добавляем небольшую случайность
+                float x = getX() + (float) Math.cos(Math.toRadians(angle)) * currentDistance;
+                float y = getY() + (float) Math.sin(Math.toRadians(angle)) * currentDistance;
+                Vector2 position = new Vector2(x, y);
+
+                if (!graph.isWall(position, GameConstants.MAX_PLAYER_WIDTH, GameConstants.MAX_PLAYER_HEIGHT) &&
+                    !graph.isFurniture(position, GameConstants.MAX_PLAYER_WIDTH, GameConstants.MAX_PLAYER_HEIGHT)) {
+                    return position; // Возвращаем первую найденную валидную позицию
+                }
             }
-            attempts++;
+
+            // Увеличиваем расстояние для следующей итерации
+            currentDistance += (GameConstants.MAX_APPROACH_DISTANCE - GameConstants.MIN_APPROACH_DISTANCE) / 10f;
+
+            // Если превысили максимальное расстояние, начинаем с минимального снова
+            if (currentDistance > GameConstants.MAX_APPROACH_DISTANCE) {
+                currentDistance = GameConstants.MIN_APPROACH_DISTANCE;
+            }
         }
-        if (!(attempts < GameConstants.MAX_ATTEMPTS_WALL)) {
-            System.out.println("CRITICAL ERROR: ATTEMPTS >= MAX");
-        }
-        return validPosition != null ? validPosition : new Vector2(getX(), getY());
     }
 }
