@@ -494,7 +494,7 @@ public class MainScreen implements Screen {
 
         // Текст сообщения
         batch.begin();
-        String message = gameWon ? "ПОБЕДА! Все квесты выполнены!" : "ПОРАЖЕНИЕ! Вас обнаружили!";
+        String message = gameWon ? "ПОБЕДА! Все квесты выполнены!" : "Вас обнаружили!\n +8 часов переработки";
         String restartMessage = "Нажмите R для перезапуска";
         // Используем шрифт из GameProgress
         BitmapFont font = gameProgress.getFont(); // Нужно добавить геттер в GameProgress

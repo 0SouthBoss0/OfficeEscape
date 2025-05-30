@@ -176,7 +176,7 @@ public class GameConstants {
     public static final Position BUTTON_SERVER = new Position(775, 678, Character.Direction.UP);
 
     // Font params
-    public static String FONT_FILE_PATH = "fonts/ArialRegular.ttf";
+    public static String FONT_FILE_PATH = "fonts/visitor2.otf";
     public static String FONT_CHARS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!?()•-";
     public static String FONT_NUMS = "0123456789";
