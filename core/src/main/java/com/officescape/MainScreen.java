@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -42,6 +41,7 @@ public class MainScreen implements Screen {
     private final Array<Rectangle> furnitureRects = new Array<>();
     private final Array<Rectangle> forbiddenZones = new Array<>();
     private final Rectangle cameraZone = new Rectangle(97, 102, 62, 30);
+    private final Rectangle exitZone = new Rectangle(1160, 700, 70, 50);
     private Viewport viewport;
     private boolean showDebug = false;
     private Array<Item> items;
@@ -146,7 +146,7 @@ public class MainScreen implements Screen {
         }
         for (int i = 0; i < items.size; i++) {
             Item item = items.get(i);
-            if (item instanceof Wardrobe || item instanceof Printer || item instanceof Trash) {
+            if (item instanceof Wardrobe || item instanceof Printer || item instanceof Trash || item instanceof TurnStile) {
                 float[] vertices = item.sprite.getVertices();
                 float minX = Math.min(Math.min(vertices[0], vertices[5]), Math.min(vertices[10], vertices[15]));
                 float maxX = Math.max(Math.max(vertices[0], vertices[5]), Math.max(vertices[10], vertices[15]));
@@ -203,6 +203,9 @@ public class MainScreen implements Screen {
             }
         }
 
+        if (gameProgress.getQuestStatus(4)) {
+            gameProgress.updateQuest(5, player.getCollisionBox().overlaps(exitZone));
+        }
 
         Array<Item> itemsToRemove = new Array<>();
         for (Item item : items) {
@@ -422,6 +425,10 @@ public class MainScreen implements Screen {
         shapeRenderer.setColor(0, 0, 1, 0.3f);
         shapeRenderer.rect(cameraZone.x, cameraZone.y, cameraZone.width, cameraZone.height);
 
+        shapeRenderer.setColor(0, 1, 1, 0.3f);
+        shapeRenderer.rect(exitZone.x, exitZone.y, exitZone.width, exitZone.height);
+
+
         shapeRenderer.end();
     }
 
@@ -490,9 +497,9 @@ public class MainScreen implements Screen {
 
         // Внутренняя рамка (цвет зависит от победы/поражения)
         if (gameWon) {
-            shapeRenderer.setColor(161/255f, 159/255f, 124/255f, 0.9f);
+            shapeRenderer.setColor(161 / 255f, 159 / 255f, 124 / 255f, 0.9f);
         } else {
-            shapeRenderer.setColor(79/ 255f, 82 / 255f, 119 / 255f, 0.9f);
+            shapeRenderer.setColor(79 / 255f, 82 / 255f, 119 / 255f, 0.9f);
         }
         shapeRenderer.rect(frameX, frameY, frameWidth, frameHeight);
         shapeRenderer.end();
@@ -516,7 +523,7 @@ public class MainScreen implements Screen {
 
         bigFont.setColor(gameWon ?
             new Color(85 / 255f, 10 / 255f, 7 / 255f, 0.9f) :
-           new Color(23 / 255f, 14 / 255f, 25 / 255f, 0.9f));
+            new Color(23 / 255f, 14 / 255f, 25 / 255f, 0.9f));
         bigFont.draw(batch, winLoseText, bigTextX, bigTextY);
 
 

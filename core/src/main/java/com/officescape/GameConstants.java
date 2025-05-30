@@ -1,9 +1,6 @@
 package com.officescape;
 
-import com.badlogic.gdx.utils.Array;
 import com.officescape.unit.Character;
-
-import java.util.Arrays;
 
 public class GameConstants {
     // Player
@@ -183,8 +180,8 @@ public class GameConstants {
     public static String FONT_NUMS = "0123456789";
 
     // Game progress panel
-    public static String[] QUEST_LIST = new String[]{"Добыть диск от сервера", "На сервере отключить камеру",
-        "Украсть ключ-карту у босса", "Прокрасться мимо бабки", "Сбежать!", "Не попасться..."};
+    public static String[] QUEST_LIST = new String[]{"Добыть флешку от сервера", "На сервере отключить камеру",
+        "Украсть ключ-карту у босса", "Прокрасться мимо бабки", "Воспользоваться картой на турникете", "Сбежать!"};
     public static int FONT_SIZE_PROGRESS = 50;
     public static float PADDING_PROGRESS = 40f;
     public static float LINE_HEIGHT_PROGRESS = 50f;

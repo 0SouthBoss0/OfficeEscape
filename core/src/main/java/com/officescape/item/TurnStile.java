@@ -14,6 +14,7 @@ public class TurnStile extends Item implements UsableItem {
     @Override
     public void onUse(GameProgress gameProgress) {
         this.isUsed = true;
+        gameProgress.updateQuest(3, true);
         gameProgress.updateQuest(4, true);
     }
 }

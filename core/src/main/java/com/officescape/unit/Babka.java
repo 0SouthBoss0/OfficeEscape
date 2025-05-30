@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.officescape.GameConstants;
 
@@ -37,7 +36,7 @@ public class Babka extends NPC {
     public void draw(SpriteBatch batch) {
         if (isSleeping) {
             float starsX = getX() - sleepingTexture.getWidth() / 2;
-            float starsY = getY() + sprite.getHeight() * GameConstants.NPC_STUNNED_OFFSET;
+            float starsY = getY() + sprite.getHeight() * GameConstants.BABKA_SLEEP_OFFSET;
             sleepingTexture.setPosition(starsX, starsY);
             sleepingTexture.draw(batch);
 
