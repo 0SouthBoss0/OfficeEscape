@@ -33,6 +33,16 @@ public class Babka extends NPC {
     }
 
     @Override
+    public boolean isPlayerNearby(Array<Rectangle> walls) {
+        Player player = findPlayerInRange();
+        if (!isSleeping && player != null && player.visible && this.canSee(player, walls)) {
+            // System.out.println(this.getClass().getSimpleName() + " sees me!");
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void draw(SpriteBatch batch) {
         if (isSleeping) {
             float starsX = getX() - sleepingTexture.getWidth() / 2;

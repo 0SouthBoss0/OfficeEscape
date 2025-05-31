@@ -174,7 +174,7 @@ public abstract class NPC extends Character {
         this.generateDelay();
     }
 
-    private Player findPlayerInRange() {
+    protected Player findPlayerInRange() {
         return NPCFactory.getInstance().getPlayer();
     }
 

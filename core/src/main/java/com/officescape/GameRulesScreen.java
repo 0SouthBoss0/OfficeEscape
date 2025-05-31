@@ -134,18 +134,18 @@ public class GameRulesScreen implements Screen {
         shapeRenderer.rect(panelX, panelY, panelWidth, panelHeight);
         shapeRenderer.end();
 
-        // В методе render():
+
         batch.begin();
-// Заголовок
-        font.setColor(Color.BLUE);
+
+        font.setColor(Color.ORANGE);
         font.draw(batch, title, panelX + padding, panelY + panelHeight - padding);
 
-// Основной текст
+
         font.setColor(Color.WHITE);
         for (int i = 0; i < rules.length; i++) {
             float yPos = panelY + panelHeight - padding - (i + 1) * lineHeight;
 
-            // Разные цвета для разных разделов
+
             if (rules[i].startsWith("Цель:")) {
                 font.setColor(Color.GREEN);
             } else if (rules[i].startsWith("Управление:")) {
@@ -154,7 +154,7 @@ public class GameRulesScreen implements Screen {
             } else if (rules[i].startsWith("Опасности:")) {
                 font.setColor(Color.RED);
             }else if (rules[i].isEmpty()) {
-                font.setColor(Color.WHITE); // разделители
+                font.setColor(Color.WHITE);
             } else {
                 font.setColor(Color.LIGHT_GRAY);
             }

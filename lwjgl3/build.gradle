@@ -28,6 +28,7 @@ if (JavaVersion.current().isJava9Compatible()) {
         compileJava.options.release.set(17)
 }
 
+
 dependencies {
   implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
   implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
