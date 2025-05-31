@@ -1,0 +1,674 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.officescape.unit.Babka",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+
+
+'nodes
+subgraph cluster_1158569846 {
+   	label=officescape
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+
+   GameProgress1504419741[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GameProgress</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   camera: OrthographicCamera [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   font: BitmapFont [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   glyphLayout: GlyphLayout [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   quests: Array&lt;Quest&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   shapeRenderer: ShapeRenderer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ areAllQuestsCompleted(): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ dispose()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getQuestStatus(index: int): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ render(batch: SpriteBatch)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateQuest(index: int, completed: boolean)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MainScreen1504419741[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MainScreen</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   batch: SpriteBatch [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   camera: OrthographicCamera [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   cameraZone: Rectangle [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   coffeeSpeedBoostTimer: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   collisionRects: Array&lt;Rectangle&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   exitZone: Rectangle [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   forbiddenZones: Array&lt;Rectangle&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   furnitureRects: Array&lt;Rectangle&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   game: OfficeEscape [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gameOver: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gameProgress: GameProgress [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gameWon: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   inventoryPanel: InventoryPanel [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isCoffeeBoostActive: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   itemShapeRenderer: ShapeRenderer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   items: Array&lt;Item&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   npcs: Array&lt;NPC&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   originalPlayerSpeed: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   player: Player [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   shapeRenderer: ShapeRenderer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   showDebug: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tiledMap: TiledMap [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tiledMapRenderer: OrthogonalTiledMapRenderer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   viewport: Viewport [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ dispose()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ hide()</TD></TR>
+<TR><TD ALIGN="LEFT" >- loadCollisions()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ pause()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ render(delta: float)</TD></TR>
+<TR><TD ALIGN="LEFT" >- renderDebug()</TD></TR>
+<TR><TD ALIGN="LEFT" >- renderGameEndScreen()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ resize(width: int, height: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ resume()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ show()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Quest1504419741[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Quest</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   completed: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   description: String [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+TiledGraph1504419741[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)TiledGraph</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connections: Array&lt;Connection&lt;Vector2&gt;&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   furniture: Array&lt;Rectangle&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   height: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   maxPlayerHeight: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   maxPlayerWidth: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nodes: Array&lt;Vector2&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tileSize: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   walls: Array&lt;Rectangle&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   width: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- buildConnections()</TD></TR>
+<TR><TD ALIGN="LEFT" >- checkAndAddConnection(from: Vector2, fromX: int, fromY: int, toX: int, toY: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getConnections(fromNode: Vector2): Array&lt;Connection&lt;Vector2&gt;&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getIndex(node: Vector2): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNodeAt(x: int, y: int): Vector2</TD></TR>
+<TR><TD ALIGN="LEFT" >+ hasFurnitureBetween(from: Vector2, to: Vector2): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ hasWallBetween(from: Vector2, to: Vector2): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init(width: int, height: int, tileSize: float, walls: Array&lt;Rectangle&gt;, furniture: Array&lt;Rectangle&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isFurniture(position: Vector2, width: float, height: float): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isFurniture(node: Vector2): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- isValidConnection(fromX: int, fromY: int, toX: int, toY: int): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isWall(position: Vector2, width: float, height: float): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isWall(node: Vector2): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ reset()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+subgraph cluster_1627257095 {
+   	label=GameConstants
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+
+   Position1071994676[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Position</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   direction: Direction [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   x: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   y: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ direction(): Direction</TD></TR>
+<TR><TD ALIGN="LEFT" >+ x(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ y(): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+}
+
+subgraph cluster_1766382071 {
+   	label=item
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+
+   ButtonServer1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ButtonServer</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onUse(gameProgress: GameProgress)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Camera1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Camera</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   blinkInterval: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   blinkTimer: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gameProgress: GameProgress [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   showRed: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   turnedOff: Sprite [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ dispose()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ draw(batch: SpriteBatch)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Coffee1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Coffee</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onTake(player: Player, gameProgress: GameProgress)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CoffeeMachine1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CoffeeMachine</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onBreak(player: Player)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onFix(character: Character)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Fish1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Fish</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onTake(player: Player, gameProgress: GameProgress)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Flash1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Flash</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onTake(player: Player, gameProgress: GameProgress)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Item1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Item</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   isBroken: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   isTaken: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   isUsed: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   scale: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   sprite: Sprite [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ canBeBroken(player: Player): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ canBeHidden(player: Player): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ canBeTaken(player: Player): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ canBeThrown(player: Player): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ canBeUsed(player: Player, items: ObjectMap&lt;Class&lt;? extends Item&gt;, InventoryItem&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ dispose()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ draw(batch: SpriteBatch)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ drawHighlight(shapeRenderer: ShapeRenderer, color: Color)</TD></TR>
+<TR><TD ALIGN="LEFT" >- isCloserThanToPlayer(player: Player, distance: float): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ take(player: Player)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ validateUsage(items: ObjectMap&lt;Class&lt;? extends Item&gt;, InventoryItem&gt;): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+KeyCard1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)KeyCard</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onTake(player: Player, gameProgress: GameProgress)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Printer1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Printer</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onBreak(player: Player)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onFix(character: Character)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Stapler1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Stapler</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   disposeTimer: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   flightDirection: Vector2 [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   flightDistance: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   flightProgress: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   flightStart: Vector2 [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isFlying: boolean [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- checkNPCHit(x: float, y: float): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- checkWallCollision(x: float, y: float): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ draw(batch: SpriteBatch)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTake(player: Player, gameProgress: GameProgress)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onThrow(player: Player)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateFlight(deltaTime: float)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Trash1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Trash</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onBreak(player: Player)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onFix(character: Character)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+TurnStile1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)TurnStile</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onUse(gameProgress: GameProgress)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Wardrobe1516392132[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Wardrobe</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ isPlayerHidden(player: Player): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onHide(player: Player)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onUnhide(player: Player)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+}
+
+subgraph cluster_1766733928 {
+   	label=unit
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+
+   Babka1516743989[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Babka</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   isSleeping: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   sleepTimer: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   sleepingTexture: Sprite [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ draw(batch: SpriteBatch)</TD></TR>
+<TR><TD ALIGN="LEFT" ># handleEmergencyResponse(deltaTime: float, walls: Array&lt;Rectangle&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onCustomUpdate(deltaTime: float, walls: Array&lt;Rectangle&gt;)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Boss1516743989[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Boss</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onCustomUpdate(deltaTime: float, walls: Array&lt;Rectangle&gt;)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Cat1516743989[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Cat</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onCustomUpdate(deltaTime: float, walls: Array&lt;Rectangle&gt;)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Character1516743989[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Character</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   animationTimer: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   collisionBox: Rectangle [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   collisionHeight: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   collisionWidth: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   currentDirection: Direction [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   currentPathIndex: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   finalDirection: Direction [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   heuristic: Heuristic&lt;Vector2&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   idleTexture: TextureRegion [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isMirrored: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   isMovingToTarget: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mapGraph: TiledGraph [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   path: GraphPath&lt;Vector2&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   pathFinder: IndexedAStarPathFinder&lt;Vector2&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   scale: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   speed: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   sprite: Sprite [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   stepTexture: TextureRegion [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   targetPosition: Vector2 [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ canSee(other: Character, walls: Array&lt;Rectangle&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- checkCollisions(walls: Array&lt;Rectangle&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ dispose()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ draw(batch: SpriteBatch)</TD></TR>
+<TR><TD ALIGN="LEFT" >- findNearestNode(x: float, y: float): Vector2</TD></TR>
+<TR><TD ALIGN="LEFT" >+ goToCoords(targetX: float, targetY: float, direction: Direction)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ goToCoords(targetX: float, targetY: float)</TD></TR>
+<TR><TD ALIGN="LEFT" >- resetAnimation()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(deltaTime: float, walls: Array&lt;Rectangle&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >- updateAnimation(deltaTime: float)</TD></TR>
+<TR><TD ALIGN="LEFT" >- updateCollisionBox()</TD></TR>
+<TR><TD ALIGN="LEFT" >- updateDirection(dx: float, dy: float)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateGraphWithNewWalls()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Colleague1516743989[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Colleague</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onCustomUpdate(deltaTime: float, walls: Array&lt;Rectangle&gt;)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Itshnik1516743989[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Itshnik</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onCustomUpdate(deltaTime: float, walls: Array&lt;Rectangle&gt;)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+NPC1516743989[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)NPC</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   NPC_WAYPOINTS: Position[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   brokenItemPosition: Vector2 [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   currentState: NPCState [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   delay: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   fixingTimer: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   isResponding: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   moveTimer: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   panicTimer: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   stars: Sprite [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   stunTimer: float [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ draw(batch: SpriteBatch)</TD></TR>
+<TR><TD ALIGN="LEFT" >- findPlayerInRange(): Player</TD></TR>
+<TR><TD ALIGN="LEFT" >- generateDelay(): float</TD></TR>
+<TR><TD ALIGN="LEFT" ># handleEmergencyResponse(deltaTime: float, walls: Array&lt;Rectangle&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isPlayerNearby(walls: Array&lt;Rectangle&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- moveToRandomWaypoint()</TD></TR>
+<TR><TD ALIGN="LEFT" ># onCustomUpdate(deltaTime: float, walls: Array&lt;Rectangle&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ reportBrokenItem(item: BreakableItem)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(deltaTime: float, walls: Array&lt;Rectangle&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" ># walkThrough(deltaTime: float)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+NPCFactory1516743989[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)NPCFactory</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   npcs: Array&lt;NPC&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   player: Player [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ clearAllNPCs()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createBabka(x: int, y: int, direction: Direction, waypoints: Position[]): NPC</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createBoss(x: int, y: int, direction: Direction, waypoints: Position[]): NPC</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createCat(x: int, y: int, direction: Direction, waypoints: Position[]): NPC</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createColleague(x: int, y: int, direction: Direction, waypoints: Position[]): NPC</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createItshnik(x: int, y: int, direction: Direction, waypoints: Position[]): NPC</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Player1516743989[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Player</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   canMove: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   isHidden: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   visible: boolean [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ draw(batch: SpriteBatch)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(deltaTime: float, walls: Array&lt;Rectangle&gt;)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+}
+}
+
+'edges
+ButtonServer1516392132 -> GameProgress1504419741[label="onUse() -> updateQuest()"];
+Camera1516392132 -> GameProgress1504419741[label="gameProgress
+[0..1]"];
+Character1516743989 -> NPC1516743989[arrowhead=none, arrowtail=empty, dir=both];
+Character1516743989 -> Player1516743989[arrowhead=none, arrowtail=empty, dir=both];
+Character1516743989 -> TiledGraph1504419741[label="mapGraph
+[0..1]"];
+Coffee1516392132 -> Fish1516392132[arrowhead=none];
+Coffee1516392132 -> Flash1516392132[arrowhead=none];
+Coffee1516392132 -> KeyCard1516392132[arrowhead=none];
+Coffee1516392132 -> Stapler1516392132[arrowhead=none];
+Flash1516392132 -> GameProgress1504419741[label="onTake() -> updateQuest()"];
+GameProgress1504419741 -> Quest1504419741[label="quests
+[0..1]"];
+Item1516392132 -> ButtonServer1516392132[arrowhead=none, arrowtail=empty, dir=both];
+Item1516392132 -> Camera1516392132[arrowhead=none, arrowtail=empty, dir=both];
+Item1516392132 -> Coffee1516392132[arrowhead=none, arrowtail=empty, dir=both];
+Item1516392132 -> CoffeeMachine1516392132[arrowhead=none, arrowtail=empty, dir=both];
+Item1516392132 -> Fish1516392132[arrowhead=none, arrowtail=empty, dir=both];
+Item1516392132 -> Flash1516392132[arrowhead=none, arrowtail=empty, dir=both];
+Item1516392132 -> KeyCard1516392132[arrowhead=none, arrowtail=empty, dir=both];
+Item1516392132 -> Printer1516392132[arrowhead=none, arrowtail=empty, dir=both];
+Item1516392132 -> Stapler1516392132[arrowhead=none, arrowtail=empty, dir=both];
+Item1516392132 -> TiledGraph1504419741[label="isCloserThanToPlayer() -> hasWallBetween()"];
+Item1516392132 -> Trash1516392132[arrowhead=none, arrowtail=empty, dir=both];
+Item1516392132 -> TurnStile1516392132[arrowhead=none, arrowtail=empty, dir=both];
+Item1516392132 -> Wardrobe1516392132[arrowhead=none, arrowtail=empty, dir=both];
+KeyCard1516392132 -> GameProgress1504419741[label="onTake() -> updateQuest()"];
+MainScreen1504419741 -> NPC1516743989[label="npcs
+[0..1]"];
+MainScreen1504419741 -> Player1516743989[label="player
+[0..1]"];
+NPC1516743989 -> Babka1516743989[arrowhead=none, arrowtail=empty, dir=both];
+NPC1516743989 -> Boss1516743989[arrowhead=none, arrowtail=empty, dir=both];
+NPC1516743989 -> Cat1516743989[arrowhead=none, arrowtail=empty, dir=both];
+NPC1516743989 -> CoffeeMachine1516392132[arrowhead=none];
+NPC1516743989 -> Colleague1516743989[arrowhead=none, arrowtail=empty, dir=both];
+NPC1516743989 -> Itshnik1516743989[arrowhead=none, arrowtail=empty, dir=both];
+NPC1516743989 -> Position1071994676[label="NPC_WAYPOINTS
+[0..*]"];
+NPC1516743989 -> Printer1516392132[arrowhead=none];
+NPC1516743989 -> Trash1516392132[arrowhead=none];
+NPCFactory1516743989 -> NPC1516743989[label="npcs
+[0..1]"];
+NPCFactory1516743989 -> Player1516743989[label="player
+[0..1]"];
+Stapler1516392132 -> TiledGraph1504419741[label="checkWallCollision() -> hasWallBetween()"];
+TurnStile1516392132 -> ButtonServer1516392132[arrowhead=none];
+
+}
+@enduml
